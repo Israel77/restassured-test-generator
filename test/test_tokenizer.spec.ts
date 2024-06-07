@@ -125,4 +125,145 @@ describe("Tests for the tokenizer", () => {
             }
         ]);
     });
+
+    it("Should tokenize deeply nested objects", () => {
+        const jsonObj = {
+            "deeplyNested": {
+                "level1": {
+                    "level2": {
+                        "key": "value"
+                    }
+                }
+            }
+        };
+
+        const tokens = tokenize(jsonObj);
+
+        expect(tokens).to.deep.equal([
+            {
+                parent: undefined,
+                name: "deeplyNested",
+                _type: "Object",
+                value: null
+            },
+            {
+                parent: "deeplyNested",
+                name: "level1",
+                _type: "Object",
+                value: null
+            },
+            {
+                parent: "deeplyNested.level1",
+                name: "level2",
+                _type: "Object",
+                value: null
+            },
+            {
+                parent: "deeplyNested.level1.level2",
+                name: "key",
+                _type: "String",
+                value: "value"
+            }
+        ]);
+    });
+
+    it("Should tokenize objects with multiple key types", () => {
+        const jsonObj = {
+            "mixedTypes": {
+                "string": "value",
+                "number": 42,
+                "boolean": true,
+                "null": null,
+                "object": {
+                    "key": "value"
+                }
+            }
+        };
+
+        const tokens = tokenize(jsonObj);
+
+        expect(tokens).to.deep.equal([
+            {
+                parent: undefined,
+                name: "mixedTypes",
+                _type: "Object",
+                value: null
+            },
+            {
+                parent: "mixedTypes",
+                name: "string",
+                _type: "String",
+                value: "value"
+            },
+            {
+                parent: "mixedTypes",
+                name: "number",
+                _type: "Integer",
+                value: 42
+            },
+            {
+                parent: "mixedTypes",
+                name: "boolean",
+                _type: "Boolean",
+                value: true
+            },
+            {
+                parent: "mixedTypes",
+                name: "null",
+                _type: "null",
+                value: null
+            },
+            {
+                parent: "mixedTypes",
+                name: "object",
+                _type: "Object",
+                value: null
+            },
+            {
+                parent: "mixedTypes.object",
+                name: "key",
+                _type: "String",
+                value: "value"
+            }
+        ]);
+    });
+
+    it("Should tokenize arrays", () => {
+        const jsonObj = {
+            "array": [
+                "value1",
+                "value2",
+                "value3"
+            ]
+        };
+
+        const tokens = tokenize(jsonObj);
+
+        expect(tokens).to.deep.equal([
+            {
+                parent: undefined,
+                name: "array",
+                _type: "Array",
+                value: null
+            },
+            {
+                parent: "array",
+                name: undefined,
+                _type: "String",
+                value: "value1"
+            },
+            {
+                parent: "array",
+                name: undefined,
+                _type: "String",
+                value: "value2"
+            },
+            {
+                parent: "array",
+                name: undefined,
+                _type: "String",
+                value: "value3"
+            }
+        ])
+    });
 });

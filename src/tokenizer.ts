@@ -3,7 +3,7 @@ import { Token, TokenType } from "./types";
 /**
  * Represents an error that occurred during type inference.
  */
-class InferenceError extends Error {
+export class InferenceError extends Error {
     /**
      * Creates a new InferenceError instance.
      * @param {string} message - The error message.
@@ -42,7 +42,19 @@ export const tokenize = (jsonObj: Object, parent?: string): Token[] => {
             });
 
             // Recursively tokenize the nested object
-            tokens.push(...tokenize(value, key));
+            tokens.push(...tokenize(value,
+                // Append the key to the parent key
+                `${parent !== undefined ? parent + "." : ""}${key}`));
+        } else if (_type === "Array") {
+            tokens.push({
+                parent: parent,
+                name: key,
+                _type: _type,
+                // Object references don't store values
+                value: null
+            });
+
+            tokens.push(...tokenizeArray(value, `${parent !== undefined ? parent + "." : ""}${key}`))
         } else {
             tokens.push({
                 parent: parent,
@@ -51,12 +63,45 @@ export const tokenize = (jsonObj: Object, parent?: string): Token[] => {
                 value: value
             });
         }
-
     }
 
     return tokens;
 };
 
+const tokenizeArray = (jsonArray: any[], arrayIdentifier: string): Token[] => {
+    const tokens: Token[] = [];
+
+    for (const value of jsonArray) {
+        const _type = parseType(value);
+        if (_type === null) {
+            throw new InferenceError(`Could not infer type of value present in ${arrayIdentifier}`);
+        }
+
+        if (_type === "Object") {
+            tokens.push({
+                parent: arrayIdentifier,
+                name: undefined,
+                _type: _type,
+                // Object references don't store values
+                value: null
+            });
+
+            // Recursively tokenize the nested object
+            tokens.push(...tokenize(value,
+                // Append the key to the parent key
+                `${parent !== undefined ? parent + "." : ""}${arrayIdentifier}`));
+        } else {
+            tokens.push({
+                parent: arrayIdentifier,
+                name: undefined,
+                _type: _type,
+                value: value
+            });
+        }
+    }
+
+    return tokens;
+}
 
 /**
  * Parses the type of a given value from a JSON object.
