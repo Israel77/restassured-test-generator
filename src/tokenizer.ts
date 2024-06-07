@@ -79,6 +79,7 @@ const tokenizeValue = (value: any, parent?: string, key?: string): Token[] => {
  * @param {string} [key] - The key of the array (undefined if it is an array element).
  * @returns {Token[]} An array of tokens representing the array.
  */
+// FIXME: Does not handle nested arrays properly
 const tokenizeArray = (jsonArray: any[], parent?: string, key?: string): Token[] => {
     const tokens: Token[] = [];
 

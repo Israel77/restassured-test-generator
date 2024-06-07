@@ -323,4 +323,116 @@ describe("Tests for the tokenizer", () => {
             }
         ]);
     });
+
+    it("Should tokenize deeply nested objects in an array", () => {
+        const jsonObj = {
+            "arrayWithNestedObjects": [
+                {
+                    "level1": {
+                        "level2": {
+                            "key": "value"
+                        }
+                    }
+                }
+            ]
+        };
+
+        const tokens = tokenize(jsonObj);
+
+        expect(tokens).to.deep.equal([
+            {
+                parent: undefined,
+                name: "arrayWithNestedObjects",
+                _type: "Array",
+                value: null
+            },
+            {
+                parent: "arrayWithNestedObjects",
+                name: undefined,
+                _type: "Object",
+                value: null
+            },
+            {
+                parent: "arrayWithNestedObjects",
+                name: "level1",
+                _type: "Object",
+                value: null
+            },
+            {
+                parent: "arrayWithNestedObjects.level1",
+                name: "level2",
+                _type: "Object",
+                value: null
+            },
+            {
+                parent: "arrayWithNestedObjects.level1.level2",
+                name: "key",
+                _type: "String",
+                value: "value"
+            }
+        ]);
+    });
+
+    it("Should tokenize array with multiple values and types", () => {
+        const jsonObj = {
+            "arrayWithMultipleValues": [
+                "string",
+                42,
+                true,
+                null,
+                {
+                    "key": "value"
+                }
+            ]
+        }
+
+        const tokens = tokenize(jsonObj);
+
+        expect(tokens).to.deep.equals(
+            [
+                {
+                    parent: undefined,
+                    name: "arrayWithMultipleValues",
+                    _type: "Array",
+                    value: null
+                },
+                {
+                    parent: "arrayWithMultipleValues",
+                    name: undefined,
+                    _type: "String",
+                    value: "string"
+                },
+                {
+                    parent: "arrayWithMultipleValues",
+                    name: undefined,
+                    _type: "Number",
+                    value: 42
+                },
+                {
+                    parent: "arrayWithMultipleValues",
+                    name: undefined,
+                    _type: "Boolean",
+                    value: true
+                },
+                {
+                    parent: "arrayWithMultipleValues",
+                    name: undefined,
+                    _type: "Null",
+                    value: null
+                },
+                {
+                    parent: "arrayWithMultipleValues",
+                    name: undefined,
+                    _type: "Object",
+                    value: null
+                },
+                {
+                    parent: "arrayWithMultipleValues",
+                    name: "key",
+                    _type: "String",
+                    value: "value"
+                }
+            ]
+        )
+    });
 });
