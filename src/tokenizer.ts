@@ -32,29 +32,18 @@ export const tokenize = (jsonObj: Object, parent?: string): Token[] => {
             throw new InferenceError(`Could not infer type of ${key}`);
         }
 
-        if (_type === "Object") {
+        if (_type === "Array") {
+            tokens.push(...tokenizeArray(value, parent, key))
+        } else if (_type === "Object") {
             tokens.push({
                 parent: parent,
                 name: key,
-                _type: _type,
+                _type: "Object",
                 // Object references don't store values
                 value: null
             });
-
             // Recursively tokenize the nested object
-            tokens.push(...tokenize(value,
-                // Append the key to the parent key
-                `${parent !== undefined ? parent + "." : ""}${key}`));
-        } else if (_type === "Array") {
-            tokens.push({
-                parent: parent,
-                name: key,
-                _type: _type,
-                // Object references don't store values
-                value: null
-            });
-
-            tokens.push(...tokenizeArray(value, `${parent !== undefined ? parent + "." : ""}${key}`))
+            tokens.push(...tokenize(value, composeKey(parent, key ?? "")));
         } else {
             tokens.push({
                 parent: parent,
@@ -68,9 +57,18 @@ export const tokenize = (jsonObj: Object, parent?: string): Token[] => {
     return tokens;
 };
 
-const tokenizeArray = (jsonArray: any[], arrayIdentifier: string): Token[] => {
+const tokenizeArray = (jsonArray: any[], parent?: string, key?: string): Token[] => {
     const tokens: Token[] = [];
 
+    tokens.push({
+        parent: parent,
+        name: key,
+        _type: "Array",
+        // Object references don't store values
+        value: null
+    });
+
+    const arrayIdentifier = composeKey(parent, key ?? "");
     for (const value of jsonArray) {
         const _type = parseType(value);
         if (_type === null) {
@@ -87,9 +85,7 @@ const tokenizeArray = (jsonArray: any[], arrayIdentifier: string): Token[] => {
             });
 
             // Recursively tokenize the nested object
-            tokens.push(...tokenize(value,
-                // Append the key to the parent key
-                `${parent !== undefined ? parent + "." : ""}${arrayIdentifier}`));
+            tokens.push(...tokenize(value, arrayIdentifier));
         } else {
             tokens.push({
                 parent: arrayIdentifier,
@@ -102,6 +98,10 @@ const tokenizeArray = (jsonArray: any[], arrayIdentifier: string): Token[] => {
 
     return tokens;
 }
+
+const composeKey = (parent: string | undefined, key: string): string =>
+    `${parent !== undefined ? parent + "." : ""}${key}`;
+
 
 /**
  * Parses the type of a given value from a JSON object.
