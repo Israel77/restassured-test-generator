@@ -266,4 +266,61 @@ describe("Tests for the tokenizer", () => {
             }
         ])
     });
+
+    it("Should tokenize arrays of objects", () => {
+        const jsonObj = {
+            "arrayOfObjects": [
+                {
+                    // Single value
+                    "key1": "value1"
+                },
+                {
+                    // Multiple values
+                    "key2": "value2",
+                    "key3": "value3"
+                }
+            ]
+        };
+
+        const tokens = tokenize(jsonObj);
+
+        expect(tokens).to.deep.equal([
+            {
+                parent: undefined,
+                name: "arrayOfObjects",
+                _type: "Array",
+                value: null
+            },
+            {
+                parent: "arrayOfObjects",
+                name: undefined,
+                _type: "Object",
+                value: null
+            },
+            {
+                parent: "arrayOfObjects",
+                name: "key1",
+                _type: "String",
+                value: "value1"
+            },
+            {
+                parent: "arrayOfObjects",
+                name: undefined,
+                _type: "Object",
+                value: null
+            },
+            {
+                parent: "arrayOfObjects",
+                name: "key2",
+                _type: "String",
+                value: "value2"
+            },
+            {
+                parent: "arrayOfObjects",
+                name: "key3",
+                _type: "String",
+                value: "value3"
+            }
+        ]);
+    });
 });

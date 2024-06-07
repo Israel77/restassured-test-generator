@@ -89,7 +89,7 @@ const tokenizeArray = (jsonArray: any[], parent?: string, key?: string): Token[]
         value: null
     });
 
-    const arrayIdentifier = composeKey(parent, key ?? "");
+    const arrayIdentifier = composeKey(parent, key);
     for (const value of jsonArray) {
         tokens.push(...tokenizeValue(value, arrayIdentifier));
     }
@@ -104,8 +104,8 @@ const tokenizeArray = (jsonArray: any[], parent?: string, key?: string): Token[]
  * @param {string} key - The child key.
  * @returns {string} The composed key.
  */
-const composeKey = (parent: string | undefined, key: string): string =>
-    `${parent !== undefined ? parent + "." : ""}${key}`;
+const composeKey = (parent: string | undefined, key?: string): string =>
+    `${parent ?? ""}${parent && key ? "." : ""}${key ?? ""}`;
 
 
 /**
