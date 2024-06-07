@@ -18,7 +18,7 @@ export class InferenceError extends Error {
  * Tokenizes a JSON object into an array of tokens.
  *
  * @param {Object} jsonObj - The JSON object to tokenize.
- * @param {string} [parent] - The parent key of the JSON object (null if it is the root).
+ * @param {string} [parent] - The parent key of the JSON object (undefined if it is the root).
  * @returns {Token[]} An array of tokens representing the JSON object.
  * @throws {InferenceError} If the type of a key cannot be inferred.
  */
@@ -26,37 +26,59 @@ export const tokenize = (jsonObj: Object, parent?: string): Token[] => {
     const tokens: Token[] = [];
 
     for (const [key, value] of Object.entries(jsonObj)) {
-
-        const _type = parseType(value);
-        if (_type === null) {
-            throw new InferenceError(`Could not infer type of ${key}`);
-        }
-
-        if (_type === "Array") {
-            tokens.push(...tokenizeArray(value, parent, key))
-        } else if (_type === "Object") {
-            tokens.push({
-                parent: parent,
-                name: key,
-                _type: "Object",
-                // Object references don't store values
-                value: null
-            });
-            // Recursively tokenize the nested object
-            tokens.push(...tokenize(value, composeKey(parent, key ?? "")));
-        } else {
-            tokens.push({
-                parent: parent,
-                name: key,
-                _type: _type,
-                value: value
-            });
-        }
+        tokens.push(...tokenizeValue(value, parent, key));
     }
 
     return tokens;
 };
 
+/**
+ * Tokenizes a value (object, array, or primitive) into an array of tokens.
+ *
+ * @param {any} value - The value to tokenize.
+ * @param {string} [parent] - The parent key of the value (null if it is the root).
+ * @param {string} [key] - The key of the value (null if it is an array element).
+ * @returns {Token[]} An array of tokens representing the value.
+ * @throws {InferenceError} If the type of the value cannot be inferred.
+ */
+const tokenizeValue = (value: any, parent?: string, key?: string): Token[] => {
+    const tokens: Token[] = [];
+
+    const _type = parseType(value);
+    if (_type === null) {
+        throw new InferenceError(`Could not infer type of ${composeKey(parent, key ?? "")}`);
+    }
+
+    if (_type === "Array") {
+        tokens.push(...tokenizeArray(value, parent, key));
+    } else if (_type === "Object") {
+        tokens.push({
+            parent: parent,
+            name: key,
+            _type: "Object",
+            value: null
+        });
+        tokens.push(...tokenize(value, composeKey(parent, key ?? "")));
+    } else {
+        tokens.push({
+            parent: parent,
+            name: key,
+            _type: _type,
+            value: value
+        });
+    }
+
+    return tokens;
+}
+
+/**
+ * Tokenizes an array into an array of tokens.
+ *
+ * @param {any[]} jsonArray - The array to tokenize.
+ * @param {string} [parent] - The parent key of the array (undefined if it is the root).
+ * @param {string} [key] - The key of the array (undefined if it is an array element).
+ * @returns {Token[]} An array of tokens representing the array.
+ */
 const tokenizeArray = (jsonArray: any[], parent?: string, key?: string): Token[] => {
     const tokens: Token[] = [];
 
@@ -64,41 +86,24 @@ const tokenizeArray = (jsonArray: any[], parent?: string, key?: string): Token[]
         parent: parent,
         name: key,
         _type: "Array",
-        // Object references don't store values
         value: null
     });
 
     const arrayIdentifier = composeKey(parent, key ?? "");
     for (const value of jsonArray) {
-        const _type = parseType(value);
-        if (_type === null) {
-            throw new InferenceError(`Could not infer type of value present in ${arrayIdentifier}`);
-        }
-
-        if (_type === "Object") {
-            tokens.push({
-                parent: arrayIdentifier,
-                name: undefined,
-                _type: _type,
-                // Object references don't store values
-                value: null
-            });
-
-            // Recursively tokenize the nested object
-            tokens.push(...tokenize(value, arrayIdentifier));
-        } else {
-            tokens.push({
-                parent: arrayIdentifier,
-                name: undefined,
-                _type: _type,
-                value: value
-            });
-        }
+        tokens.push(...tokenizeValue(value, arrayIdentifier));
     }
 
     return tokens;
 }
 
+/**
+ * Composes a key by combining a parent key and a child key with a dot separator.
+ *
+ * @param {string | undefined} parent - The parent key (undefined if it is the root).
+ * @param {string} key - The child key.
+ * @returns {string} The composed key.
+ */
 const composeKey = (parent: string | undefined, key: string): string =>
     `${parent !== undefined ? parent + "." : ""}${key}`;
 
