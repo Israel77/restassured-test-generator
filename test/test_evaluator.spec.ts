@@ -13,8 +13,8 @@ describe("Tests for the evaluator", () => {
             }
         ];
 
-        const result = generateTests(items);
+        const result = generateTests(items, { format: false, statusCode: 200 });
 
-        expect(result).to.equal("then()\n    .body(\"string\", equalTo(\"Hello, world!\"))\n    .statusCode(200);");
+        expect(result).to.equal("then().body(\"string\", equalTo(\"Hello, world!\")).statusCode(200);");
     })
 });

@@ -9,7 +9,10 @@ describe("Tests for the tokenizer -> parser -> evaluator pipeline", () => {
             "string": "Hello, world!"
         };
 
-        const result = generateTests(parse(tokenize(jsonObj)));
+        const result = generateTests(parse(tokenize(jsonObj)), {
+            format: true,
+            statusCode: 200
+        });
 
         let expectedResult = "then()";
         expectedResult += "\n    ";

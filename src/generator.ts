@@ -1,14 +1,28 @@
-import { TestItem, TokenType } from "./types";
+import { GeneratorOptions, TestItem, TokenType } from "./types";
 
-export const generateTests = (items: TestItem[]): string => {
-    let result = "then()\n";
+export const generateTests = (items: TestItem[], options?: GeneratorOptions): string => {
+    options = {
+        format: true,
+        ...options
+    };
+
+    let sep = options.format ? "\n    " : "";
+    let end = ";";
+
+    let result = "then()";
 
     for (const item of items) {
         if (item.testType === "CheckForValue") {
-            result += `    .body("${item.path}", equalTo(${formatValue(item.value, item.valueType)}))\n`;
+            result += sep +
+                `.body("${item.path}", equalTo(${formatValue(item.value, item.valueType)}))`;
         }
     }
-    result += "    .statusCode(200);"
+
+    if (options.statusCode !== undefined) {
+        result += sep + `.statusCode(${options.statusCode})`;
+    }
+
+    result += end;
     return result;
 }
 
