@@ -12,7 +12,7 @@ describe("Tests for the tokenizer", () => {
         expect(tokens).to.deep.equal([
             {
                 parent: undefined,
-                name: "string",
+                key: "string",
                 _type: "String",
                 value: "Hello, world!"
             }
@@ -29,7 +29,7 @@ describe("Tests for the tokenizer", () => {
         expect(tokens).to.deep.equal([
             {
                 parent: undefined,
-                name: "int",
+                key: "int",
                 _type: "Integer",
                 value: 1234567890
             }
@@ -46,7 +46,7 @@ describe("Tests for the tokenizer", () => {
         expect(tokens).to.deep.equal([
             {
                 parent: undefined,
-                name: "decimal",
+                key: "decimal",
                 _type: "Decimal",
                 value: 1234567890.1234567890
             }
@@ -63,7 +63,7 @@ describe("Tests for the tokenizer", () => {
         expect(tokens).to.deep.equal([
             {
                 parent: undefined,
-                name: "nullValue",
+                key: "nullValue",
                 _type: "null",
                 value: null
             }
@@ -81,13 +81,13 @@ describe("Tests for the tokenizer", () => {
         expect(tokens).to.deep.equal([
             {
                 parent: undefined,
-                name: "trueValue",
+                key: "trueValue",
                 _type: "Boolean",
                 value: true
             },
             {
                 parent: undefined,
-                name: "falseValue",
+                key: "falseValue",
                 _type: "Boolean",
                 value: false
             }
@@ -107,19 +107,19 @@ describe("Tests for the tokenizer", () => {
         expect(tokens).to.deep.equal([
             {
                 parent: undefined,
-                name: "nestedObject",
+                key: "nestedObject",
                 _type: "Object",
                 value: null
             },
             {
                 parent: "nestedObject",
-                name: "key1",
+                key: "key1",
                 _type: "String",
                 value: "value1"
             },
             {
                 parent: "nestedObject",
-                name: "key2",
+                key: "key2",
                 _type: "Integer",
                 value: 2
             }
@@ -142,25 +142,25 @@ describe("Tests for the tokenizer", () => {
         expect(tokens).to.deep.equal([
             {
                 parent: undefined,
-                name: "deeplyNested",
+                key: "deeplyNested",
                 _type: "Object",
                 value: null
             },
             {
                 parent: "deeplyNested",
-                name: "level1",
+                key: "level1",
                 _type: "Object",
                 value: null
             },
             {
                 parent: "deeplyNested.level1",
-                name: "level2",
+                key: "level2",
                 _type: "Object",
                 value: null
             },
             {
                 parent: "deeplyNested.level1.level2",
-                name: "key",
+                key: "key",
                 _type: "String",
                 value: "value"
             }
@@ -185,43 +185,43 @@ describe("Tests for the tokenizer", () => {
         expect(tokens).to.deep.equal([
             {
                 parent: undefined,
-                name: "mixedTypes",
+                key: "mixedTypes",
                 _type: "Object",
                 value: null
             },
             {
                 parent: "mixedTypes",
-                name: "string",
+                key: "string",
                 _type: "String",
                 value: "value"
             },
             {
                 parent: "mixedTypes",
-                name: "number",
+                key: "number",
                 _type: "Integer",
                 value: 42
             },
             {
                 parent: "mixedTypes",
-                name: "boolean",
+                key: "boolean",
                 _type: "Boolean",
                 value: true
             },
             {
                 parent: "mixedTypes",
-                name: "null",
+                key: "null",
                 _type: "null",
                 value: null
             },
             {
                 parent: "mixedTypes",
-                name: "object",
+                key: "object",
                 _type: "Object",
                 value: null
             },
             {
                 parent: "mixedTypes.object",
-                name: "key",
+                key: "key",
                 _type: "String",
                 value: "value"
             }
@@ -242,25 +242,25 @@ describe("Tests for the tokenizer", () => {
         expect(tokens).to.deep.equal([
             {
                 parent: undefined,
-                name: "array",
+                key: "array",
                 _type: "Array",
                 value: null
             },
             {
                 parent: "array",
-                name: undefined,
+                key: undefined,
                 _type: "String",
                 value: "value1"
             },
             {
                 parent: "array",
-                name: undefined,
+                key: undefined,
                 _type: "String",
                 value: "value2"
             },
             {
                 parent: "array",
-                name: undefined,
+                key: undefined,
                 _type: "String",
                 value: "value3"
             }
@@ -287,37 +287,37 @@ describe("Tests for the tokenizer", () => {
         expect(tokens).to.deep.equal([
             {
                 parent: undefined,
-                name: "arrayOfObjects",
+                key: "arrayOfObjects",
                 _type: "Array",
                 value: null
             },
             {
                 parent: "arrayOfObjects",
-                name: undefined,
+                key: undefined,
                 _type: "Object",
                 value: null
             },
             {
                 parent: "arrayOfObjects",
-                name: "key1",
+                key: "key1",
                 _type: "String",
                 value: "value1"
             },
             {
                 parent: "arrayOfObjects",
-                name: undefined,
+                key: undefined,
                 _type: "Object",
                 value: null
             },
             {
                 parent: "arrayOfObjects",
-                name: "key2",
+                key: "key2",
                 _type: "String",
                 value: "value2"
             },
             {
                 parent: "arrayOfObjects",
-                name: "key3",
+                key: "key3",
                 _type: "String",
                 value: "value3"
             }
@@ -342,31 +342,31 @@ describe("Tests for the tokenizer", () => {
         expect(tokens).to.deep.equal([
             {
                 parent: undefined,
-                name: "arrayWithNestedObjects",
+                key: "arrayWithNestedObjects",
                 _type: "Array",
                 value: null
             },
             {
                 parent: "arrayWithNestedObjects",
-                name: undefined,
+                key: undefined,
                 _type: "Object",
                 value: null
             },
             {
                 parent: "arrayWithNestedObjects",
-                name: "level1",
+                key: "level1",
                 _type: "Object",
                 value: null
             },
             {
                 parent: "arrayWithNestedObjects.level1",
-                name: "level2",
+                key: "level2",
                 _type: "Object",
                 value: null
             },
             {
                 parent: "arrayWithNestedObjects.level1.level2",
-                name: "key",
+                key: "key",
                 _type: "String",
                 value: "value"
             }
@@ -392,43 +392,43 @@ describe("Tests for the tokenizer", () => {
             [
                 {
                     parent: undefined,
-                    name: "arrayWithMultipleValues",
+                    key: "arrayWithMultipleValues",
                     _type: "Array",
                     value: null
                 },
                 {
                     parent: "arrayWithMultipleValues",
-                    name: undefined,
+                    key: undefined,
                     _type: "String",
                     value: "string"
                 },
                 {
                     parent: "arrayWithMultipleValues",
-                    name: undefined,
-                    _type: "Number",
+                    key: undefined,
+                    _type: "Integer",
                     value: 42
                 },
                 {
                     parent: "arrayWithMultipleValues",
-                    name: undefined,
+                    key: undefined,
                     _type: "Boolean",
                     value: true
                 },
                 {
                     parent: "arrayWithMultipleValues",
-                    name: undefined,
-                    _type: "Null",
+                    key: undefined,
+                    _type: "null",
                     value: null
                 },
                 {
                     parent: "arrayWithMultipleValues",
-                    name: undefined,
+                    key: undefined,
                     _type: "Object",
                     value: null
                 },
                 {
                     parent: "arrayWithMultipleValues",
-                    name: "key",
+                    key: "key",
                     _type: "String",
                     value: "value"
                 }

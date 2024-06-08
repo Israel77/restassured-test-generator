@@ -54,7 +54,7 @@ const tokenizeValue = (value: any, parent?: string, key?: string): Token[] => {
     } else if (_type === "Object") {
         tokens.push({
             parent: parent,
-            name: key,
+            key: key,
             _type: "Object",
             value: null
         });
@@ -62,7 +62,7 @@ const tokenizeValue = (value: any, parent?: string, key?: string): Token[] => {
     } else {
         tokens.push({
             parent: parent,
-            name: key,
+            key: key,
             _type: _type,
             value: value
         });
@@ -85,7 +85,7 @@ const tokenizeArray = (jsonArray: any[], parent?: string, key?: string): Token[]
 
     tokens.push({
         parent: parent,
-        name: key,
+        key: key,
         _type: "Array",
         value: null
     });
