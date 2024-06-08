@@ -1,8 +1,8 @@
-import { TestItem, Token } from "./types";
+import { JsonBodyTest, Token } from "./types";
 import { tokenize, composeKey } from "./tokenizer.js";
 
-export const parse = (tokens: Token[]): TestItem[] => {
-    const items: TestItem[] = [];
+export const parse = (tokens: Token[]): JsonBodyTest[] => {
+    const items: JsonBodyTest[] = [];
 
     const parentTypes: { [key: string]: "Object" | "Array" } = {};
 

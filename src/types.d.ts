@@ -15,7 +15,7 @@ export type TokenType =
     | "Array"
     | "null"
 
-export type TestItem = {
+export type JsonBodyTest = {
     testType: TestType,
     path: string,
     value: any,

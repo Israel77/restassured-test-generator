@@ -1,10 +1,10 @@
 import { expect } from 'chai';
-import { TestItem } from '../src/types';
+import { JsonBodyTest } from '../src/types';
 import { generateTests } from '../src/generator.js';
 
 describe("Tests for the evaluator", () => {
     it("Should evaluate string values", () => {
-        const items: TestItem[] = [
+        const items: JsonBodyTest[] = [
             {
                 testType: "CheckForValue",
                 path: "string",

@@ -1,25 +1,27 @@
-import { GeneratorOptions, TestItem, TokenType } from "./types";
+import { GeneratorOptions, JsonBodyTest, TokenType } from "./types";
 
-export const generateTests = (items: TestItem[], options?: GeneratorOptions): string => {
+export const generateTests = (items: JsonBodyTest[], options?: GeneratorOptions): string => {
     options = {
         format: true,
         ...options
     };
 
-    let sep = options.format ? "\n    " : "";
+    let indent = options.format ? "    " : "";
+    let newline = options.format ? "\n" : "";
     let end = ";";
 
     let result = "then()";
 
     for (const item of items) {
         if (item.testType === "CheckForValue") {
-            result += sep +
+            result += newline + indent +
                 `.body("${item.path}", equalTo(${formatValue(item.value, item.valueType)}))`;
         }
     }
 
     if (options.statusCode !== undefined) {
-        result += sep + `.statusCode(${options.statusCode})`;
+        result += newline + indent +
+            `.statusCode(${options.statusCode})`;
     }
 
     result += end;
