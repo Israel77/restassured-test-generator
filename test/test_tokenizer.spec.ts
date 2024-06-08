@@ -248,19 +248,19 @@ describe("Tests for the tokenizer", () => {
             },
             {
                 parent: "array",
-                key: undefined,
+                key: "[0]",
                 _type: "String",
                 value: "value1"
             },
             {
                 parent: "array",
-                key: undefined,
+                key: "[1]",
                 _type: "String",
                 value: "value2"
             },
             {
                 parent: "array",
-                key: undefined,
+                key: "[2]",
                 _type: "String",
                 value: "value3"
             }
@@ -293,30 +293,30 @@ describe("Tests for the tokenizer", () => {
             },
             {
                 parent: "arrayOfObjects",
-                key: undefined,
+                key: "[0]",
                 _type: "Object",
                 value: null
             },
             {
-                parent: "arrayOfObjects",
+                parent: "arrayOfObjects[0]",
                 key: "key1",
                 _type: "String",
                 value: "value1"
             },
             {
                 parent: "arrayOfObjects",
-                key: undefined,
+                key: "[1]",
                 _type: "Object",
                 value: null
             },
             {
-                parent: "arrayOfObjects",
+                parent: "arrayOfObjects[1]",
                 key: "key2",
                 _type: "String",
                 value: "value2"
             },
             {
-                parent: "arrayOfObjects",
+                parent: "arrayOfObjects[1]",
                 key: "key3",
                 _type: "String",
                 value: "value3"
@@ -348,24 +348,24 @@ describe("Tests for the tokenizer", () => {
             },
             {
                 parent: "arrayWithNestedObjects",
-                key: undefined,
+                key: "[0]",
                 _type: "Object",
                 value: null
             },
             {
-                parent: "arrayWithNestedObjects",
+                parent: "arrayWithNestedObjects[0]",
                 key: "level1",
                 _type: "Object",
                 value: null
             },
             {
-                parent: "arrayWithNestedObjects.level1",
+                parent: "arrayWithNestedObjects[0].level1",
                 key: "level2",
                 _type: "Object",
                 value: null
             },
             {
-                parent: "arrayWithNestedObjects.level1.level2",
+                parent: "arrayWithNestedObjects[0].level1.level2",
                 key: "key",
                 _type: "String",
                 value: "value"
@@ -398,41 +398,117 @@ describe("Tests for the tokenizer", () => {
                 },
                 {
                     parent: "arrayWithMultipleValues",
-                    key: undefined,
+                    key: "[0]",
                     _type: "String",
                     value: "string"
                 },
                 {
                     parent: "arrayWithMultipleValues",
-                    key: undefined,
+                    key: "[1]",
                     _type: "Integer",
                     value: 42
                 },
                 {
                     parent: "arrayWithMultipleValues",
-                    key: undefined,
+                    key: "[2]",
                     _type: "Boolean",
                     value: true
                 },
                 {
                     parent: "arrayWithMultipleValues",
-                    key: undefined,
+                    key: "[3]",
                     _type: "null",
                     value: null
                 },
                 {
                     parent: "arrayWithMultipleValues",
-                    key: undefined,
+                    key: "[4]",
                     _type: "Object",
                     value: null
                 },
                 {
-                    parent: "arrayWithMultipleValues",
+                    parent: "arrayWithMultipleValues[4]",
                     key: "key",
                     _type: "String",
                     value: "value"
                 }
             ]
         )
+    });
+
+    it("Should tokenize array of arrays", () => {
+        const jsonObj = {
+            "arrayOfArrays": [
+                [
+                    "value1",
+                    "value2",
+                    "value3"
+                ],
+                [
+                    "value4",
+                    "value5",
+                    "value6"
+                ]
+            ]
+        };
+
+        const tokens = tokenize(jsonObj);
+
+        expect(tokens).to.deep.equal([
+            {
+                parent: undefined,
+                key: "arrayOfArrays",
+                _type: "Array",
+                value: null
+            },
+            {
+                parent: "arrayOfArrays",
+                key: "[0]",
+                _type: "Array",
+                value: null
+            },
+            {
+                parent: "arrayOfArrays[0]",
+                key: "[0]",
+                _type: "String",
+                value: "value1"
+            },
+            {
+                parent: "arrayOfArrays[0]",
+                key: "[1]",
+                _type: "String",
+                value: "value2"
+            },
+            {
+                parent: "arrayOfArrays[0]",
+                key: "[2]",
+                _type: "String",
+                value: "value3"
+            },
+            {
+                parent: "arrayOfArrays",
+                key: "[1]",
+                _type: "Array",
+                value: null
+            },
+            {
+                parent: "arrayOfArrays[1]",
+                key: "[0]",
+                _type: "String",
+                value: "value4"
+            },
+            {
+                parent: "arrayOfArrays[1]",
+                key: "[1]",
+                _type: "String",
+                value: "value5"
+            },
+            {
+                parent: "arrayOfArrays[1]",
+                key: "[2]",
+                _type: "String",
+                value: "value6"
+            }
+        ]);
     });
 });
