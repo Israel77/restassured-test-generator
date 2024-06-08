@@ -108,7 +108,7 @@ const tokenizeArray = (jsonArray: any[], parent: string | undefined, key: string
  * @returns {string} The composed key.
  */
 const composeKey = (parent: string | undefined, key: string, fromArray: boolean): string =>
-    `${parent ?? ""}${parent && key && !fromArray ? "." : ""}${key ?? ""}`;
+    `${parent ?? ""}${parent && !fromArray ? "." : ""}${key}`;
 
 
 /**
