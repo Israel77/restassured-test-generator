@@ -3,7 +3,7 @@ export type Token = {
     parent?: string,
     // Key of the current object, or index if it is an array element
     key: string,
-    _type: TokenType,
+    type: TokenType,
     value: string | number | boolean | Object | any[] | null,
 }
 

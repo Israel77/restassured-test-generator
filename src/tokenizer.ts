@@ -55,7 +55,7 @@ const tokenizeValue = (value: any, parent: string | undefined, key: string, from
         tokens.push({
             parent: parent,
             key: key,
-            _type: "Object",
+            type: "Object",
             value: null
         });
         const tokenKey = composeKey(parent, key, fromArray);
@@ -64,7 +64,7 @@ const tokenizeValue = (value: any, parent: string | undefined, key: string, from
         tokens.push({
             parent: parent,
             key: key,
-            _type: _type,
+            type: _type,
             value: value
         });
     }
@@ -87,7 +87,7 @@ const tokenizeArray = (jsonArray: any[], parent: string | undefined, key: string
     tokens.push({
         parent: parent,
         key: key,
-        _type: "Array",
+        type: "Array",
         value: null
     });
 

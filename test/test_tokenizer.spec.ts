@@ -13,7 +13,7 @@ describe("Tests for the tokenizer", () => {
             {
                 parent: undefined,
                 key: "string",
-                _type: "String",
+                type: "String",
                 value: "Hello, world!"
             }
         ]);
@@ -30,7 +30,7 @@ describe("Tests for the tokenizer", () => {
             {
                 parent: undefined,
                 key: "int",
-                _type: "Number",
+                type: "Number",
                 value: 1234567890
             }
         ]);
@@ -47,7 +47,7 @@ describe("Tests for the tokenizer", () => {
             {
                 parent: undefined,
                 key: "decimal",
-                _type: "Number",
+                type: "Number",
                 value: 1234567890.1234567890
             }
         ]);
@@ -64,7 +64,7 @@ describe("Tests for the tokenizer", () => {
             {
                 parent: undefined,
                 key: "nullValue",
-                _type: "null",
+                type: "null",
                 value: null
             }
         ]);
@@ -82,13 +82,13 @@ describe("Tests for the tokenizer", () => {
             {
                 parent: undefined,
                 key: "trueValue",
-                _type: "Boolean",
+                type: "Boolean",
                 value: true
             },
             {
                 parent: undefined,
                 key: "falseValue",
-                _type: "Boolean",
+                type: "Boolean",
                 value: false
             }
         ]);
@@ -108,19 +108,19 @@ describe("Tests for the tokenizer", () => {
             {
                 parent: undefined,
                 key: "nestedObject",
-                _type: "Object",
+                type: "Object",
                 value: null
             },
             {
                 parent: "nestedObject",
                 key: "key1",
-                _type: "String",
+                type: "String",
                 value: "value1"
             },
             {
                 parent: "nestedObject",
                 key: "key2",
-                _type: "Number",
+                type: "Number",
                 value: 2
             }
         ]);
@@ -143,25 +143,25 @@ describe("Tests for the tokenizer", () => {
             {
                 parent: undefined,
                 key: "deeplyNested",
-                _type: "Object",
+                type: "Object",
                 value: null
             },
             {
                 parent: "deeplyNested",
                 key: "level1",
-                _type: "Object",
+                type: "Object",
                 value: null
             },
             {
                 parent: "deeplyNested.level1",
                 key: "level2",
-                _type: "Object",
+                type: "Object",
                 value: null
             },
             {
                 parent: "deeplyNested.level1.level2",
                 key: "key",
-                _type: "String",
+                type: "String",
                 value: "value"
             }
         ]);
@@ -186,43 +186,43 @@ describe("Tests for the tokenizer", () => {
             {
                 parent: undefined,
                 key: "mixedTypes",
-                _type: "Object",
+                type: "Object",
                 value: null
             },
             {
                 parent: "mixedTypes",
                 key: "string",
-                _type: "String",
+                type: "String",
                 value: "value"
             },
             {
                 parent: "mixedTypes",
                 key: "number",
-                _type: "Number",
+                type: "Number",
                 value: 42
             },
             {
                 parent: "mixedTypes",
                 key: "boolean",
-                _type: "Boolean",
+                type: "Boolean",
                 value: true
             },
             {
                 parent: "mixedTypes",
                 key: "null",
-                _type: "null",
+                type: "null",
                 value: null
             },
             {
                 parent: "mixedTypes",
                 key: "object",
-                _type: "Object",
+                type: "Object",
                 value: null
             },
             {
                 parent: "mixedTypes.object",
                 key: "key",
-                _type: "String",
+                type: "String",
                 value: "value"
             }
         ]);
@@ -243,25 +243,25 @@ describe("Tests for the tokenizer", () => {
             {
                 parent: undefined,
                 key: "array",
-                _type: "Array",
+                type: "Array",
                 value: null
             },
             {
                 parent: "array",
                 key: "[0]",
-                _type: "String",
+                type: "String",
                 value: "value1"
             },
             {
                 parent: "array",
                 key: "[1]",
-                _type: "String",
+                type: "String",
                 value: "value2"
             },
             {
                 parent: "array",
                 key: "[2]",
-                _type: "String",
+                type: "String",
                 value: "value3"
             }
         ])
@@ -288,37 +288,37 @@ describe("Tests for the tokenizer", () => {
             {
                 parent: undefined,
                 key: "arrayOfObjects",
-                _type: "Array",
+                type: "Array",
                 value: null
             },
             {
                 parent: "arrayOfObjects",
                 key: "[0]",
-                _type: "Object",
+                type: "Object",
                 value: null
             },
             {
                 parent: "arrayOfObjects[0]",
                 key: "key1",
-                _type: "String",
+                type: "String",
                 value: "value1"
             },
             {
                 parent: "arrayOfObjects",
                 key: "[1]",
-                _type: "Object",
+                type: "Object",
                 value: null
             },
             {
                 parent: "arrayOfObjects[1]",
                 key: "key2",
-                _type: "String",
+                type: "String",
                 value: "value2"
             },
             {
                 parent: "arrayOfObjects[1]",
                 key: "key3",
-                _type: "String",
+                type: "String",
                 value: "value3"
             }
         ]);
@@ -343,31 +343,31 @@ describe("Tests for the tokenizer", () => {
             {
                 parent: undefined,
                 key: "arrayWithNestedObjects",
-                _type: "Array",
+                type: "Array",
                 value: null
             },
             {
                 parent: "arrayWithNestedObjects",
                 key: "[0]",
-                _type: "Object",
+                type: "Object",
                 value: null
             },
             {
                 parent: "arrayWithNestedObjects[0]",
                 key: "level1",
-                _type: "Object",
+                type: "Object",
                 value: null
             },
             {
                 parent: "arrayWithNestedObjects[0].level1",
                 key: "level2",
-                _type: "Object",
+                type: "Object",
                 value: null
             },
             {
                 parent: "arrayWithNestedObjects[0].level1.level2",
                 key: "key",
-                _type: "String",
+                type: "String",
                 value: "value"
             }
         ]);
@@ -393,43 +393,43 @@ describe("Tests for the tokenizer", () => {
                 {
                     parent: undefined,
                     key: "arrayWithMultipleValues",
-                    _type: "Array",
+                    type: "Array",
                     value: null
                 },
                 {
                     parent: "arrayWithMultipleValues",
                     key: "[0]",
-                    _type: "String",
+                    type: "String",
                     value: "string"
                 },
                 {
                     parent: "arrayWithMultipleValues",
                     key: "[1]",
-                    _type: "Number",
+                    type: "Number",
                     value: 42
                 },
                 {
                     parent: "arrayWithMultipleValues",
                     key: "[2]",
-                    _type: "Boolean",
+                    type: "Boolean",
                     value: true
                 },
                 {
                     parent: "arrayWithMultipleValues",
                     key: "[3]",
-                    _type: "null",
+                    type: "null",
                     value: null
                 },
                 {
                     parent: "arrayWithMultipleValues",
                     key: "[4]",
-                    _type: "Object",
+                    type: "Object",
                     value: null
                 },
                 {
                     parent: "arrayWithMultipleValues[4]",
                     key: "key",
-                    _type: "String",
+                    type: "String",
                     value: "value"
                 }
             ]
@@ -458,55 +458,55 @@ describe("Tests for the tokenizer", () => {
             {
                 parent: undefined,
                 key: "arrayOfArrays",
-                _type: "Array",
+                type: "Array",
                 value: null
             },
             {
                 parent: "arrayOfArrays",
                 key: "[0]",
-                _type: "Array",
+                type: "Array",
                 value: null
             },
             {
                 parent: "arrayOfArrays[0]",
                 key: "[0]",
-                _type: "String",
+                type: "String",
                 value: "value1"
             },
             {
                 parent: "arrayOfArrays[0]",
                 key: "[1]",
-                _type: "String",
+                type: "String",
                 value: "value2"
             },
             {
                 parent: "arrayOfArrays[0]",
                 key: "[2]",
-                _type: "String",
+                type: "String",
                 value: "value3"
             },
             {
                 parent: "arrayOfArrays",
                 key: "[1]",
-                _type: "Array",
+                type: "Array",
                 value: null
             },
             {
                 parent: "arrayOfArrays[1]",
                 key: "[0]",
-                _type: "String",
+                type: "String",
                 value: "value4"
             },
             {
                 parent: "arrayOfArrays[1]",
                 key: "[1]",
-                _type: "String",
+                type: "String",
                 value: "value5"
             },
             {
                 parent: "arrayOfArrays[1]",
                 key: "[2]",
-                _type: "String",
+                type: "String",
                 value: "value6"
             }
         ]);

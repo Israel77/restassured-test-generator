@@ -7,18 +7,18 @@ export const parse = (tokens: Token[]): TestItem[] => {
     const parentTypes: { [key: string]: "Object" | "Array" } = {};
 
     for (const token of tokens) {
-        if (token._type !== "Object" && token._type !== "Array") {
+        if (token.type !== "Object" && token.type !== "Array") {
             items.push({
                 testType: "CheckForValue",
                 path: composeKey(token.parent,
                     token.key,
                     parentTypes[token.parent ?? ""] === "Array"),
                 value: token.value,
-                valueType: token._type
+                valueType: token.type
             });
         }
         else {
-            parentTypes[composeKey(token.parent, token.key, token._type === "Array")] = token._type;
+            parentTypes[composeKey(token.parent, token.key, token.type === "Array")] = token.type;
         }
     }
 
