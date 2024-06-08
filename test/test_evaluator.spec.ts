@@ -6,9 +6,10 @@ describe("Tests for the evaluator", () => {
     it("Should evaluate string values", () => {
         const items: TestItem[] = [
             {
-                type: "CheckForValue",
+                testType: "CheckForValue",
                 path: "string",
-                value: "Hello, world!"
+                value: "Hello, world!",
+                valueType: "String"
             }
         ];
 

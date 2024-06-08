@@ -9,11 +9,12 @@ export const parse = (tokens: Token[]): TestItem[] => {
     for (const token of tokens) {
         if (token._type !== "Object" && token._type !== "Array") {
             items.push({
-                type: "CheckForValue",
+                testType: "CheckForValue",
                 path: composeKey(token.parent,
                     token.key,
                     parentTypes[token.parent ?? ""] === "Array"),
                 value: token.value,
+                valueType: token._type
             });
         }
         else {

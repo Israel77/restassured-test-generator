@@ -16,9 +16,10 @@ export type TokenType =
     | "null"
 
 export type TestItem = {
-    type: TestType,
+    testType: TestType,
     path: string,
     value: any,
+    valueType: TokenType,
 }
 
 export type TestType =
