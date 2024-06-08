@@ -107,7 +107,7 @@ const tokenizeArray = (jsonArray: any[], parent: string | undefined, key: string
  * @param {string} key - The child key.
  * @returns {string} The composed key.
  */
-const composeKey = (parent: string | undefined, key: string, fromArray: boolean): string =>
+export const composeKey = (parent: string | undefined, key: string, fromArray: boolean): string =>
     `${parent ?? ""}${parent && !fromArray ? "." : ""}${key}`;
 
 
@@ -123,12 +123,7 @@ const parseType = (value: Exclude<any, bigint | symbol | undefined>):
         case "string":
             return "String";
         case "number":
-            if (Number.isInteger(value)) {
-                return "Integer";
-            }
-            else {
-                return "Decimal";
-            }
+            return "Number"
         case "boolean":
             return "Boolean";
         case "object":

@@ -30,7 +30,7 @@ describe("Tests for the tokenizer", () => {
             {
                 parent: undefined,
                 key: "int",
-                _type: "Integer",
+                _type: "Number",
                 value: 1234567890
             }
         ]);
@@ -47,7 +47,7 @@ describe("Tests for the tokenizer", () => {
             {
                 parent: undefined,
                 key: "decimal",
-                _type: "Decimal",
+                _type: "Number",
                 value: 1234567890.1234567890
             }
         ]);
@@ -120,7 +120,7 @@ describe("Tests for the tokenizer", () => {
             {
                 parent: "nestedObject",
                 key: "key2",
-                _type: "Integer",
+                _type: "Number",
                 value: 2
             }
         ]);
@@ -198,7 +198,7 @@ describe("Tests for the tokenizer", () => {
             {
                 parent: "mixedTypes",
                 key: "number",
-                _type: "Integer",
+                _type: "Number",
                 value: 42
             },
             {
@@ -405,7 +405,7 @@ describe("Tests for the tokenizer", () => {
                 {
                     parent: "arrayWithMultipleValues",
                     key: "[1]",
-                    _type: "Integer",
+                    _type: "Number",
                     value: 42
                 },
                 {
