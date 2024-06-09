@@ -3,7 +3,7 @@ import { tokenize, composeKey } from '../src/compiler/tokenizer.js';
 import { parse } from '../src/compiler/parser.js';
 import { generateTests } from '../src/compiler/generator.js';
 
-describe("Tests for the tokenizer -> parser -> evaluator pipeline", () => {
+describe("Tests for the tokenizer -> parser -> generator pipeline", () => {
     it("Should generate tests for objects with string values", () => {
         const jsonObj = {
             "string": "Hello, world!"
@@ -15,7 +15,9 @@ describe("Tests for the tokenizer -> parser -> evaluator pipeline", () => {
         });
 
         let expectedResult = "given()";
-        expectedResult += "\n";
+        expectedResult += "\n    ";
+        expectedResult += ".when()";
+        expectedResult += "\n    ";
         expectedResult += ".then()";
         expectedResult += "\n    ";
         expectedResult += ".body(\"string\", equalTo(\"Hello, world!\"))";

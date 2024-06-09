@@ -35,7 +35,7 @@ export class VarOrValue<T> {
     }
 }
 
-export const generateTests: TestGenerator = (items, options?) => {
+export const generateTests: TestGenerator = (responseTestItems, options?) => {
     options = {
         format: true,
         ...options
@@ -49,19 +49,7 @@ export const generateTests: TestGenerator = (items, options?) => {
 
     result += generateRequestSpecification(options.request, newline, indent);
 
-    result += newline + ".then()";
-
-    for (const item of items) {
-        if (item.testType === "CheckForValue") {
-            result += newline + indent +
-                `.body("${item.path}", equalTo(${formatValue(item.value, item.valueType)}))`;
-        }
-    }
-
-    if (options.statusCode !== undefined) {
-        result += newline + indent +
-            `.statusCode(${options.statusCode})`;
-    }
+    result += generateResponseTests(responseTestItems, newline, indent, options);
 
     result += end;
     return result;
@@ -110,6 +98,38 @@ const generateRequestSpecification = (request: RequestSpecification | undefined,
             `.body(${request.body.unwrap()})`;
     }
 
+    for (const header of request?.headers ?? []) {
+        const key = header[0].unwrap();
+        const value = header[1].unwrap();
+
+        result += newline + indent +
+            `.header(${key}, ${value})`;
+    }
+
+    for (const cookie of request?.cookies ?? []) {
+        const key = cookie[0].unwrap();
+        const value = cookie[1].unwrap();
+
+        result += newline + indent +
+            `.cookie(${key}, ${value})`;
+    }
+
+    for (const parameter of request?.params ?? []) {
+        const key = parameter[0].unwrap();
+        const value = parameter[1].unwrap();
+
+        result += newline + indent +
+            `.param(${key}, ${value})`;
+    }
+
+    for (const parameter of request?.params ?? []) {
+        const key = parameter[0].unwrap();
+        const value = parameter[1].unwrap();
+
+        result += newline + indent +
+            `.param(${key}, ${value})`;
+    }
+
     result += newline + ".when()";
 
     if (request?.method) {
@@ -119,6 +139,26 @@ const generateRequestSpecification = (request: RequestSpecification | undefined,
             .unwrap().toLowerCase();
         result += newline + indent +
             `.${_method}(${request.url?.unwrap()})`;
+    }
+
+    return result;
+}
+
+const generateResponseTests = (responseTestItems: JsonBodyTest[], newline: string, indent: string, options: GeneratorOptions): string => {
+    let result = "";
+
+    result += newline + ".then()";
+
+    for (const item of responseTestItems) {
+        if (item.testType === "CheckForValue") {
+            result += newline + indent +
+                `.body("${item.path}", equalTo(${formatValue(item.value, item.valueType)}))`;
+        }
+    }
+
+    if (options.statusCode !== undefined) {
+        result += newline + indent +
+            `.statusCode(${options.statusCode})`;
     }
 
     return result;
