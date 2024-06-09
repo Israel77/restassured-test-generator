@@ -17,7 +17,11 @@ describe("Tests for the generator test types", () => {
         const options = { format: false, statusCode: 200 };
         const result = generateTests(items, options);
 
-        const expectedResult = "given().when().then().body(\"Hello, world!\", equalTo(\"Hello, world!\")).statusCode(200);";
+        const expectedResult = "given()" +
+            ".when()" +
+            ".then()" +
+            ".body(\"Hello, world!\", equalTo(\"Hello, world!\"))" +
+            ".statusCode(200);";
         expect(result).to.equal(expectedResult);
     })
 });
@@ -40,7 +44,11 @@ describe("Tests for the request specification options", () => {
         };
         const result = generateTests(items, options);
 
-        const expectedResult = "given().accept(\"application/json\").when().then().body(\"Hello, world!\", equalTo(\"Hello, world!\"));";
+        const expectedResult = "given()" +
+            ".accept(\"application/json\")" +
+            ".when()" +
+            ".then()" +
+            ".body(\"Hello, world!\", equalTo(\"Hello, world!\"));";
         expect(result).to.equal(expectedResult);
     })
 
@@ -61,7 +69,11 @@ describe("Tests for the request specification options", () => {
         };
         const result = generateTests(items, options);
 
-        const expectedResult = "given().contentType(\"application/json\").when().then().body(\"Hello, world!\", equalTo(\"Hello, world!\"));";
+        const expectedResult = "given()" +
+            ".contentType(\"application/json\")" +
+            ".when()" +
+            ".then()" +
+            ".body(\"Hello, world!\", equalTo(\"Hello, world!\"));";
         expect(result).to.equal(expectedResult);
     })
 
@@ -82,7 +94,11 @@ describe("Tests for the request specification options", () => {
         };
         const result = generateTests(items, options);
 
-        const expectedResult = "given().body(\"{\"key\":\"value\"}\").when().then().body(\"Hello, world!\", equalTo(\"Hello, world!\"));";
+        const expectedResult = "given()" +
+            ".body(\"{\"key\":\"value\"}\")" +
+            ".when()" +
+            ".then()" +
+            ".body(\"Hello, world!\", equalTo(\"Hello, world!\"));";
         expect(result).to.equal(expectedResult);
     })
 
@@ -106,7 +122,12 @@ describe("Tests for the request specification options", () => {
         };
         const result = generateTests(items, options);
 
-        const expectedResult = "given().header(\"X-Header-1\", \"value1\").header(\"X-Header-2\", \"value2\").when().then().body(\"Hello, world!\", equalTo(\"Hello, world!\"));";
+        const expectedResult = "given()" +
+            ".header(\"X-Header-1\", \"value1\")" +
+            ".header(\"X-Header-2\", \"value2\")" +
+            ".when()" +
+            ".then()" +
+            ".body(\"Hello, world!\", equalTo(\"Hello, world!\"));";
         expect(result).to.equal(expectedResult);
     })
 
@@ -130,7 +151,12 @@ describe("Tests for the request specification options", () => {
         };
         const result = generateTests(items, options);
 
-        const expectedResult = "given().cookie(\"cookie1\", \"value1\").cookie(\"cookie2\", \"value2\").when().then().body(\"Hello, world!\", equalTo(\"Hello, world!\"));";
+        const expectedResult = "given()" +
+            ".cookie(\"cookie1\", \"value1\")" +
+            ".cookie(\"cookie2\", \"value2\")" +
+            ".when()" +
+            ".then()" +
+            ".body(\"Hello, world!\", equalTo(\"Hello, world!\"));";
         expect(result).to.equal(expectedResult);
     })
 
@@ -154,7 +180,12 @@ describe("Tests for the request specification options", () => {
         };
         const result = generateTests(items, options);
 
-        const expectedResult = "given().param(\"param1\", \"value1\").param(\"param2\", \"value2\").when().then().body(\"Hello, world!\", equalTo(\"Hello, world!\"));";
+        const expectedResult = "given()" +
+            ".param(\"param1\", \"value1\")" +
+            ".param(\"param2\", \"value2\")" +
+            ".when()" +
+            ".then()" +
+            ".body(\"Hello, world!\", equalTo(\"Hello, world!\"));";
         expect(result).to.equal(expectedResult);
     })
 
@@ -176,7 +207,11 @@ describe("Tests for the request specification options", () => {
         };
         const result = generateTests(items, options);
 
-        const expectedResult = "given().when().get(\"/api/endpoint\").then().body(\"Hello, world!\", equalTo(\"Hello, world!\"));";
+        const expectedResult = "given()" +
+            ".when()" +
+            ".get(\"/api/endpoint\")" +
+            ".then()" +
+            ".body(\"Hello, world!\", equalTo(\"Hello, world!\"));";
         expect(result).to.equal(expectedResult);
     })
 
@@ -197,9 +232,62 @@ describe("Tests for the request specification options", () => {
         };
         const result = generateTests(items, options);
 
-        const expectedResult = "given().when().port(8080).then().body(\"Hello, world!\", equalTo(\"Hello, world!\"));";
+        const expectedResult = "given()" +
+            ".when()" +
+            ".port(8080)" +
+            ".then()" +
+            ".body(\"Hello, world!\", equalTo(\"Hello, world!\"));";
         expect(result).to.equal(expectedResult);
     })
 
+    it("Should generate tests with references to variables", () => {
+        const items: JsonBodyTest[] = [
+            {
+                testType: "CheckForValue",
+                path: "Hello, world!",
+                value: "Hello, world!",
+                valueType: "String"
+            }]
+
+        const requestSpec = {
+            method: new VarOrValue("POST" as HTTPMethod).asVar(),
+            url: new VarOrValue("endpoint").asVar(),
+            contentType: new VarOrValue("MediaType.APPLICATION_JSON").asVar(),
+            headers: new Map([
+                [new VarOrValue("X-Header-1").asValue(), new VarOrValue("header1").asVar()],
+                [new VarOrValue("X-Header-2").asValue(), new VarOrValue("header2").asVar()]
+            ]),
+            cookies: new Map([
+                [new VarOrValue("cookie").asValue(), new VarOrValue("someCookie").asVar()]
+            ]),
+            params: new Map([
+                [new VarOrValue("param1").asValue(), new VarOrValue("firstParameter").asVar()],
+                [new VarOrValue("param2").asValue(), new VarOrValue("secondParameter").asVar()]
+            ]),
+            body: new VarOrValue("body").asVar(),
+        }
+        const options = {
+            format: false,
+            request: requestSpec
+        };
+
+        const result = generateTests(items, options);
+
+        const expectedResult = "given()" +
+            ".contentType(MediaType.APPLICATION_JSON)" +
+            ".body(body)" +
+            ".header(\"X-Header-1\", header1)" +
+            ".header(\"X-Header-2\", header2)" +
+            ".cookie(\"cookie\", someCookie)" +
+            ".param(\"param1\", firstParameter)" +
+            ".param(\"param2\", secondParameter)" +
+            ".when()" +
+            ".post(endpoint)" +
+            ".then()" +
+            ".body(\"Hello, world!\", equalTo(\"Hello, world!\"));";
+
+        expect(result).to.equal(expectedResult);
+
+    });
 
 });
