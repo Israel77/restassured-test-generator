@@ -130,7 +130,7 @@ const generateRequestSpecification = (request: RequestSpecification | undefined,
             `.param(${key}, ${value})`;
     }
 
-    result += newline + ".when()";
+    result += newline + indent + ".when()";
 
     if (request?.method) {
         const _method = request.method
@@ -152,7 +152,7 @@ const generateRequestSpecification = (request: RequestSpecification | undefined,
 const generateResponseTests = (responseTestItems: JsonBodyTest[], newline: string, indent: string, options: GeneratorOptions): string => {
     let result = "";
 
-    result += newline + ".then()";
+    result += newline + indent + ".then()";
 
     for (const item of responseTestItems) {
         if (item.testType === "CheckForValue") {
