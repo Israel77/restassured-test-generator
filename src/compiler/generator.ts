@@ -122,12 +122,12 @@ const generateRequestSpecification = (request: RequestSpecification | undefined,
             `.param(${key}, ${value})`;
     }
 
-    for (const parameter of request?.params ?? []) {
+    for (const parameter of request?.queryParams ?? []) {
         const key = parameter[0].unwrap();
         const value = parameter[1].unwrap();
 
         result += newline + indent +
-            `.param(${key}, ${value})`;
+            `.queryParam(${key}, ${value})`;
     }
 
     result += newline + indent + ".when()";
