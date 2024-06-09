@@ -1,6 +1,5 @@
 import { JsonBodyTest, Parser } from "../types/parser";
-import { Token } from "../types/tokenizer";
-import { tokenize, composeKey } from "./tokenizer.js";
+import { composeKey } from "./tokenizer.js";
 
 export const parse: Parser = tokens => {
     const items: JsonBodyTest[] = [];
