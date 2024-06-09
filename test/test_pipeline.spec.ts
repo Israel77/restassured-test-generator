@@ -1,7 +1,7 @@
 import { expect } from 'chai';
-import { tokenize, composeKey } from '../src/compiler/tokenizer.js';
+import { tokenize } from '../src/compiler/tokenizer.js';
 import { parse } from '../src/compiler/parser.js';
-import { generateTests } from '../src/compiler/generator.js';
+import { generateTests, VarOrValue } from '../src/compiler/generator.js';
 
 describe("Tests for the tokenizer -> parser -> generator pipeline", () => {
     it("Should generate tests for objects with string values", () => {
@@ -9,20 +9,22 @@ describe("Tests for the tokenizer -> parser -> generator pipeline", () => {
             "string": "Hello, world!"
         };
 
-        const result = generateTests(parse(tokenize(jsonObj)), {
+        const options = {
             format: true,
             statusCode: 200
-        });
+        };
 
-        let expectedResult = "given()";
-        expectedResult += "\n    ";
-        expectedResult += ".when()";
-        expectedResult += "\n    ";
-        expectedResult += ".then()";
-        expectedResult += "\n    ";
-        expectedResult += ".body(\"string\", equalTo(\"Hello, world!\"))";
-        expectedResult += "\n    ";
-        expectedResult += ".statusCode(200);";
+        const result = generateTests(parse(tokenize(jsonObj)), options);
+
+        let expectedResult = "given()" +
+            "\n    " +
+            ".when()" +
+            "\n    " +
+            ".then()" +
+            "\n    " +
+            ".body(\"string\", equalTo(\"Hello, world!\"))" +
+            "\n    " +
+            ".statusCode(200);";
 
         expect(result).to.equal(expectedResult);
     });

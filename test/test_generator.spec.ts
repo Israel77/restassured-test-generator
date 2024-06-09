@@ -1,20 +1,205 @@
 import { expect } from 'chai';
 import { JsonBodyTest } from '../src/types/parser.js';
-import { generateTests } from '../src/compiler/generator.js';
+import { generateTests, VarOrValue } from '../src/compiler/generator.js';
+import { HTTPMethod } from '../src/types/generator.js';
 
-describe("Tests for the evaluator", () => {
-    it("Should evaluate string values", () => {
+describe("Tests for the generator test types", () => {
+    it("Should generate tests with string values", () => {
         const items: JsonBodyTest[] = [
             {
                 testType: "CheckForValue",
-                path: "string",
+                path: "Hello, world!",
                 value: "Hello, world!",
                 valueType: "String"
             }
         ];
 
-        const result = generateTests(items, { format: false, statusCode: 200 });
+        const options = { format: false, statusCode: 200 };
+        const result = generateTests(items, options);
 
-        expect(result).to.equal("given().when().then().body(\"string\", equalTo(\"Hello, world!\")).statusCode(200);");
+        const expectedResult = "given().when().then().body(\"Hello, world!\", equalTo(\"Hello, world!\")).statusCode(200);";
+        expect(result).to.equal(expectedResult);
     })
+});
+
+describe("Tests for the request specification options", () => {
+    it("Should generate tests with accept header", () => {
+        const items: JsonBodyTest[] = [
+            {
+                testType: "CheckForValue",
+                path: "Hello, world!",
+                value: "Hello, world!",
+                valueType: "String"
+            }
+        ];
+        const options = {
+            format: false,
+            request: {
+                accept: new VarOrValue("application/json").asValue()
+            }
+        };
+        const result = generateTests(items, options);
+
+        const expectedResult = "given().accept(\"application/json\").when().then().body(\"Hello, world!\", equalTo(\"Hello, world!\"));";
+        expect(result).to.equal(expectedResult);
+    })
+
+    it("Should generate tests with content type", () => {
+        const items: JsonBodyTest[] = [
+            {
+                testType: "CheckForValue",
+                path: "Hello, world!",
+                value: "Hello, world!",
+                valueType: "String"
+            }
+        ];
+        const options = {
+            format: false,
+            request: {
+                contentType: new VarOrValue("application/json").asValue()
+            }
+        };
+        const result = generateTests(items, options);
+
+        const expectedResult = "given().contentType(\"application/json\").when().then().body(\"Hello, world!\", equalTo(\"Hello, world!\"));";
+        expect(result).to.equal(expectedResult);
+    })
+
+    it("Should generate tests with request body", () => {
+        const items: JsonBodyTest[] = [
+            {
+                testType: "CheckForValue",
+                path: "Hello, world!",
+                value: "Hello, world!",
+                valueType: "String"
+            }
+        ];
+        const options = {
+            format: false,
+            request: {
+                body: new VarOrValue('{"key":"value"}').asValue()
+            }
+        };
+        const result = generateTests(items, options);
+
+        const expectedResult = "given().body(\"{\"key\":\"value\"}\").when().then().body(\"Hello, world!\", equalTo(\"Hello, world!\"));";
+        expect(result).to.equal(expectedResult);
+    })
+
+    it("Should generate tests with headers", () => {
+        const items: JsonBodyTest[] = [
+            {
+                testType: "CheckForValue",
+                path: "Hello, world!",
+                value: "Hello, world!",
+                valueType: "String"
+            }
+        ];
+        const options = {
+            format: false,
+            request: {
+                headers: new Map([
+                    [new VarOrValue("X-Header-1").asValue(), new VarOrValue("value1").asValue()],
+                    [new VarOrValue("X-Header-2").asValue(), new VarOrValue("value2").asValue()]
+                ])
+            }
+        };
+        const result = generateTests(items, options);
+
+        const expectedResult = "given().header(\"X-Header-1\", \"value1\").header(\"X-Header-2\", \"value2\").when().then().body(\"Hello, world!\", equalTo(\"Hello, world!\"));";
+        expect(result).to.equal(expectedResult);
+    })
+
+    it("Should generate tests with cookies", () => {
+        const items: JsonBodyTest[] = [
+            {
+                testType: "CheckForValue",
+                path: "Hello, world!",
+                value: "Hello, world!",
+                valueType: "String"
+            }
+        ];
+        const options = {
+            format: false,
+            request: {
+                cookies: new Map([
+                    [new VarOrValue("cookie1").asValue(), new VarOrValue("value1").asValue()],
+                    [new VarOrValue("cookie2").asValue(), new VarOrValue("value2").asValue()]
+                ])
+            }
+        };
+        const result = generateTests(items, options);
+
+        const expectedResult = "given().cookie(\"cookie1\", \"value1\").cookie(\"cookie2\", \"value2\").when().then().body(\"Hello, world!\", equalTo(\"Hello, world!\"));";
+        expect(result).to.equal(expectedResult);
+    })
+
+    it("Should generate tests with params", () => {
+        const items: JsonBodyTest[] = [
+            {
+                testType: "CheckForValue",
+                path: "Hello, world!",
+                value: "Hello, world!",
+                valueType: "String"
+            }
+        ];
+        const options = {
+            format: false,
+            request: {
+                params: new Map([
+                    [new VarOrValue("param1").asValue(), new VarOrValue("value1").asValue()],
+                    [new VarOrValue("param2").asValue(), new VarOrValue("value2").asValue()]
+                ])
+            }
+        };
+        const result = generateTests(items, options);
+
+        const expectedResult = "given().param(\"param1\", \"value1\").param(\"param2\", \"value2\").when().then().body(\"Hello, world!\", equalTo(\"Hello, world!\"));";
+        expect(result).to.equal(expectedResult);
+    })
+
+    it("Should generate tests with HTTP method and URL", () => {
+        const items: JsonBodyTest[] = [
+            {
+                testType: "CheckForValue",
+                path: "Hello, world!",
+                value: "Hello, world!",
+                valueType: "String"
+            }
+        ];
+        const options = {
+            format: false,
+            request: {
+                method: new VarOrValue("GET" as HTTPMethod).asValue(),
+                url: new VarOrValue("/api/endpoint").asValue()
+            }
+        };
+        const result = generateTests(items, options);
+
+        const expectedResult = "given().when().get(\"/api/endpoint\").then().body(\"Hello, world!\", equalTo(\"Hello, world!\"));";
+        expect(result).to.equal(expectedResult);
+    })
+
+    it("Should generate tests with port", () => {
+        const items: JsonBodyTest[] = [
+            {
+                testType: "CheckForValue",
+                path: "Hello, world!",
+                value: "Hello, world!",
+                valueType: "String"
+            }
+        ];
+        const options = {
+            format: false,
+            request: {
+                port: new VarOrValue(8080).asValue()
+            }
+        };
+        const result = generateTests(items, options);
+
+        const expectedResult = "given().when().port(8080).then().body(\"Hello, world!\", equalTo(\"Hello, world!\"));";
+        expect(result).to.equal(expectedResult);
+    })
+
+
 });
