@@ -141,6 +141,11 @@ const generateRequestSpecification = (request: RequestSpecification | undefined,
             `.${_method}(${request.url?.unwrap()})`;
     }
 
+    if (request?.port) {
+        result += newline + indent +
+            `.port(${request.port.unwrap()})`;
+    }
+
     return result;
 }
 
