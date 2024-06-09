@@ -1,6 +1,39 @@
-import { GeneratorOptions, TestGenerator } from "../types/generator";
+import { assert } from "chai";
+import { GeneratorOptions, TestGenerator, RequestSpecification } from "../types/generator";
 import { JsonBodyTest } from "../types/parser";
 import { TokenType } from "../types/tokenizer";
+
+/**
+ * If isVar is true, value will be intepreted as a variable in the generated test.
+ */
+export class VarOrValue<T> {
+    private value: T
+    private isVar: boolean
+
+    constructor(value: T) {
+        this.value = value;
+        this.isVar = false;
+    }
+
+    asVar(): VarOrValue<T> {
+        this.isVar = true;
+        return this;
+    }
+
+    asValue(): VarOrValue<T> {
+        this.isVar = false;
+        return this;
+    }
+
+    unwrap(): T | string {
+        if (this.isVar || typeof this.value !== "string") {
+            return this.value;
+        } else {
+            assert(typeof this.value === "string");
+            return `"${this.value}"`;
+        }
+    }
+}
 
 export const generateTests: TestGenerator = (items, options?) => {
     options = {
@@ -12,7 +45,9 @@ export const generateTests: TestGenerator = (items, options?) => {
     let newline = options.format ? "\n" : "";
     let end = ";";
 
-    let result = "given()";
+    let result = "";
+
+    result += generateRequestSpecification(options.request, newline, indent);
 
     result += newline + ".then()";
 
@@ -53,4 +88,38 @@ const formatValue = (value: any, type: TokenType): string | undefined => {
         default:
             throw new Error("Unsupported value type");
     }
+}
+
+const generateRequestSpecification = (request: RequestSpecification | undefined,
+    newline: string,
+    indent: string): string => {
+    let result = "given()";
+
+    if (request?.accept) {
+        result += newline + indent +
+            `.accept(${request.accept.unwrap()})`;
+    }
+
+    if (request?.contentType) {
+        result += newline + indent +
+            `.contentType(${request.contentType.unwrap()})`;
+    }
+
+    if (request?.body) {
+        result += newline + indent +
+            `.body(${request.body.unwrap()})`;
+    }
+
+    result += newline + ".when()";
+
+    if (request?.method) {
+        const _method = request.method
+            // Hack to always interpret as method call, not string
+            .asVar()
+            .unwrap().toLowerCase();
+        result += newline + indent +
+            `.${_method}(${request.url?.unwrap()})`;
+    }
+
+    return result;
 }
