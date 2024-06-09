@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { JsonBodyTest } from '../src/types';
-import { generateTests } from '../src/generator.js';
+import { JsonBodyTest } from '../src/types/parser';
+import { generateTests } from '../src/compiler/generator.js';
 
 describe("Tests for the evaluator", () => {
     it("Should evaluate string values", () => {
@@ -15,6 +15,6 @@ describe("Tests for the evaluator", () => {
 
         const result = generateTests(items, { format: false, statusCode: 200 });
 
-        expect(result).to.equal("then().body(\"string\", equalTo(\"Hello, world!\")).statusCode(200);");
+        expect(result).to.equal("given().then().body(\"string\", equalTo(\"Hello, world!\")).statusCode(200);");
     })
 });

@@ -1,6 +1,8 @@
-import { GeneratorOptions, JsonBodyTest, TokenType } from "./types";
+import { GeneratorOptions, TestGenerator } from "../types/generator";
+import { JsonBodyTest } from "../types/parser";
+import { TokenType } from "../types/tokenizer";
 
-export const generateTests = (items: JsonBodyTest[], options?: GeneratorOptions): string => {
+export const generateTests: TestGenerator = (items, options?) => {
     options = {
         format: true,
         ...options
@@ -10,7 +12,9 @@ export const generateTests = (items: JsonBodyTest[], options?: GeneratorOptions)
     let newline = options.format ? "\n" : "";
     let end = ";";
 
-    let result = "then()";
+    let result = "given()";
+
+    result += newline + ".then()";
 
     for (const item of items) {
         if (item.testType === "CheckForValue") {

@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { tokenize } from '../src/tokenizer.js';
+import { tokenize } from '../src/compiler/tokenizer.js';
 
 describe("Tests for the tokenizer", () => {
     it("Should tokenize string values", () => {

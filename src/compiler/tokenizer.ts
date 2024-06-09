@@ -1,4 +1,4 @@
-import { Token, TokenType } from "./types";
+import { Token, TokenType, Tokenizer } from "../types/tokenizer";
 
 /**
  * Represents an error that occurred during type inference.
@@ -22,7 +22,7 @@ export class InferenceError extends Error {
  * @returns {Token[]} An array of tokens representing the JSON object.
  * @throws {InferenceError} If the type of a key cannot be inferred.
  */
-export const tokenize = (jsonObj: Object, parent?: string): Token[] => {
+export const tokenize: Tokenizer = (jsonObj, parent?) => {
     const tokens: Token[] = [];
 
     for (const [key, value] of Object.entries(jsonObj)) {
