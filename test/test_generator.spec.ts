@@ -274,11 +274,11 @@ describe("Tests for the request specification options", () => {
         const result = generateTests(items, options);
 
         const expectedResult = "given()" +
-            ".contentType(MediaType.APPLICATION_JSON)" +
             ".body(body)" +
+            ".contentType(MediaType.APPLICATION_JSON)" +
+            ".cookie(\"cookie\", someCookie)" +
             ".header(\"X-Header-1\", header1)" +
             ".header(\"X-Header-2\", header2)" +
-            ".cookie(\"cookie\", someCookie)" +
             ".param(\"param1\", firstParameter)" +
             ".param(\"param2\", secondParameter)" +
             ".when()" +

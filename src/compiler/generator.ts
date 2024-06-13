@@ -83,9 +83,15 @@ const generateRequestSpecification = (request: RequestSpecification | undefined,
     indent: string): string => {
     let result = "given()";
 
+    // Request parameters
     if (request?.accept) {
         result += newline + indent +
             `.accept(${request.accept.unwrap()})`;
+    }
+
+    if (request?.body) {
+        result += newline + indent +
+            `.body(${request.body.unwrap()})`;
     }
 
     if (request?.contentType) {
@@ -93,9 +99,12 @@ const generateRequestSpecification = (request: RequestSpecification | undefined,
             `.contentType(${request.contentType.unwrap()})`;
     }
 
-    if (request?.body) {
+    for (const cookie of request?.cookies ?? []) {
+        const key = cookie[0].unwrap();
+        const value = cookie[1].unwrap();
+
         result += newline + indent +
-            `.body(${request.body.unwrap()})`;
+            `.cookie(${key}, ${value})`;
     }
 
     for (const header of request?.headers ?? []) {
@@ -106,13 +115,6 @@ const generateRequestSpecification = (request: RequestSpecification | undefined,
             `.header(${key}, ${value})`;
     }
 
-    for (const cookie of request?.cookies ?? []) {
-        const key = cookie[0].unwrap();
-        const value = cookie[1].unwrap();
-
-        result += newline + indent +
-            `.cookie(${key}, ${value})`;
-    }
 
     for (const parameter of request?.params ?? []) {
         const key = parameter[0].unwrap();
@@ -130,6 +132,7 @@ const generateRequestSpecification = (request: RequestSpecification | undefined,
             `.queryParam(${key}, ${value})`;
     }
 
+    // Request endpoint
     result += newline + indent + ".when()";
 
     if (request?.method) {

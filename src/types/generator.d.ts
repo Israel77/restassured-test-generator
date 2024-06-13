@@ -14,12 +14,12 @@ export type RequestSpecification = {
     accept?: VarOrValue<string>,
     body?: VarOrValue<string>,
     contentType?: VarOrValue<string>,
-    port?: VarOrValue<number>,
-    headers?: Map<VarOrValue<string>, VarOrValue<string>>,
     cookies?: Map<VarOrValue<string>, VarOrValue<string>>,
-    params?: Map<VarOrValue<string>, VarOrValue<string>>,
-    queryParams?: Map<VarOrValue<string>, VarOrValue<string>>,
+    headers?: Map<VarOrValue<string>, VarOrValue<string>>,
     method?: VarOrValue<HTTPMethod>,
+    params?: Map<VarOrValue<string>, VarOrValue<string>>,
+    port?: VarOrValue<number>,
+    queryParams?: Map<VarOrValue<string>, VarOrValue<string>>,
     url?: VarOrValue<string>,
 }
 
