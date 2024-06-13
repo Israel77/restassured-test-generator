@@ -162,6 +162,11 @@ const generateResponseTests = (responseTestItems: JsonBodyTest[], newline: strin
             result += newline + indent +
                 `.body("${item.path}", equalTo(${formatValue(item.value, item.valueType)}))`;
         }
+
+        if (item.testType === "CheckForNull") {
+            result += newline + indent +
+                `.body("${item.path}", nullValue())`;
+        }
     }
 
     if (options.statusCode !== undefined) {

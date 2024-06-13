@@ -7,7 +7,13 @@ export const parse: Parser = tokens => {
     const parentTypes: { [key: string]: "Object" | "Array" } = {};
 
     for (const token of tokens) {
-        if (token.type !== "Object" && token.type !== "Array") {
+        if (token.type === "null") {
+            items.push({
+                testType: "CheckForNull",
+                path: composeKey(token.parent, token.key, parentTypes[token.parent ?? ""] === "Array")
+            });
+        }
+        else if (token.type !== "Object" && token.type !== "Array") {
             items.push({
                 testType: "CheckForValue",
                 path: composeKey(token.parent,

@@ -69,17 +69,15 @@ describe("Tests for the generator", () => {
         it("Should generate tests with null values", () => {
             const items: JsonBodyTest[] = [
                 {
-                    testType: "CheckForValue",
+                    testType: "CheckForNull",
                     path: "null",
-                    value: null,
-                    valueType: "null"
                 }
             ];
 
             const expectedResult = "given()" +
                 ".when()" +
                 ".then()" +
-                ".body(\"null\", equalTo(null));";
+                ".body(\"null\", nullValue());";
             const result = generateTests(items, options);
 
             expect(result).to.equal(expectedResult);
