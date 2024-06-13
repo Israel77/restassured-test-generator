@@ -1,7 +1,7 @@
 import { expect } from 'chai';
-import { JsonBodyTest } from '../src/types/parser.js';
+import { JsonBodyTest } from '../src/types/compiler/parser.js';
 import { generateTests, VarOrValue } from '../src/compiler/generator.js';
-import { HTTPMethod } from '../src/types/generator.js';
+import { HTTPMethod } from '../src/types/compiler/generator.js';
 
 describe("Tests for the generator test types", () => {
     it("Should generate tests with string values", () => {

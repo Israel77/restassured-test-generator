@@ -1,4 +1,4 @@
-import { Token, TokenType, Tokenizer } from "../types/tokenizer";
+import { Token, TokenType, Tokenizer } from "../types/compiler/tokenizer";
 
 /**
  * Represents an error that occurred during type inference.

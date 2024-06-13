@@ -1,9 +1,11 @@
+import { JsonType } from "../jsonTypes";
+
 export type Parser = (tokens: Token[]) => JsonBodyTest[];
 
 export type JsonBodyTest = {
     testType: TestType,
     path: string,
-    value: any,
+    value: JsonType,
     valueType: TokenType,
 }
 

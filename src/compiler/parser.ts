@@ -1,4 +1,4 @@
-import { JsonBodyTest, Parser } from "../types/parser";
+import { JsonBodyTest, Parser } from "../types/compiler/parser";
 import { composeKey } from "./tokenizer.js";
 
 export const parse: Parser = tokens => {

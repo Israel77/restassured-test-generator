@@ -1,0 +1,1 @@
+export type JsonType = string | number | boolean | Object | any[] | null;

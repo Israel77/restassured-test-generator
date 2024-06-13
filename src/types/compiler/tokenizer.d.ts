@@ -1,3 +1,5 @@
+import { JsonType } from "../jsonTypes";
+
 export type Tokenizer = (jsonObj: Object, parent?: string) => Token[];
 
 export type Token = {
@@ -6,7 +8,7 @@ export type Token = {
     // Key of the current object, or index if it is an array element
     key: string,
     type: TokenType,
-    value: string | number | boolean | Object | any[] | null,
+    value: JsonType,
 }
 
 export type TokenType =
