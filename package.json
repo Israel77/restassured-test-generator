@@ -5,7 +5,8 @@
     "main": "index.js",
     "scripts": {
         "test": "mocha",
-        "compile": "tsc"
+        "compile": "tsc",
+        "coverage": "typescript-coverage-report"
     },
     "keywords": [],
     "author": "",
@@ -16,7 +17,8 @@
         "chai": "^5.1.1",
         "mocha": "^10.4.0",
         "ts-node": "^10.9.2",
-        "typescript": "^5.4.5"
+        "typescript": "^5.4.5",
+        "typescript-coverage-report": "^1.0.0"
     },
     "type": "module"
 }
