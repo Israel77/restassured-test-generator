@@ -280,7 +280,7 @@ describe("Tests for the tokenizer", () => {
                     "key3": "value3"
                 }
             ]
-        };
+        } as const;
 
         const tokens = tokenize(jsonObj);
 

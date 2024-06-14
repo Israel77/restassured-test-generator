@@ -1,4 +1,5 @@
 import { Token, TokenType, Tokenizer } from "../types/compiler/tokenizer";
+import { JsonType } from "../types/jsonTypes";
 
 /**
  * Represents an error that occurred during type inference.
@@ -41,7 +42,7 @@ export const tokenize: Tokenizer = (jsonObj, parent?) => {
  * @returns {Token[]} An array of tokens representing the value.
  * @throws {InferenceError} If the type of the value cannot be inferred.
  */
-const tokenizeValue = (value: any, parent: string | undefined, key: string, fromArray: boolean): Token[] => {
+const tokenizeValue = (value: JsonType, parent: string | undefined, key: string, fromArray: boolean): Token[] => {
     const tokens: Token[] = [];
 
     const _type = parseType(value);
@@ -50,7 +51,7 @@ const tokenizeValue = (value: any, parent: string | undefined, key: string, from
     }
 
     if (_type === "Array") {
-        tokens.push(...tokenizeArray(value, parent, key, fromArray));
+        tokens.push(...tokenizeArray(value as JsonType[], parent, key, fromArray));
     } else if (_type === "Object") {
         tokens.push({
             parent: parent,
@@ -59,7 +60,7 @@ const tokenizeValue = (value: any, parent: string | undefined, key: string, from
             value: null
         });
         const tokenKey = composeKey(parent, key, fromArray);
-        tokens.push(...tokenize(value, tokenKey));
+        tokens.push(...tokenize(value as { [key: string]: JsonType }, tokenKey));
     } else {
         tokens.push({
             parent: parent,
@@ -81,7 +82,7 @@ const tokenizeValue = (value: any, parent: string | undefined, key: string, from
  * @returns {Token[]} An array of tokens representing the array.
  */
 // FIXME: Does not handle nested arrays properly
-const tokenizeArray = (jsonArray: any[], parent: string | undefined, key: string, fromArray: boolean): Token[] => {
+const tokenizeArray = (jsonArray: JsonType[], parent: string | undefined, key: string, fromArray: boolean): Token[] => {
     const tokens: Token[] = [];
 
     tokens.push({
@@ -117,7 +118,7 @@ export const composeKey = (parent: string | undefined, key: string, fromArray: b
  * @param {Exclude<any, bigint | symbol | undefined>} value - The value to parse.
  * @returns {TokenType | null} The parsed token type or null if the type is not recognized.
  */
-const parseType = (value: Exclude<any, bigint | symbol | undefined>):
+const parseType = (value: JsonType):
     TokenType | null => {
     switch (typeof value) {
         case "string":

@@ -1,5 +1,5 @@
 import { JsonType } from "../jsonTypes";
-import { TokenType } from "./tokenizer";
+import { Token, TokenType } from "./tokenizer";
 
 export type Parser = (tokens: Token[], simplify?: boolean) => JsonBodyTest[];
 
