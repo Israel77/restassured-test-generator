@@ -158,14 +158,19 @@ const generateResponseTests = (responseTestItems: JsonBodyTest[], newline: strin
     result += newline + indent + ".then()";
 
     for (const item of responseTestItems) {
-        if (item.testType === "CheckForValue") {
-            result += newline + indent +
-                `.body("${item.path}", equalTo(${formatValue(item.value, item.valueType)}))`;
-        }
-
-        if (item.testType === "CheckForNull") {
-            result += newline + indent +
-                `.body("${item.path}", nullValue())`;
+        switch (item.testType) {
+            case "CheckForValue":
+                result += newline + indent +
+                    `.body("${item.path}", equalTo(${formatValue(item.value, item.valueType)}))`;
+                break;
+            case "CheckForNull":
+                result += newline + indent +
+                    `.body("${item.path}", nullValue())`;
+                break;
+            case "CheckArrayItems":
+                result += newline + indent +
+                    `.body("${item.path}", arrayContaining(${item.items.map(v => formatValue(v.value, v.valueType)).join(", ")}))`;
+                break;
         }
     }
 

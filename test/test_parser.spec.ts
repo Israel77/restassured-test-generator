@@ -157,4 +157,58 @@ describe("Tests for the parser", () => {
             }
         ]);
     });
+
+    it("Should merge array items when simplify is true", () => {
+        const tokens = [
+            {
+                parent: undefined,
+                key: "array",
+                type: "Array",
+                value: null
+            },
+            {
+                parent: "array",
+                key: "[0]",
+                type: "String",
+                value: "value1"
+            },
+            {
+                parent: "array",
+                key: "[1]",
+                type: "String",
+                value: "value2"
+            },
+            {
+                parent: "array",
+                key: "[2]",
+                type: "String",
+                value: "value3"
+            }
+        ];
+
+        const items = parse(tokens, true);
+
+        expect(items.length).to.equal(1);
+        expect(items[0]).to.deep.equal(
+            {
+                testType: "CheckArrayItems",
+                path: "array",
+                items: [
+                    {
+                        value: "value1",
+                        valueType: "String"
+                    },
+                    {
+                        value: "value2",
+                        valueType: "String"
+                    },
+                    {
+                        value: "value3",
+                        valueType: "String"
+                    }
+                ]
+            },
+        );
+
+    });
 });

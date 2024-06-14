@@ -83,6 +83,28 @@ describe("Tests for the generator", () => {
             expect(result).to.equal(expectedResult);
         });
 
+        it(("Should generate tests for array item checks"), () => {
+
+            const items: JsonBodyTest[] = [
+                {
+                    testType: "CheckArrayItems",
+                    path: "array",
+                    items: [
+                        { value: "Hello, world!", valueType: "String" },
+                        { value: 123, valueType: "Number" },
+                    ]
+                }
+            ];
+
+            const expectedResult = "given()" +
+                ".when()" +
+                ".then()" +
+                ".body(\"array\", arrayContaining(\"Hello, world!\", 123));";
+
+            const result = generateTests(items, options);
+
+            expect(result).to.equal(expectedResult);
+        });
     });
 
     describe("Tests for the request specification options", () => {
