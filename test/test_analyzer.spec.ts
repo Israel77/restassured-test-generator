@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { analyze } from '../src/compiler/analyzer.js';
+import { analyze } from '../lib/compiler/analyzer.js';
 
 describe("Tests for the analyzer", () => {
     it("Should analyze string values", () => {
