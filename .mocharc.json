@@ -1,6 +1,4 @@
 {
-    "require": "ts-node/register",
-    "loader": "ts-node/esm",
     "extensions": [
         "ts"
     ],
@@ -9,5 +7,8 @@
     ],
     "watch-files": [
         "src"
+    ],
+    "node-option": [
+        "import=tsx"
     ]
 }
