@@ -17,7 +17,7 @@ export type RequestSpecification = {
     contentType?: VarOrValue<string>,
     cookies?: Map<VarOrValue<string>, VarOrValue<string>>,
     headers?: Map<VarOrValue<string>, VarOrValue<string>>,
-    method?: VarOrValue<HTTPMethod>,
+    method?: HTTPMethod,
     params?: Map<VarOrValue<string>, VarOrValue<string>>,
     port?: VarOrValue<number>,
     queryParams?: Map<VarOrValue<string>, VarOrValue<string>>,

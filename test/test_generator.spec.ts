@@ -282,7 +282,7 @@ describe("Tests for the generator", () => {
             const options = {
                 format: false,
                 request: {
-                    method: new VarOrValue("GET" as HTTPMethod).asValue(),
+                    method: "GET" as HTTPMethod,
                     url: new VarOrValue("/api/endpoint").asValue()
                 }
             };
@@ -331,7 +331,7 @@ describe("Tests for the generator", () => {
                 }]
 
             const requestSpec = {
-                method: new VarOrValue("POST" as HTTPMethod).asVar(),
+                method: "POST" as HTTPMethod,
                 url: new VarOrValue("endpoint").asVar(),
                 contentType: new VarOrValue("MediaType.APPLICATION_JSON").asVar(),
                 headers: new Map([

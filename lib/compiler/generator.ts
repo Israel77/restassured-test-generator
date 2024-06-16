@@ -140,10 +140,8 @@ const generateRequestSpecification = (request: RequestSpecification | undefined,
     result += newline + indent + ".when()";
 
     if (request?.method) {
-        const _method = request.method
-            // Hack to always interpret as method call, not string
-            .asVar()
-            .unwrap().toLowerCase();
+        console.log(request.method);
+        const _method = request.method.toLowerCase();
         result += newline + indent +
             `.${_method}(${request.url?.unwrap()})`;
     }
