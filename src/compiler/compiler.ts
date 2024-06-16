@@ -1,6 +1,6 @@
 import { generateTests } from "./generator.js";
 import { parse } from "./parser.js";
-import { tokenize } from "./tokenizer.js";
+import { analyze } from "./analyzer.js";
 
 export const compile = (json: string): string =>
-    generateTests(parse(tokenize(JSON.parse(json))));
+    generateTests(parse(analyze(JSON.parse(json))));

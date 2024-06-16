@@ -1,7 +1,7 @@
 import { JsonType } from "../jsonTypes";
-import { Token, TokenType } from "./tokenizer";
+import { JsonField, FieldType } from "./analyzer";
 
-export type Parser = (tokens: Token[], simplify?: boolean) => JsonBodyTest[];
+export type Parser = (tokens: JsonField[], simplify?: boolean) => JsonBodyTest[];
 
 export type JsonBodyTest =
     | CheckForValue
@@ -12,7 +12,7 @@ type CheckForValue = {
     testType: "CheckForValue",
     path: string,
     value: JsonType,
-    valueType: TokenType,
+    valueType: FieldType,
 }
 
 type CheckForNull = {
@@ -25,7 +25,7 @@ type CheckArrayItems = {
     path: string,
     items: {
         value: JsonType,
-        valueType: TokenType,
+        valueType: FieldType,
     }[]
 }
 

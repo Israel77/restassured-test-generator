@@ -1,7 +1,7 @@
 import { assert } from "chai";
 import { GeneratorOptions, TestGenerator, RequestSpecification } from "../types/compiler/generator";
 import { JsonBodyTest } from "../types/compiler/parser";
-import { TokenType } from "../types/compiler/tokenizer";
+import { FieldType } from "../types/compiler/analyzer";
 import { JsonType } from "../types/jsonTypes";
 
 /**
@@ -56,7 +56,7 @@ export const generateTests: TestGenerator = (responseTestItems, options?) => {
     return result;
 }
 
-const formatValue = (value: JsonType, type: TokenType): string | undefined => {
+const formatValue = (value: JsonType, type: FieldType): string | undefined => {
     const JAVA_MAX_INT = 2_147_483_647;
 
     switch (type) {

@@ -1,5 +1,5 @@
-import { Token, TokenType, Tokenizer } from "../types/compiler/tokenizer";
-import { JsonType } from "../types/jsonTypes";
+import { JsonField, FieldType, Analyzer } from "../types/compiler/analyzer.js";
+import { JsonType } from "../types/jsonTypes.js";
 import { composeKey } from "./utils.js";
 
 /**
@@ -17,34 +17,34 @@ export class InferenceError extends Error {
 }
 
 /**
- * Tokenizes a JSON object into an array of tokens.
+ * Analyzes a JSON object into an array of JsonFields.
  *
- * @param {Object} jsonObj - The JSON object to tokenize.
+ * @param {Object} jsonObj - The JSON object to analyze.
  * @param {string} [parent] - The parent key of the JSON object (undefined if it is the root).
- * @returns {Token[]} An array of tokens representing the JSON object.
+ * @returns {JsonField[]} An array of JsonFields representing the JSON object.
  * @throws {InferenceError} If the type of a key cannot be inferred.
  */
-export const tokenize: Tokenizer = (jsonObj, parent?) => {
-    const tokens: Token[] = [];
+export const analyze: Analyzer = (jsonObj, parent?) => {
+    const fields: JsonField[] = [];
 
     for (const [key, value] of Object.entries(jsonObj)) {
-        tokens.push(...tokenizeValue(value, parent, key, false));
+        fields.push(...analyzeValue(value, parent, key, false));
     }
 
-    return tokens;
+    return fields;
 };
 
 /**
- * Tokenizes a value (object, array, or primitive) into an array of tokens.
+ * Analyzes a value (object, array, or primitive) into an array of JsonFields.
  *
- * @param {any} value - The value to tokenize.
+ * @param {any} value - The value to analyze.
  * @param {string} [parent] - The parent key of the value (undefined if it is the root).
  * @param {string} [key] - The key of the value (undefined if it is an array element).
- * @returns {Token[]} An array of tokens representing the value.
+ * @returns {JsonField[]} An array of JsonFields representing the value.
  * @throws {InferenceError} If the type of the value cannot be inferred.
  */
-const tokenizeValue = (value: JsonType, parent: string | undefined, key: string, fromArray: boolean): Token[] => {
-    const tokens: Token[] = [];
+const analyzeValue = (value: JsonType, parent: string | undefined, key: string, fromArray: boolean): JsonField[] => {
+    const fields: JsonField[] = [];
 
     const _type = parseType(value);
     if (_type === null) {
@@ -52,18 +52,18 @@ const tokenizeValue = (value: JsonType, parent: string | undefined, key: string,
     }
 
     if (_type === "Array") {
-        tokens.push(...tokenizeArray(value as JsonType[], parent, key, fromArray));
+        fields.push(...analyzeArray(value as JsonType[], parent, key, fromArray));
     } else if (_type === "Object") {
-        tokens.push({
+        fields.push({
             parent: parent,
             key: key,
             type: "Object",
             value: null
         });
-        const tokenKey = composeKey(parent, key, fromArray);
-        tokens.push(...tokenize(value as { [key: string]: JsonType }, tokenKey));
+        const fieldKey = composeKey(parent, key, fromArray);
+        fields.push(...analyze(value as { [key: string]: JsonType }, fieldKey));
     } else {
-        tokens.push({
+        fields.push({
             parent: parent,
             key: key,
             type: _type,
@@ -71,22 +71,21 @@ const tokenizeValue = (value: JsonType, parent: string | undefined, key: string,
         });
     }
 
-    return tokens;
+    return fields;
 }
 
 /**
- * Tokenizes an array into an array of tokens.
+ * Analyzes an array into an array of JsonFields.
  *
- * @param {any[]} jsonArray - The array to tokenize.
+ * @param {any[]} jsonArray - The array to analyze.
  * @param {string} [parent] - The parent key of the array (undefined if it is the root).
  * @param {string} [key] - The key of the array (undefined if it is an array element).
- * @returns {Token[]} An array of tokens representing the array.
+ * @returns {JsonField[]} An array of JsonFields representing the array.
  */
-// FIXME: Does not handle nested arrays properly
-const tokenizeArray = (jsonArray: JsonType[], parent: string | undefined, key: string, fromArray: boolean): Token[] => {
-    const tokens: Token[] = [];
+const analyzeArray = (jsonArray: JsonType[], parent: string | undefined, key: string, fromArray: boolean): JsonField[] => {
+    const fields: JsonField[] = [];
 
-    tokens.push({
+    fields.push({
         parent: parent,
         key: key,
         type: "Array",
@@ -95,20 +94,20 @@ const tokenizeArray = (jsonArray: JsonType[], parent: string | undefined, key: s
 
     const arrayIdentifier = composeKey(parent, key, fromArray);
     for (const [index, value] of Object.entries(jsonArray)) {
-        tokens.push(...tokenizeValue(value, arrayIdentifier, `[${index}]`, true));
+        fields.push(...analyzeValue(value, arrayIdentifier, `[${index}]`, true));
     }
 
-    return tokens;
+    return fields;
 }
 
 /**
  * Parses the type of a given value from a JSON object.
  *
  * @param {Exclude<any, bigint | symbol | undefined>} value - The value to parse.
- * @returns {TokenType | null} The parsed token type or null if the type is not recognized.
+ * @returns {FieldType | null} The parsed token type or null if the type is not recognized.
  */
 const parseType = (value: JsonType):
-    TokenType | null => {
+    FieldType | null => {
     switch (typeof value) {
         case "string":
             return "String";

@@ -1,15 +1,15 @@
 import { expect } from 'chai';
-import { tokenize } from '../src/compiler/tokenizer.js';
+import { analyze } from '../src/compiler/analyzer.js';
 
-describe("Tests for the tokenizer", () => {
-    it("Should tokenize string values", () => {
+describe("Tests for the analyzer", () => {
+    it("Should analyze string values", () => {
         const jsonObj = {
             "string": "Hello, world!"
         };
 
-        const tokens = tokenize(jsonObj);
+        const fields = analyze(jsonObj);
 
-        expect(tokens).to.deep.equal([
+        expect(fields).to.deep.equal([
             {
                 parent: undefined,
                 key: "string",
@@ -19,14 +19,14 @@ describe("Tests for the tokenizer", () => {
         ]);
     });
 
-    it("Should tokenize integer values", () => {
+    it("Should analyze integer values", () => {
         const jsonObj = {
             "int": 1234567890
         };
 
-        const tokens = tokenize(jsonObj);
+        const fields = analyze(jsonObj);
 
-        expect(tokens).to.deep.equal([
+        expect(fields).to.deep.equal([
             {
                 parent: undefined,
                 key: "int",
@@ -36,14 +36,14 @@ describe("Tests for the tokenizer", () => {
         ]);
     });
 
-    it("Should tokenize decimal values", () => {
+    it("Should analyze decimal values", () => {
         const jsonObj = {
             "decimal": 1234567890.1234567890
         };
 
-        const tokens = tokenize(jsonObj);
+        const fields = analyze(jsonObj);
 
-        expect(tokens).to.deep.equal([
+        expect(fields).to.deep.equal([
             {
                 parent: undefined,
                 key: "decimal",
@@ -53,14 +53,14 @@ describe("Tests for the tokenizer", () => {
         ]);
     });
 
-    it("Should tokenize null values", () => {
+    it("Should analyze null values", () => {
         const jsonObj = {
             "nullValue": null
         };
 
-        const tokens = tokenize(jsonObj);
+        const fields = analyze(jsonObj);
 
-        expect(tokens).to.deep.equal([
+        expect(fields).to.deep.equal([
             {
                 parent: undefined,
                 key: "nullValue",
@@ -70,15 +70,15 @@ describe("Tests for the tokenizer", () => {
         ]);
     });
 
-    it("Should tokenize boolean values", () => {
+    it("Should analyze boolean values", () => {
         const jsonObj = {
             "trueValue": true,
             "falseValue": false
         };
 
-        const tokens = tokenize(jsonObj);
+        const fields = analyze(jsonObj);
 
-        expect(tokens).to.deep.equal([
+        expect(fields).to.deep.equal([
             {
                 parent: undefined,
                 key: "trueValue",
@@ -94,7 +94,7 @@ describe("Tests for the tokenizer", () => {
         ]);
     });
 
-    it("Should tokenize nested objects", () => {
+    it("Should analyze nested objects", () => {
         const jsonObj = {
             "nestedObject": {
                 "key1": "value1",
@@ -102,9 +102,9 @@ describe("Tests for the tokenizer", () => {
             }
         };
 
-        const tokens = tokenize(jsonObj);
+        const fields = analyze(jsonObj);
 
-        expect(tokens).to.deep.equal([
+        expect(fields).to.deep.equal([
             {
                 parent: undefined,
                 key: "nestedObject",
@@ -126,7 +126,7 @@ describe("Tests for the tokenizer", () => {
         ]);
     });
 
-    it("Should tokenize deeply nested objects", () => {
+    it("Should analyze deeply nested objects", () => {
         const jsonObj = {
             "deeplyNested": {
                 "level1": {
@@ -137,9 +137,9 @@ describe("Tests for the tokenizer", () => {
             }
         };
 
-        const tokens = tokenize(jsonObj);
+        const fields = analyze(jsonObj);
 
-        expect(tokens).to.deep.equal([
+        expect(fields).to.deep.equal([
             {
                 parent: undefined,
                 key: "deeplyNested",
@@ -167,7 +167,7 @@ describe("Tests for the tokenizer", () => {
         ]);
     });
 
-    it("Should tokenize objects with multiple key types", () => {
+    it("Should analyze objects with multiple key types", () => {
         const jsonObj = {
             "mixedTypes": {
                 "string": "value",
@@ -180,9 +180,9 @@ describe("Tests for the tokenizer", () => {
             }
         };
 
-        const tokens = tokenize(jsonObj);
+        const fields = analyze(jsonObj);
 
-        expect(tokens).to.deep.equal([
+        expect(fields).to.deep.equal([
             {
                 parent: undefined,
                 key: "mixedTypes",
@@ -228,7 +228,7 @@ describe("Tests for the tokenizer", () => {
         ]);
     });
 
-    it("Should tokenize arrays", () => {
+    it("Should analyze arrays", () => {
         const jsonObj = {
             "array": [
                 "value1",
@@ -237,9 +237,9 @@ describe("Tests for the tokenizer", () => {
             ]
         };
 
-        const tokens = tokenize(jsonObj);
+        const fields = analyze(jsonObj);
 
-        expect(tokens).to.deep.equal([
+        expect(fields).to.deep.equal([
             {
                 parent: undefined,
                 key: "array",
@@ -267,7 +267,7 @@ describe("Tests for the tokenizer", () => {
         ])
     });
 
-    it("Should tokenize arrays of objects", () => {
+    it("Should analyze arrays of objects", () => {
         const jsonObj = {
             "arrayOfObjects": [
                 {
@@ -282,9 +282,9 @@ describe("Tests for the tokenizer", () => {
             ]
         } as const;
 
-        const tokens = tokenize(jsonObj);
+        const fields = analyze(jsonObj);
 
-        expect(tokens).to.deep.equal([
+        expect(fields).to.deep.equal([
             {
                 parent: undefined,
                 key: "arrayOfObjects",
@@ -324,7 +324,7 @@ describe("Tests for the tokenizer", () => {
         ]);
     });
 
-    it("Should tokenize deeply nested objects in an array", () => {
+    it("Should analyze deeply nested objects in an array", () => {
         const jsonObj = {
             "arrayWithNestedObjects": [
                 {
@@ -337,9 +337,9 @@ describe("Tests for the tokenizer", () => {
             ]
         };
 
-        const tokens = tokenize(jsonObj);
+        const fields = analyze(jsonObj);
 
-        expect(tokens).to.deep.equal([
+        expect(fields).to.deep.equal([
             {
                 parent: undefined,
                 key: "arrayWithNestedObjects",
@@ -373,7 +373,7 @@ describe("Tests for the tokenizer", () => {
         ]);
     });
 
-    it("Should tokenize array with multiple values and types", () => {
+    it("Should analyze array with multiple values and types", () => {
         const jsonObj = {
             "arrayWithMultipleValues": [
                 "string",
@@ -386,9 +386,9 @@ describe("Tests for the tokenizer", () => {
             ]
         }
 
-        const tokens = tokenize(jsonObj);
+        const fields = analyze(jsonObj);
 
-        expect(tokens).to.deep.equals(
+        expect(fields).to.deep.equals(
             [
                 {
                     parent: undefined,
@@ -436,7 +436,7 @@ describe("Tests for the tokenizer", () => {
         )
     });
 
-    it("Should tokenize array of arrays", () => {
+    it("Should analyze array of arrays", () => {
         const jsonObj = {
             "arrayOfArrays": [
                 [
@@ -452,9 +452,9 @@ describe("Tests for the tokenizer", () => {
             ]
         };
 
-        const tokens = tokenize(jsonObj);
+        const fields = analyze(jsonObj);
 
-        expect(tokens).to.deep.equal([
+        expect(fields).to.deep.equal([
             {
                 parent: undefined,
                 key: "arrayOfArrays",

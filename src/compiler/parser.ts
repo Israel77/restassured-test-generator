@@ -1,5 +1,5 @@
 import { JsonBodyTest, Parser } from "../types/compiler/parser";
-import { Token } from "../types/compiler/tokenizer";
+import { JsonField } from "../types/compiler/analyzer";
 import { composeKey } from "./utils.js";
 
 /**
@@ -38,7 +38,7 @@ const removeInternals = (item: JsonBodyTestInternal): JsonBodyTest => {
     return rest;
 }
 
-const simplifyArrayItems = (tokens: Token[], items: JsonBodyTestInternal[]): JsonBodyTestInternal[] => {
+const simplifyArrayItems = (tokens: JsonField[], items: JsonBodyTestInternal[]): JsonBodyTestInternal[] => {
     const arrays = tokens
         .filter(token => token.type === "Array");
 
@@ -66,7 +66,7 @@ const simplifyArrayItems = (tokens: Token[], items: JsonBodyTestInternal[]): Jso
     return items;
 }
 
-const insertTest = (items: JsonBodyTestInternal[], token: Token, parentTypes: { [key: string]: "Array" | "Object" }): void => {
+const insertTest = (items: JsonBodyTestInternal[], token: JsonField, parentTypes: { [key: string]: "Array" | "Object" }): void => {
     if (token.type === "null") {
         items.push({
             testType: "CheckForNull",

@@ -1,10 +1,10 @@
 import { expect } from "chai";
 import { parse } from "../src/compiler/parser.js";
-import { Token } from "../src/types/compiler/tokenizer.js";
+import { JsonField } from "../src/types/compiler/analyzer.js";
 
 describe("Tests for the parser", () => {
     it("Should parse string values", () => {
-        const tokens: Token[] = [
+        const tokens: JsonField[] = [
             {
                 parent: undefined,
                 key: "string",
@@ -26,7 +26,7 @@ describe("Tests for the parser", () => {
     });
 
     it("Should parse integer values", () => {
-        const tokens: Token[] = [
+        const tokens: JsonField[] = [
             {
                 parent: undefined,
                 key: "int",
@@ -48,7 +48,7 @@ describe("Tests for the parser", () => {
     });
 
     it("Should parse null values", () => {
-        const tokens: Token[] = [
+        const tokens: JsonField[] = [
             {
                 parent: undefined,
                 key: "nullValue",
@@ -68,7 +68,7 @@ describe("Tests for the parser", () => {
     });
 
     it("Should parse nested objects", () => {
-        const tokens: Token[] = [
+        const tokens: JsonField[] = [
             {
                 parent: undefined,
                 key: "nestedObject",
@@ -108,7 +108,7 @@ describe("Tests for the parser", () => {
     });
 
     it("Should parse arrays", () => {
-        const tokens: Token[] = [
+        const tokens: JsonField[] = [
             {
                 parent: undefined,
                 key: "array",
@@ -160,7 +160,7 @@ describe("Tests for the parser", () => {
     });
 
     it("Should merge array items when simplify is true", () => {
-        const tokens: Token[] = [
+        const tokens: JsonField[] = [
             {
                 parent: undefined,
                 key: "array",

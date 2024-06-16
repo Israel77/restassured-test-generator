@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { compile } from '../src/compiler/compiler.js';
 
-describe("Tests for the tokenizer -> parser -> generator pipeline", () => {
+describe("Synthetic tests for the analyzer -> parser -> generator pipeline", () => {
     it("Should generate tests for objects with string values", () => {
         const json = `{
             "string": "Hello, world!"
