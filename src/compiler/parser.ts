@@ -1,6 +1,6 @@
 import { JsonBodyTest, Parser } from "../types/compiler/parser";
 import { Token } from "../types/compiler/tokenizer";
-import { composeKey } from "./tokenizer.js";
+import { composeKey } from "./utils.js";
 
 /**
  * A middle ground between the token and the output tests

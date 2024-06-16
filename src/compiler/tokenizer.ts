@@ -1,5 +1,6 @@
 import { Token, TokenType, Tokenizer } from "../types/compiler/tokenizer";
 import { JsonType } from "../types/jsonTypes";
+import { composeKey } from "./utils.js";
 
 /**
  * Represents an error that occurred during type inference.
@@ -99,18 +100,6 @@ const tokenizeArray = (jsonArray: JsonType[], parent: string | undefined, key: s
 
     return tokens;
 }
-
-/**
- * Composes a key by combining a parent key and a child key with a dot separator
- * for objects, or simple concatenation for arrays.
- *
- * @param {string | undefined} parent - The parent key (undefined if it is the root).
- * @param {string} key - The child key.
- * @returns {string} The composed key.
- */
-export const composeKey = (parent: string | undefined, key: string, fromArray: boolean): string =>
-    `${parent ?? ""}${parent && !fromArray ? "." : ""}${key}`;
-
 
 /**
  * Parses the type of a given value from a JSON object.
