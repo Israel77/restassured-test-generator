@@ -140,10 +140,8 @@ const generateRequestSpecification = (request: RequestSpecification | undefined,
     result += newline + indent + ".when()";
 
     if (request?.method) {
-        console.log(request.method);
-        const _method = request.method.toLowerCase();
         result += newline + indent +
-            `.${_method}(${request.url?.unwrap()})`;
+            `.${request.method.toLowerCase()}(${request.url?.unwrap()})`;
     }
 
     if (request?.port) {

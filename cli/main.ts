@@ -8,7 +8,7 @@ import { VarOrValue } from '../lib/compiler/generator.js';
 import { HTTPMethod } from '../lib/types/compiler/generator.js';
 
 program
-    .option("-f, --file <file>", "File with JSON response body")
+    .addOption(new Option("-f, --file <file>", "File with JSON response body"))
     .option("-s, --string <body>", "String representing JSON response body")
     .option("-sc, --statusCode <code>", "HTTP status code", parseInt);
 
@@ -85,9 +85,6 @@ const main = (programOptions: OptionValues) => {
 
     const httpMethod = getMethodAndUrl(programOptions).method;
     const url = getMethodAndUrl(programOptions).url;
-
-    console.log(httpMethod);
-    console.log(url);
 
     const compilerOptions: CompilerOptions = {
         simplify: true,
