@@ -1,6 +1,6 @@
 {
-    "name": "resteasy-test-generator",
-    "version": "1.0.0",
+    "name": "restassured-test-generator",
+    "version": "0.1.0",
     "description": "",
     "main": "index.js",
     "scripts": {
@@ -16,6 +16,7 @@
     "devDependencies": {
         "@types/chai": "^4.3.16",
         "@types/mocha": "^10.0.6",
+        "@types/node": "^20.14.2",
         "c8": "^10.1.2",
         "chai": "^5.1.1",
         "mocha": "^10.4.0",
@@ -23,5 +24,9 @@
         "typescript": "^5.4.5",
         "typescript-coverage-report": "^1.0.0"
     },
-    "type": "module"
+    "type": "module",
+    "bin": "./dist/cli/main.js",
+    "dependencies": {
+        "commander": "^12.1.0"
+    }
 }
