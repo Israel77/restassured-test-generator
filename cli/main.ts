@@ -1,26 +1,132 @@
 #!/usr/bin/env node
 
-import { OptionValues, program } from 'commander';
-import { readFile, readFileSync } from "fs";
+import { Option, OptionValues, program } from 'commander';
+import { readFileSync } from "fs";
 import { compile } from '../lib/compiler/compiler.js';
+import { CompilerOptions } from '../lib/types/compiler/compiler.js';
+import { VarOrValue } from '../lib/compiler/generator.js';
+import { HTTPMethod } from '../lib/types/compiler/generator.js';
 
 program
     .option("-f, --file <file>", "File with JSON response body")
-    .option("-s, --string <body>", "String representing JSON response body");
+    .option("-s, --string <body>", "String representing JSON response body")
+    .option("-sc, --statusCode <code>", "HTTP status code", parseInt);
+
+// Options for each one of the HTTP methods
+program
+    .addOption(new Option("--post <url>", "URL of the POST request")
+        .conflicts("--delete")
+        .conflicts("--get")
+        .conflicts("--head")
+        .conflicts("--options")
+        .conflicts("--patch")
+        .conflicts("--put")
+    )
+    .addOption(new Option("--get <url>", "URL of the GET request")
+        .conflicts("--delete")
+        .conflicts("--post")
+        .conflicts("--head")
+        .conflicts("--options")
+        .conflicts("--patch")
+        .conflicts("--put")
+    )
+    .addOption(new Option("--put <url>", "URL of the PUT request")
+        .conflicts("--delete")
+        .conflicts("--get")
+        .conflicts("--head")
+        .conflicts("--options")
+        .conflicts("--patch")
+        .conflicts("--post")
+    )
+    .addOption(new Option("--delete <url>", "URL of the DELETE request")
+        .conflicts("--post")
+        .conflicts("--get")
+        .conflicts("--head")
+        .conflicts("--options")
+        .conflicts("--patch")
+        .conflicts("--put")
+    )
+    .addOption(new Option("--patch <url>", "URL of the PATCH request")
+        .conflicts("--delete")
+        .conflicts("--get")
+        .conflicts("--head")
+        .conflicts("--options")
+        .conflicts("--post")
+        .conflicts("--put")
+    )
+    .addOption(new Option("--head <url>", "URL of the HEAD request")
+        .conflicts("--delete")
+        .conflicts("--get")
+        .conflicts("--post")
+        .conflicts("--options")
+        .conflicts("--patch")
+        .conflicts("--put")
+    )
+    .addOption(new Option("--options <url>", "URL of the OPTIONS request")
+        .conflicts("--delete")
+        .conflicts("--get")
+        .conflicts("--head")
+        .conflicts("--post")
+        .conflicts("--patch")
+        .conflicts("--put")
+    );
 
 program.parse();
 
-const options = program.opts();
+const programOptions = program.opts();
 
-const main = (options: OptionValues) => {
-    if (!options.file && !options.string) {
+const main = (programOptions: OptionValues) => {
+    if (!programOptions.file && !programOptions.string) {
         console.error("No file or string provided");
         return;
     }
 
-    const body: string = options.string ? options.string : readFileSync(options.file, "utf-8");
+    const body: string = programOptions.string ? programOptions.string : readFileSync(programOptions.file, "utf-8");
 
-    console.log(compile(body));
+    const httpMethod = getMethodAndUrl(programOptions).method;
+    const url = getMethodAndUrl(programOptions).url;
+
+    console.log(httpMethod);
+    console.log(url);
+
+    const compilerOptions: CompilerOptions = {
+        simplify: true,
+        generatorOptions: {
+            statusCode: Number.isNaN(programOptions.statusCode) ? undefined : programOptions.statusCode,
+            request: {
+                method: httpMethod,
+                url: url ? new VarOrValue(url).asValue() : undefined
+            }
+        }
+    }
+
+    console.log(compile(body, compilerOptions));
 }
 
-main(options);
+const getMethodAndUrl = (programOptions: OptionValues): { method?: HTTPMethod, url?: string } => {
+    let method: HTTPMethod | undefined;
+
+    if (programOptions.post) {
+        method = "POST";
+    } else if (programOptions.get) {
+        method = "GET";
+    } else if (programOptions.put) {
+        method = "PUT";
+    } else if (programOptions.delete) {
+        method = "DELETE";
+    } else if (programOptions.patch) {
+        method = "PATCH";
+    } else if (programOptions.head) {
+        method = "HEAD";
+    } else if (programOptions.options) {
+        method = "OPTIONS";
+    } else {
+        method = undefined;
+    }
+
+    const url = method ? programOptions[method.toLowerCase()] : undefined;
+
+    return { method, url };
+}
+
+main(programOptions);

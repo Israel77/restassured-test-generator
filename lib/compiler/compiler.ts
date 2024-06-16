@@ -1,6 +1,20 @@
 import { generateTests } from "./generator.js";
 import { parse } from "./parser.js";
 import { analyze } from "./analyzer.js";
+import { JsonType } from "../types/jsonTypes.js";
+import { CompilerOptions } from "../types/compiler/compiler.js";
 
-export const compile = (json: string): string =>
-    generateTests(parse(analyze(JSON.parse(json))));
+export const compile = (json: string, compilerOptions?: CompilerOptions): string | void => {
+    let jsonObj: { [key: string]: JsonType };
+
+    try {
+        jsonObj = JSON.parse(json);
+    } catch (error) {
+        console.error("Invalid JSON\n" + error);
+        return;
+    }
+
+    return generateTests(
+        parse(analyze(jsonObj), compilerOptions?.simplify),
+        compilerOptions?.generatorOptions);
+}
