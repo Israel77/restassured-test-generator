@@ -1,8 +1,8 @@
-import { assert } from "chai";
 import { GeneratorOptions, TestGenerator, RequestSpecification } from "../types/compiler/generator";
 import { JsonBodyTest } from "../types/compiler/parser";
 import { FieldType } from "../types/compiler/analyzer";
 import { JsonType } from "../types/jsonTypes";
+import assert from "assert";
 
 /**
  * If isVar is true, value will be intepreted as a variable in the generated test.
