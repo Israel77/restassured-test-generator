@@ -10,7 +10,7 @@ import { HTTPMethod } from '../lib/types/compiler/generator.js';
 program
     .addOption(new Option("-f, --file <file>", "File with JSON response body"))
     .option("-s, --string <body>", "String representing JSON response body")
-    .option("-sc, --statusCode <code>", "HTTP status code", parseInt);
+    .option("-sc, --status-code <code>", "HTTP status code", parseInt);
 
 // Options for each one of the HTTP methods
 program
