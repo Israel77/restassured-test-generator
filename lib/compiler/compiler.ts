@@ -1,8 +1,8 @@
 import { generateTests } from "./generator.js";
 import { parse } from "./parser.js";
 import { analyze } from "./analyzer.js";
-import { JsonType } from "../types/jsonTypes.js";
-import { CompilerOptions } from "../types/compiler/compiler.js";
+import { JsonType } from "../../types/jsonTypes.js";
+import { CompilerOptions } from "../../types/compiler/compiler.js";
 
 export const compile = (json: string, compilerOptions?: CompilerOptions): string | void => {
     let jsonObj: { [key: string]: JsonType };

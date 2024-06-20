@@ -3,9 +3,9 @@
 import { Option, OptionValues, program } from 'commander';
 import { readFileSync } from "fs";
 import { compile } from '../lib/compiler/compiler.js';
-import { CompilerOptions } from '../lib/types/compiler/compiler.js';
+import { CompilerOptions } from '../types/compiler/compiler.js';
 import { VarOrValue } from '../lib/compiler/generator.js';
-import { HTTPMethod } from '../lib/types/compiler/generator.js';
+import { HTTPMethod } from '../types/compiler/generator.js';
 
 program
     .addOption(new Option("-f, --file <file>", "File with JSON response body"))

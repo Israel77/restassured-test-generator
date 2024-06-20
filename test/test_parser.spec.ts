@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { parse } from "../lib/compiler/parser.js";
-import { JsonField } from "../lib/types/compiler/analyzer.js";
+import { JsonField } from "../types/compiler/analyzer.js";
 
 describe("Tests for the parser", () => {
     it("Should parse string values", () => {

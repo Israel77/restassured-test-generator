@@ -1,5 +1,5 @@
-import { JsonField, FieldType, Analyzer } from "../types/compiler/analyzer.js";
-import { JsonType } from "../types/jsonTypes.js";
+import { JsonField, FieldType, Analyzer } from "../../types/compiler/analyzer.js";
+import { JsonType } from "../../types/jsonTypes.js";
 import { composeKey } from "./utils.js";
 
 /**

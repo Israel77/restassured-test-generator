@@ -1,5 +1,5 @@
-import { JsonBodyTest, Parser } from "../types/compiler/parser";
-import { JsonField } from "../types/compiler/analyzer";
+import { JsonBodyTest, Parser } from "../../types/compiler/parser";
+import { JsonField } from "../../types/compiler/analyzer";
 import { composeKey } from "./utils.js";
 
 /**

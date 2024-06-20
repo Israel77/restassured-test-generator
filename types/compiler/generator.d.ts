@@ -1,4 +1,4 @@
-import { VarOrValue } from "../../compiler/generator";
+import { VarOrValue } from "../../lib/compiler/generator";
 import { JsonBodyTest } from "./parser";
 
 export type TestGenerator = (items: JsonBodyTest[], options?: GeneratorOptions) => string;
