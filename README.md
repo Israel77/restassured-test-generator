@@ -4,7 +4,7 @@ A transpiler to convert JSON response body to Java RestAssured assertions.
 
 This project contains both a CLI and a library that can be used to generate RestAssured assertions from JSON responses. 
 
-> 🚧 Warning: This is a working in progress and breaking changes shall be expected, especially with the CLI.
+> 🚧 Warning: This is a work in progress and breaking changes shall be expected, specially with the CLI.
 
 
 # 1. Installation
@@ -88,13 +88,13 @@ given()
 
 ## 2.2 Library
 
-The transpiler can be imported as a standalone library and used in a JavaScript project. The library exports a Compiler object containing a compile function that accepts a JSON string and returns a Java RestAssured assertion string.
+The transpiler can be imported as a standalone library and used in a JavaScript project. The library exports a Compiler object containing a compile function that accepts a JSON string, and can also take additional options for the test generation, and returns a Java RestAssured assertion string.
 
 Example usage:
 ```js
 import { Compiler, VarOrValue } from 'restassured-test-generator';
 
-const jsonString = `{"id": 69420, "name": "John", "age": 30}`;
+const jsonString = `{"id": 69420, "name": "John", "age": 42}`;
 
 const compilerOptions = {
     simplify: true,
@@ -126,7 +126,7 @@ The VarOrValue class is a wrapper around a string that can be either a variable 
 ```js
 import { Compiler, VarOrValue } from 'restassured-test-generator';
 
-const jsonString = `{"id": 69420, "name": "John", "age": 30}`;
+const jsonString = `{"id": 69420, "name": "John", "age": 42}`;
 
 const compilerOptions = {
     simplify: true,
