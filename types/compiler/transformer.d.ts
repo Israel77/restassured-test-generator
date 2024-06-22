@@ -1,7 +1,7 @@
 import { JsonType } from "../jsonTypes";
 import { JsonField, FieldType } from "./analyzer";
 
-export type Parser = (tokens: JsonField[], simplify?: boolean) => JsonBodyTest[];
+export type Transformer = (tokens: JsonField[], simplify?: boolean) => JsonBodyTest[];
 
 export type JsonBodyTest =
     | CheckForValue

@@ -1,5 +1,5 @@
-import { JsonBodyTest, Parser } from "../../types/compiler/parser";
-import { JsonField } from "../../types/compiler/analyzer";
+import { JsonBodyTest, Transformer } from "../../types/compiler/transformer.js";
+import { JsonField } from "../../types/compiler/analyzer.js";
 import { composeKey } from "./utils.js";
 
 /**
@@ -10,7 +10,7 @@ type JsonBodyTestInternal = JsonBodyTest & {
     key: string,
 };
 
-export const parse: Parser = (tokens, simplify?) => {
+export const transform: Transformer = (tokens, simplify?) => {
     simplify ??= false;
 
     let testItems: JsonBodyTestInternal[] = [];

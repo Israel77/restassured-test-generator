@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { JsonBodyTest } from '../types/compiler/parser.js';
+import { JsonBodyTest } from '../types/compiler/transformer.js';
 import { generateTests, VarOrValue } from '../lib/compiler/generator.js';
 import { HTTPMethod } from '../types/compiler/generator.js';
 

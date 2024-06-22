@@ -1,5 +1,5 @@
 import { generateTests } from "./generator.js";
-import { parse } from "./parser.js";
+import { transform } from "./transformer.js";
 import { analyze } from "./analyzer.js";
 import { JsonType } from "../../types/jsonTypes.js";
 import { CompilerOptions } from "../../types/compiler/compiler.js";
@@ -15,6 +15,6 @@ export const compile = (json: string, compilerOptions?: CompilerOptions): string
     }
 
     return generateTests(
-        parse(analyze(jsonObj), compilerOptions?.simplify),
+        transform(analyze(jsonObj), compilerOptions?.simplify),
         compilerOptions?.generatorOptions);
 }

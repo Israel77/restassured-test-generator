@@ -1,9 +1,9 @@
 import { expect } from "chai";
-import { parse } from "../lib/compiler/parser.js";
+import { transform } from "../lib/compiler/transformer.js";
 import { JsonField } from "../types/compiler/analyzer.js";
 
-describe("Tests for the parser", () => {
-    it("Should parse string values", () => {
+describe("Tests for the transformer", () => {
+    it("Should evaluate string values", () => {
         const tokens: JsonField[] = [
             {
                 parent: undefined,
@@ -13,7 +13,7 @@ describe("Tests for the parser", () => {
             }
         ];
 
-        const items = parse(tokens);
+        const items = transform(tokens);
 
         expect(items).to.deep.equal([
             {
@@ -25,7 +25,7 @@ describe("Tests for the parser", () => {
         ]);
     });
 
-    it("Should parse integer values", () => {
+    it("Should evaluate integer values", () => {
         const tokens: JsonField[] = [
             {
                 parent: undefined,
@@ -35,7 +35,7 @@ describe("Tests for the parser", () => {
             }
         ];
 
-        const items = parse(tokens);
+        const items = transform(tokens);
 
         expect(items).to.deep.equal([
             {
@@ -47,7 +47,7 @@ describe("Tests for the parser", () => {
         ]);
     });
 
-    it("Should parse null values", () => {
+    it("Should evaluate null values", () => {
         const tokens: JsonField[] = [
             {
                 parent: undefined,
@@ -57,7 +57,7 @@ describe("Tests for the parser", () => {
             }
         ];
 
-        const items = parse(tokens);
+        const items = transform(tokens);
 
         expect(items).to.deep.equal([
             {
@@ -67,7 +67,7 @@ describe("Tests for the parser", () => {
         ]);
     });
 
-    it("Should parse nested objects", () => {
+    it("Should evaluate nested objects", () => {
         const tokens: JsonField[] = [
             {
                 parent: undefined,
@@ -89,7 +89,7 @@ describe("Tests for the parser", () => {
             }
         ];
 
-        const items = parse(tokens);
+        const items = transform(tokens);
 
         expect(items).to.deep.equal([
             {
@@ -107,7 +107,7 @@ describe("Tests for the parser", () => {
         ]);
     });
 
-    it("Should parse arrays", () => {
+    it("Should evaluate arrays", () => {
         const tokens: JsonField[] = [
             {
                 parent: undefined,
@@ -135,7 +135,7 @@ describe("Tests for the parser", () => {
             }
         ];
 
-        const items = parse(tokens);
+        const items = transform(tokens);
 
         expect(items).to.deep.equal([
             {
@@ -187,7 +187,7 @@ describe("Tests for the parser", () => {
             }
         ];
 
-        const items = parse(tokens, true);
+        const items = transform(tokens, true);
 
         expect(items.length).to.equal(1);
         expect(items[0]).to.deep.equal(

@@ -1,5 +1,5 @@
 import { GeneratorOptions, TestGenerator, RequestSpecification } from "../../types/compiler/generator";
-import { JsonBodyTest } from "../../types/compiler/parser";
+import { JsonBodyTest } from "../../types/compiler/transformer";
 import { FieldType } from "../../types/compiler/analyzer";
 import { JsonType } from "../../types/jsonTypes";
 import { isBoolean, isNumber, isString } from "./utils.js";
