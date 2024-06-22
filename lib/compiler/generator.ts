@@ -2,7 +2,7 @@ import { GeneratorOptions, TestGenerator, RequestSpecification } from "../../typ
 import { JsonBodyTest } from "../../types/compiler/parser";
 import { FieldType } from "../../types/compiler/analyzer";
 import { JsonType } from "../../types/jsonTypes";
-import assert from "assert";
+import { isBoolean, isNumber, isString } from "./utils";
 
 /**
  * If isVar is true, value will be intepreted as a variable in the generated test.
@@ -30,7 +30,7 @@ export class VarOrValue<T> {
         if (this.isVar || typeof this.value !== "string") {
             return this.value;
         } else {
-            assert(typeof this.value === "string");
+            isString(this.value);
             return `"${this.value}"`;
         }
     }
@@ -63,8 +63,7 @@ const formatValue = (value: JsonType, type: FieldType): string | undefined => {
         case "String":
             return `"${value}"`;
         case "Number":
-            assert(typeof value === "number");
-
+            isNumber(value);
             if (!Number.isInteger(value)) {
                 return `${value}f`;
             } else if (value > JAVA_MAX_INT) {
@@ -73,7 +72,7 @@ const formatValue = (value: JsonType, type: FieldType): string | undefined => {
                 return value.toString();
             }
         case "Boolean":
-            assert(typeof value === "boolean");
+            isBoolean(value);
             return value.toString();
         case "null":
             return "null";
