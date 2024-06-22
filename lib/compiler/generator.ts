@@ -2,7 +2,7 @@ import { GeneratorOptions, TestGenerator, RequestSpecification } from "../../typ
 import { JsonBodyTest } from "../../types/compiler/parser";
 import { FieldType } from "../../types/compiler/analyzer";
 import { JsonType } from "../../types/jsonTypes";
-import { isBoolean, isNumber, isString } from "./utils";
+import { isBoolean, isNumber, isString } from "./utils.js";
 
 /**
  * If isVar is true, value will be intepreted as a variable in the generated test.
