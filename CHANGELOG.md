@@ -9,10 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Fixed
 - Add .js extension to imports, so that the output JavaScript code for the library works correctly.
 - Fix some typos on README.
-- Separate ongoing development from master branch.
+- Accept array as root of JSON object.
 
 ## Changed
 - Changed name of parser step to transformer, since it doesn't really parse anything but transforms JSON data into test data.
+- Separate ongoing development from master branch.
 
 [0.0.3] - 2024-06-22
 ## Changed
