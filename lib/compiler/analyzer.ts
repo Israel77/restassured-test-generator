@@ -1,5 +1,5 @@
 import { JsonField, FieldType, Analyzer } from "../../types/compiler/analyzer.js";
-import { JsonType } from "../../types/jsonTypes.js";
+import { JsonObject, JsonType } from "../../types/jsonTypes.js";
 import { composeKey } from "./utils.js";
 
 /**
@@ -19,7 +19,7 @@ export class InferenceError extends Error {
 /**
  * Analyzes a JSON object into an array of JsonFields.
  *
- * @param {Object} jsonObj - The JSON object to analyze.
+ * @param {JsonObject} jsonObj - The JSON object to analyze.
  * @param {string} [parent] - The parent key of the JSON object (undefined if it is the root).
  * @returns {JsonField[]} An array of JsonFields representing the JSON object.
  * @throws {InferenceError} If the type of a key cannot be inferred.
@@ -28,7 +28,8 @@ export const analyze: Analyzer = (jsonObj, parent?) => {
     const fields: JsonField[] = [];
 
     for (const [key, value] of Object.entries(jsonObj)) {
-        fields.push(...analyzeValue(value, parent, key, false));
+        const fieldKey = Array.isArray(jsonObj) ? `[${key}]` : key;
+        fields.push(...analyzeValue(value, parent, fieldKey, false));
     }
 
     return fields;

@@ -2,6 +2,8 @@ export type JsonType =
     | string
     | number
     | boolean
-    | { [key: string]: JsonType }
+    | JsonObject
     | readonly JsonType[]
     | null;
+
+type JsonObject = { [key: string]: JsonType };

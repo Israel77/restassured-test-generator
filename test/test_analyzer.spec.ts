@@ -511,4 +511,30 @@ describe("Tests for the analyzer", () => {
             }
         ]);
     });
+    it("Should be able to analyze arrays as the root object", () => {
+        const jsonObj = [1, 2, 3];
+
+        const fields = analyze(jsonObj);
+
+        expect(fields).to.deep.equal([
+            {
+                parent: undefined,
+                key: "[0]",
+                type: "Number",
+                value: 1
+            },
+            {
+                parent: undefined,
+                key: "[1]",
+                type: "Number",
+                value: 2
+            },
+            {
+                parent: undefined,
+                key: "[2]",
+                type: "Number",
+                value: 3
+            }
+        ]);
+    });
 });

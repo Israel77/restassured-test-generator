@@ -1,6 +1,6 @@
-import { JsonType } from "../jsonTypes";
+import { JsonObject, JsonType } from "../jsonTypes";
 
-export type Analyzer = (jsonObj: { [key: string]: JsonType }, parent?: string) => JsonField[];
+export type Analyzer = (jsonObj: JsonObject | JsonType[], parent?: string) => JsonField[];
 
 export type JsonField = {
     // Parent is the key of the parent object, or undefined if it is the root object
