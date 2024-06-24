@@ -162,18 +162,6 @@ import { Compiler } from 'restassured-test-generator';
 const jsonString = `{"id": 69420, "name": "John", "age": 30}`;
 
 const fields = Compiler.analyze(jsonString);
-const tests = Compiler.parse(fields);
-const output = Compiler.generateTests(tests);
+const testSpec = Compiler.transform(fields);
+const output = Compiler.generateTests(testSpec);
 ```
-# 3. Architecture
-
-<!-- TODO: Update documentation -->
-The transpiler architecture follows somewhat closely the traditional compiler design pattern, each step being its own module.
-
-![The compiler pipeline with analyzer, parser and code generator](assets/compiler_architecture.png "Internal architecture of the compiler")
-
-Since parsing JSON is trivial when using the JS standard library, the tokenizer in a traditional compiler is replaced by an analyzer. The analyzer is responsible for extracting information from JSON and building a list of nodes that represent the JSON fields.
-
-The parser takes the list of JSON fields and converts it to a list of assertion tests for the JSON body. It can generate an individual test for each field, and optionally, simplify some tests by combining fields, such as elements of an array.
-
-The generator then takes the list of assertion tests and generates the Java RestAssured assertion code. It can also receive a list of options used to customize parameters of the generated code, like formatting and indentation, as well as test options unrelated to the JSON response body, such as the HTTP method, URL, headers, status code, etc.

@@ -6,8 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 [Unreleased]
-## Fixed
-- Don't generate separate tests for empty arrays or arrays that only contains inner objects.
+## Changed
+- Change test generation strategy for empty objects and arrays.
+- Don't generate tests for arrays that only contains inner objects, as it would be an empty test, and the inner fields already have their tests.
+- Removed documentation regarding the internal project architecture, as it is still in a early stage and can change at any time.
 
 [0.0.4] - 2024-06-23
 ## Fixed
