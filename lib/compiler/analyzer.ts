@@ -2,7 +2,6 @@ import { JsonField, FieldType, Analyzer } from "../../types/compiler/analyzer.js
 import { JsonObject, JsonType } from "../../types/jsonTypes.js";
 import { composeKey } from "./utils.js";
 
-// TODO: Refactor analyzer code
 /**
  * Represents an error that occurred during type inference.
  */
@@ -42,6 +41,7 @@ export const analyze: Analyzer = (jsonObj, parent?) => {
  * @param {any} value - The value to analyze.
  * @param {string} [parent] - The parent key of the value (undefined if it is the root).
  * @param {string} [key] - The key of the value (undefined if it is an array element).
+ * @param {boolean} [fromArray] - Wether the parent key refers to an array.
  * @returns {JsonField[]} An array of JsonFields representing the value.
  * @throws {InferenceError} If the type of the value cannot be inferred.
  */
@@ -56,14 +56,17 @@ const analyzeValue = (value: JsonType, parent: string | undefined, key: string, 
     if (_type === "Array") {
         fields.push(...analyzeArray(value as JsonType[], parent, key, fromArray));
     } else if (_type === "Object") {
+        // Push object marker
         fields.push({
             parent: parent,
             key: key,
             type: "Object",
             value: null
         });
+
+        // Recursively analyze the inner fields
         const fieldKey = composeKey(parent, key, fromArray);
-        fields.push(...analyze(value as { [key: string]: JsonType }, fieldKey));
+        fields.push(...analyze(value as JsonObject, fieldKey));
     } else {
         fields.push({
             parent: parent,
@@ -105,7 +108,7 @@ const analyzeArray = (jsonArray: JsonType[], parent: string | undefined, key: st
 /**
  * Parses the type of a given value from a JSON object.
  *
- * @param {Exclude<any, bigint | symbol | undefined>} value - The value to parse.
+ * @param {JsonType} value - The value to parse.
  * @returns {FieldType | null} The parsed token type or null if the type is not recognized.
  */
 const parseType = (value: JsonType):
