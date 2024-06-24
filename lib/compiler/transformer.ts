@@ -38,6 +38,7 @@ const removeInternals = (item: JsonBodyTestInternal): JsonBodyTest => {
     return rest;
 }
 
+// TODO: Implement simplification for objects with the same schema nested in arrays
 const simplifyArrayItems = (tokens: JsonField[], items: JsonBodyTestInternal[]): JsonBodyTestInternal[] => {
     const arrays = tokens
         .filter(token => token.type === "Array");
@@ -54,13 +55,16 @@ const simplifyArrayItems = (tokens: JsonField[], items: JsonBodyTestInternal[]):
             valueType: token.type,
         }))
 
-        items.push({
-            testType: "CheckArrayItems",
-            path: composeKey(array.parent, key, true),
-            items: arrayItems,
-            parent: array.parent,
-            key: key,
-        });
+        // Only generate tests if the array contains inner values
+        if (arrayItems.length > 0) {
+            items.push({
+                testType: "CheckArrayItems",
+                path: composeKey(array.parent, key, true),
+                items: arrayItems,
+                parent: array.parent,
+                key: key,
+            })
+        };
     }
 
     return items;
