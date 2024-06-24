@@ -10,6 +10,13 @@ type JsonBodyTestInternal = JsonBodyTest & {
     key: string,
 };
 
+/**
+ * Transforms a list of JsonFields into a list of JsonBodyTests.
+ * 
+ * @param {JsonField[]} fields - An array of JsonFields representing the schema.
+ * @param {boolean} [simplify=false] - Whether to simplify the generated tests by combining values when possible.
+ * @returns {JsonBodyTest[]} An array of JsonBodyTests representing the tests to be performed on the JSON body.
+ */
 export const transform: Transformer = (fields, simplify?) => {
     simplify ??= false;
 
@@ -42,7 +49,13 @@ export const transform: Transformer = (fields, simplify?) => {
 
     return testItems.map(removeInternals);
 }
-
+/**
+ * Converts the internal representation used within the transformer for optimizations
+ * into the output format that will be used to generate the tests.
+ * 
+ * @param item - The JsonBodyTestInternal representation.
+ * @returns The JSONBodyTest representation.
+ */
 const removeInternals = (item: JsonBodyTestInternal): JsonBodyTest => {
     const { parent, key, ...rest } = item;
     return rest;
