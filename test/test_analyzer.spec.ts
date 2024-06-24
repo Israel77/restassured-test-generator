@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import { analyze } from '../lib/compiler/analyzer.js';
+import { JsonField } from '../types/compiler/analyzer.js';
 
 describe("Tests for the analyzer", () => {
     it("Should analyze string values", () => {
@@ -536,5 +537,195 @@ describe("Tests for the analyzer", () => {
                 value: 3
             }
         ]);
+    });
+
+    it("Should analyze complex objects correctly", () => {
+
+        const jsonObj = {
+            "people": [
+                {
+                    "id": 1,
+                    "name": "John",
+                    "height": 1.85,
+                    "friends": [
+                        2,
+                        3
+                    ]
+                },
+                {
+                    "id": 2,
+                    "name": "Jane",
+                    "height": 1.75,
+                    "friends": [
+                        1,
+                        3
+                    ]
+                },
+                {
+                    "id": 3,
+                    "name": "Bob",
+                    "height": 1.95,
+                    "friends": [
+                        1,
+                        2,
+                    ]
+                },
+            ]
+        }
+
+        const expectedFields: JsonField[] = [
+            //#region "people"
+            {
+                parent: undefined,
+                key: "people",
+                type: "Array",
+                value: null
+            },
+            //#region "people[0]"
+            {
+                parent: "people",
+                key: "[0]",
+                type: "Object",
+                value: null
+            },
+            {
+                parent: "people[0]",
+                key: "id",
+                type: "Number",
+                value: 1
+            },
+            {
+                parent: "people[0]",
+                key: "name",
+                type: "String",
+                value: "John"
+            },
+            {
+                parent: "people[0]",
+                key: "height",
+                type: "Number",
+                value: 1.85
+            },
+            //#region "people[0].friends"
+            {
+                parent: "people[0]",
+                key: "friends",
+                type: "Array",
+                value: null
+            },
+            {
+                parent: "people[0].friends",
+                key: "[0]",
+                type: "Number",
+                value: 2
+            },
+            {
+                parent: "people[0].friends",
+                key: "[1]",
+                type: "Number",
+                value: 3
+            },
+            //#endrigion "people[0].friends"
+            //#endretion "people[0]"
+
+            //#region "people[1]"
+            {
+                parent: "people",
+                key: "[1]",
+                type: "Object",
+                value: null
+            },
+            {
+                parent: "people[1]",
+                key: "id",
+                type: "Number",
+                value: 2
+            },
+            {
+                parent: "people[1]",
+                key: "name",
+                type: "String",
+                value: "Jane"
+            },
+            {
+                parent: "people[1]",
+                key: "height",
+                type: "Number",
+                value: 1.75
+            },
+            //#region "people[1].friends"
+            {
+                parent: "people[1]",
+                key: "friends",
+                type: "Array",
+                value: null
+            },
+            {
+                parent: "people[1].friends",
+                key: "[0]",
+                type: "Number",
+                value: 1
+            },
+            {
+                parent: "people[1].friends",
+                key: "[1]",
+                type: "Number",
+                value: 3
+            },
+            //#endregion "people[1].friends"
+            //#endregion "people[1]"
+
+            //#region "people[2]"
+            {
+                parent: "people",
+                key: "[2]",
+                type: "Object",
+                value: null
+            },
+            {
+                parent: "people[2]",
+                key: "id",
+                type: "Number",
+                value: 3
+            },
+            {
+                parent: "people[2]",
+                key: "name",
+                type: "String",
+                value: "Bob"
+            },
+            {
+                parent: "people[2]",
+                key: "height",
+                type: "Number",
+                value: 1.95
+            },
+            //#region "people[1].friends"
+            {
+                parent: "people[2]",
+                key: "friends",
+                type: "Array",
+                value: null
+            },
+            {
+                parent: "people[2].friends",
+                key: "[0]",
+                type: "Number",
+                value: 1
+            },
+            {
+                parent: "people[2].friends",
+                key: "[1]",
+                type: "Number",
+                value: 2
+            },
+            //#endregion "people[1].friends"
+            //#endregion "people[1]"
+
+            //#endregion "people"
+        ]
+
+        const fields = analyze(jsonObj);
+        expect(fields).to.deep.equal(expectedFields);
     });
 });
