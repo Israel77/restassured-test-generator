@@ -167,6 +167,7 @@ const output = Compiler.generateTests(tests);
 ```
 # 3. Architecture
 
+<!-- TODO: Update documentation -->
 The transpiler architecture follows somewhat closely the traditional compiler design pattern, each step being its own module.
 
 ![The compiler pipeline with analyzer, parser and code generator](assets/compiler_architecture.png "Internal architecture of the compiler")

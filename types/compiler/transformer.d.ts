@@ -6,7 +6,8 @@ export type Transformer = (tokens: JsonField[], simplify?: boolean) => JsonBodyT
 export type JsonBodyTest =
     | CheckForValue
     | CheckForNull
-    | CheckArrayItems;
+    | CheckArrayItems
+    | CheckForEmpty;
 
 type CheckForValue = {
     testType: "CheckForValue",
@@ -29,7 +30,13 @@ type CheckArrayItems = {
     }[]
 }
 
+type CheckForEmpty = {
+    testType: "CheckForEmpty",
+    path: string,
+}
+
 export type TestType =
     | "CheckForValue"
     | "CheckForNull"
-    | "CheckArrayItems";
+    | "CheckArrayItems"
+    | "CheckForEmpty";

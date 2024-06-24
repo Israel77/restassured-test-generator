@@ -2,6 +2,7 @@ import { JsonField, FieldType, Analyzer } from "../../types/compiler/analyzer.js
 import { JsonObject, JsonType } from "../../types/jsonTypes.js";
 import { composeKey } from "./utils.js";
 
+// TODO: Refactor analyzer code
 /**
  * Represents an error that occurred during type inference.
  */

@@ -4,7 +4,7 @@ import { JsonField } from "../types/compiler/analyzer.js";
 
 describe("Tests for the transformer", () => {
     it("Should evaluate string values", () => {
-        const tokens: JsonField[] = [
+        const fields: JsonField[] = [
             {
                 parent: undefined,
                 key: "string",
@@ -13,7 +13,7 @@ describe("Tests for the transformer", () => {
             }
         ];
 
-        const items = transform(tokens);
+        const items = transform(fields);
 
         expect(items).to.deep.equal([
             {
@@ -26,7 +26,7 @@ describe("Tests for the transformer", () => {
     });
 
     it("Should evaluate integer values", () => {
-        const tokens: JsonField[] = [
+        const fields: JsonField[] = [
             {
                 parent: undefined,
                 key: "int",
@@ -35,7 +35,7 @@ describe("Tests for the transformer", () => {
             }
         ];
 
-        const items = transform(tokens);
+        const items = transform(fields);
 
         expect(items).to.deep.equal([
             {
@@ -48,7 +48,7 @@ describe("Tests for the transformer", () => {
     });
 
     it("Should evaluate null values", () => {
-        const tokens: JsonField[] = [
+        const fields: JsonField[] = [
             {
                 parent: undefined,
                 key: "nullValue",
@@ -57,7 +57,7 @@ describe("Tests for the transformer", () => {
             }
         ];
 
-        const items = transform(tokens);
+        const items = transform(fields);
 
         expect(items).to.deep.equal([
             {
@@ -68,7 +68,7 @@ describe("Tests for the transformer", () => {
     });
 
     it("Should evaluate nested objects", () => {
-        const tokens: JsonField[] = [
+        const fields: JsonField[] = [
             {
                 parent: undefined,
                 key: "nestedObject",
@@ -89,7 +89,7 @@ describe("Tests for the transformer", () => {
             }
         ];
 
-        const items = transform(tokens);
+        const items = transform(fields);
 
         expect(items).to.deep.equal([
             {
@@ -108,7 +108,7 @@ describe("Tests for the transformer", () => {
     });
 
     it("Should evaluate arrays", () => {
-        const tokens: JsonField[] = [
+        const fields: JsonField[] = [
             {
                 parent: undefined,
                 key: "array",
@@ -135,7 +135,7 @@ describe("Tests for the transformer", () => {
             }
         ];
 
-        const items = transform(tokens);
+        const items = transform(fields);
 
         expect(items).to.deep.equal([
             {
@@ -160,7 +160,7 @@ describe("Tests for the transformer", () => {
     });
 
     it("Should merge array items when simplify is true", () => {
-        const tokens: JsonField[] = [
+        const fields: JsonField[] = [
             {
                 parent: undefined,
                 key: "array",
@@ -187,7 +187,7 @@ describe("Tests for the transformer", () => {
             }
         ];
 
-        const items = transform(tokens, true);
+        const items = transform(fields, true);
 
         expect(items.length).to.equal(1);
         expect(items[0]).to.deep.equal(
@@ -212,4 +212,34 @@ describe("Tests for the transformer", () => {
         );
 
     });
+
+    it("Should evaluate empty nested objects or arrays", () => {
+        const fields: JsonField[] = [
+            {
+                parent: undefined,
+                key: "emptyObject",
+                type: "Object",
+                value: null
+            },
+            {
+                parent: undefined,
+                key: "emptyArray",
+                type: "Array",
+                value: null
+            }
+        ]
+
+        const items = transform(fields);
+
+        expect(items).to.deep.equal([
+            {
+                testType: "CheckForEmpty",
+                path: "emptyObject"
+            },
+            {
+                testType: "CheckForEmpty",
+                path: "emptyArray"
+            }
+        ])
+    })
 });

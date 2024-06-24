@@ -162,13 +162,20 @@ const generateResponseTests = (responseTestItems: JsonBodyTest[], newline: strin
                 result += newline + indent +
                     `.body("${item.path}", equalTo(${formatValue(item.value, item.valueType)}))`;
                 break;
+
             case "CheckForNull":
                 result += newline + indent +
                     `.body("${item.path}", nullValue())`;
                 break;
+
             case "CheckArrayItems":
                 result += newline + indent +
                     `.body("${item.path}", arrayContaining(${item.items.map(v => formatValue(v.value, v.valueType)).join(", ")}))`;
+                break;
+
+            case "CheckForEmpty":
+                result += newline + indent +
+                    `.body("${item.path}", empty())`;
                 break;
         }
     }
