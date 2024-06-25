@@ -170,7 +170,7 @@ const generateResponseTests = (responseTestItems: JsonBodyTest[], newline: strin
 
             case "CheckArrayItems":
                 result += newline + indent +
-                    `.body("${item.path}", arrayContaining(${item.items.map(v => formatValue(v.value, v.valueType)).join(", ")}))`;
+                    `.body("${item.path}", hasItems(${item.items.map(v => formatValue(v.value, v.valueType)).join(", ")}))`;
                 break;
 
             case "CheckForEmpty":

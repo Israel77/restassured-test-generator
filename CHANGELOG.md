@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Fixed
 - Fixed bug when generating paths for deeply nested combinations of arrays and objects.
+- Change arrayContaining matcher to hasItems on the output code when testing arrays, as it is more consistent with the way RestAssured traverses the JSON body.
 
 [0.0.4] - 2024-06-23
 ## Fixed
