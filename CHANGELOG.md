@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Don't generate tests for arrays that only contains inner objects, as it would be an empty test, and the inner fields already have their tests.
 - Removed documentation regarding the internal project architecture, as it is still in a early stage and can change at any time.
 
+## Fixed
+- Fixed bug when generating paths for deeply nested combinations of arrays and objects.
+
 [0.0.4] - 2024-06-23
 ## Fixed
 - Add .js extension to imports, so that the output JavaScript code for the library works correctly.

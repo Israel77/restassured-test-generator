@@ -6,7 +6,7 @@
         "test/**/*.spec.*"
     ],
     "watch-files": [
-        "src"
+        "lib"
     ],
     "node-option": [
         "import=tsx"

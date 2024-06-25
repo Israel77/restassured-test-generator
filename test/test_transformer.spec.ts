@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import { transform } from "../lib/compiler/transformer.js";
 import { JsonField } from "../types/compiler/analyzer.js";
+import { JsonBodyTest } from "../types/compiler/transformer.js";
 
 describe("Tests for the transformer", () => {
     it("Should evaluate string values", () => {
@@ -242,4 +243,270 @@ describe("Tests for the transformer", () => {
             }
         ])
     })
+
+    it("Should evaluate complex objects", () => {
+        const fields: JsonField[] = [
+            //#region "people"
+            {
+                parent: undefined,
+                key: "people",
+                type: "Array",
+                value: null
+            },
+            //#region "people[0]"
+            {
+                parent: "people",
+                key: "[0]",
+                type: "Object",
+                value: null
+            },
+            {
+                parent: "people[0]",
+                key: "id",
+                type: "Number",
+                value: 1
+            },
+            {
+                parent: "people[0]",
+                key: "name",
+                type: "String",
+                value: "John"
+            },
+            {
+                parent: "people[0]",
+                key: "height",
+                type: "Number",
+                value: 1.85
+            },
+            //#region "people[0].friends"
+            {
+                parent: "people[0]",
+                key: "friends",
+                type: "Array",
+                value: null
+            },
+            {
+                parent: "people[0].friends",
+                key: "[0]",
+                type: "Number",
+                value: 2
+            },
+            {
+                parent: "people[0].friends",
+                key: "[1]",
+                type: "Number",
+                value: 3
+            },
+            //#endregion "people[0].friends"
+            //#endregion "people[0]"
+
+            //#region "people[1]"
+            {
+                parent: "people",
+                key: "[1]",
+                type: "Object",
+                value: null
+            },
+            {
+                parent: "people[1]",
+                key: "id",
+                type: "Number",
+                value: 2
+            },
+            {
+                parent: "people[1]",
+                key: "name",
+                type: "String",
+                value: "Jane"
+            },
+            {
+                parent: "people[1]",
+                key: "height",
+                type: "Number",
+                value: 1.75
+            },
+            //#region "people[1].friends"
+            {
+                parent: "people[1]",
+                key: "friends",
+                type: "Array",
+                value: null
+            },
+            {
+                parent: "people[1].friends",
+                key: "[0]",
+                type: "Number",
+                value: 1
+            },
+            {
+                parent: "people[1].friends",
+                key: "[1]",
+                type: "Number",
+                value: 3
+            },
+            //#endregion "people[1].friends"
+            //#endregion "people[1]"
+
+            //#region "people[2]"
+            {
+                parent: "people",
+                key: "[2]",
+                type: "Object",
+                value: null
+            },
+            {
+                parent: "people[2]",
+                key: "id",
+                type: "Number",
+                value: 3
+            },
+            {
+                parent: "people[2]",
+                key: "name",
+                type: "String",
+                value: "Bob"
+            },
+            {
+                parent: "people[2]",
+                key: "height",
+                type: "Number",
+                value: 1.95
+            },
+            //#region "people[1].friends"
+            {
+                parent: "people[2]",
+                key: "friends",
+                type: "Array",
+                value: null
+            },
+            {
+                parent: "people[2].friends",
+                key: "[0]",
+                type: "Number",
+                value: 1
+            },
+            {
+                parent: "people[2].friends",
+                key: "[1]",
+                type: "Number",
+                value: 2
+            },
+            //#endregion "people[1].friends"
+            //#endregion "people[1]"
+
+            //#endregion "people"
+        ]
+
+        const expectedResult: JsonBodyTest[] = [
+            //#region "people[0]"
+            {
+                testType: "CheckForValue",
+                path: "people[0].id",
+                valueType: "Number",
+                value: 1
+            },
+            {
+                testType: "CheckForValue",
+                path: "people[0].name",
+                valueType: "String",
+                value: "John"
+            },
+            {
+                testType: "CheckForValue",
+                path: "people[0].height",
+                valueType: "Number",
+                value: 1.85
+            },
+            //#region "people[0].friends"
+            {
+                testType: "CheckForValue",
+                path: "people[0].friends[0]",
+                valueType: "Number",
+                value: 2
+            },
+            {
+                testType: "CheckForValue",
+                path: "people[0].friends[1]",
+                valueType: "Number",
+                value: 3
+            },
+            //#endregion "people[0].friends"
+            //#endregion "people[0]"
+
+            //#region "people[1]"
+            {
+                testType: "CheckForValue",
+                path: "people[1].id",
+                valueType: "Number",
+                value: 2
+            },
+            {
+                testType: "CheckForValue",
+                path: "people[1].name",
+                valueType: "String",
+                value: "Jane"
+            },
+            {
+                testType: "CheckForValue",
+                path: "people[1].height",
+                valueType: "Number",
+                value: 1.75
+            },
+            //#region "people[1].friends"
+            {
+                testType: "CheckForValue",
+                path: "people[1].friends[0]",
+                valueType: "Number",
+                value: 1
+            },
+            {
+                testType: "CheckForValue",
+                path: "people[1].friends[1]",
+                valueType: "Number",
+                value: 3
+            },
+            //#endregion "people[1].friends"
+            //#endregion "people[1]"
+
+            //#region "people[2]"
+            {
+                testType: "CheckForValue",
+                path: "people[2].id",
+                valueType: "Number",
+                value: 3
+            },
+            {
+                testType: "CheckForValue",
+                path: "people[2].name",
+                valueType: "String",
+                value: "Bob"
+            },
+            {
+                testType: "CheckForValue",
+                path: "people[2].height",
+                valueType: "Number",
+                value: 1.95
+            },
+            //#region "people[1].friends"
+            {
+                testType: "CheckForValue",
+                path: "people[2].friends[0]",
+                valueType: "Number",
+                value: 1
+            },
+            {
+                testType: "CheckForValue",
+                path: "people[2].friends[1]",
+                valueType: "Number",
+                value: 2
+            },
+            //#region "people[2].friends"
+            //#endregion "people[2].friends"
+            //#endregion "people[2]"
+        ]
+
+        const result = transform(fields, false);
+
+        expect(result).to.deep.equals(expectedResult);
+    });
 });

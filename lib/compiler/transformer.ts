@@ -26,7 +26,10 @@ export const transform: Transformer = (fields, simplify?) => {
 
     for (const field of fields) {
         if (field.type === "Object" || field.type === "Array") {
-            const compositeKey = composeKey(field.parent, field.key, field.type === "Array");
+            const compositeKey = composeKey(
+                field.parent,
+                field.key,
+                parentTypes[field.parent ?? ""] === "Array");
             parentTypes[compositeKey] = field.type;
 
             if (!fields.some(field => field.parent === compositeKey)) {
@@ -61,7 +64,7 @@ const removeInternals = (item: JsonBodyTestInternal): JsonBodyTest => {
     return rest;
 }
 
-// TODO: Implement simplification for objects with the same schema nested in arrays
+
 const simplifyArrayItems = (fields: JsonField[], items: JsonBodyTestInternal[]): JsonBodyTestInternal[] => {
     const arrays = fields
         .filter(field => field.type === "Array");

@@ -24,78 +24,77 @@ describe("Synthetic tests for the analyzer -> parser -> generator pipeline", () 
     // FIXME: Deeply nested arrays inside objects do not generate correct output
     it("Should generate tests for complex objects", () => {
         const json = `
-{
-  "list": [
-    "hello",
-    "world"
-  ],
-  "listOfLists": [
-    [
-      "a",
-      "b",
-      "c"
-    ],
-    [
-      "d",
-      "e",
-      "f"
-    ]
-  ],
-  "people": [
     {
-      "id": 1,
-      "name": "John",
-      "height": 1.85,
-      "friends": [
-        2,
-        3,
-        4
-      ]
-    },
-    {
-      "id": 2,
-      "name": "Jane",
-      "height": 1.75,
-      "friends": [
-        1,
-        3,
-        4
-      ]
-    },
-    {
-      "id": 3,
-      "name": "Bob",
-      "height": 1.95,
-      "friends": [
-        1,
-        2,
-        4,
-        5
-      ]
-    },
-    {
-      "id": 4,
-      "name": "Alice",
-      "height": 1.65,
-      "friends": [
-        2,
-        3
-      ]
-    },
-    {
-      "id": 5,
-      "name": "Eve",
-      "height": 1.55,
-      "friends": [
-        3
+      "list": [
+        "hello",
+        "world"
+      ],
+      "listOfLists": [
+        [
+          "a",
+          "b",
+          "c"
+        ],
+        [
+          "d",
+          "e",
+          "f"
+        ]
+      ],
+      "people": [
+        {
+          "id": 1,
+          "name": "John",
+          "height": 1.85,
+          "friends": [
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Jane",
+          "height": 1.75,
+          "friends": [
+            1,
+            3,
+            4
+          ]
+        },
+        {
+          "id": 3,
+          "name": "Bob",
+          "height": 1.95,
+          "friends": [
+            1,
+            2,
+            4,
+            5
+          ]
+        },
+        {
+          "id": 4,
+          "name": "Alice",
+          "height": 1.65,
+          "friends": [
+            2,
+            3
+          ]
+        },
+        {
+          "id": 5,
+          "name": "Eve",
+          "height": 1.55,
+          "friends": [
+            3
+          ]
+        }
       ]
     }
-  ]
-}
-`
+    `
 
-        const expectedResult = `
-given()
+        const expectedResult = `given()
     .when()
     .get("/complex/object")
     .then()
@@ -135,8 +134,8 @@ given()
     .body("people[4].name", equalTo("Eve"))
     .body("people[4].height", equalTo(1.55f))
     .body("people[4].friends[0]", equalTo(3))
-    .statusCode(200);
-`
+    .statusCode(200);`
+
         const options: CompilerOptions = {
             simplify: false,
             generatorOptions: {
