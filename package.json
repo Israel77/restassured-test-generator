@@ -4,9 +4,10 @@
     "description": "Generates RestAssured assertions based on a given JSON input",
     "main": "index.js",
     "scripts": {
-        "dev": "tsx ./cli/main.ts",
+        "dev": "tsc --watch --sourceMap",
+        "clean": "rm -r ./dist && echo 'dist directory cleaned' || 'dist directory is already clean'",
         "test": "mocha",
-        "build": "tsc",
+        "build": "npm run clean; tsc && echo 'Successful build'",
         "coverage": "c8 npm run test",
         "type-coverage": "typescript-coverage-report"
     },
@@ -24,6 +25,5 @@
         "typescript": "^5.4.5",
         "typescript-coverage-report": "^1.0.0"
     },
-    "type": "module",
-    "bin": "./dist/cli/main.js"
+    "type": "module"
 }
