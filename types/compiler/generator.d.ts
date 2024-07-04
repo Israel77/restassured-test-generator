@@ -1,5 +1,5 @@
-import { VarOrValue } from "../../lib/compiler/generator";
 import { JsonBodyTest } from "./transformer";
+import { Var } from "../../lib/compiler/utils"
 
 export type TestGenerator = (items: JsonBodyTest[], options?: GeneratorOptions) => string;
 
@@ -12,16 +12,16 @@ export type GeneratorOptions = {
 }
 
 export type RequestSpecification = {
-    accept?: VarOrValue<string>,
-    body?: VarOrValue<string>,
-    contentType?: VarOrValue<string>,
-    cookies?: Map<VarOrValue<string>, VarOrValue<string>>,
-    headers?: Map<VarOrValue<string>, VarOrValue<string>>,
+    accept?: string | Var,
+    body?: string | Var,
+    contentType?: string | Var,
+    cookies?: Map<string | Var, string | Var>,
+    headers?: Map<string | Var, string | Var>,
     method?: HTTPMethod,
-    params?: Map<VarOrValue<string>, VarOrValue<string>>,
-    port?: VarOrValue<number>,
-    queryParams?: Map<VarOrValue<string>, VarOrValue<string>>,
-    url?: VarOrValue<string>,
+    params?: Map<string | Var, string | Var>,
+    port?: number | Var,
+    queryParams?: Map<string | Var, string | Var>,
+    url?: string | Var,
 }
 
 /**

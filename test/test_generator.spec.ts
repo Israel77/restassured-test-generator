@@ -1,7 +1,8 @@
 import { expect } from 'chai';
 import { JsonBodyTest } from '../types/compiler/transformer.js';
-import { generateTests, VarOrValue } from '../lib/compiler/generator.js';
+import { generateTests } from '../lib/compiler/generator.js';
 import { HTTPMethod } from '../types/compiler/generator.js';
+import { Var } from '../lib/compiler/utils.js';
 
 describe("Tests for the generator", () => {
     describe("Tests for the generator test types", () => {
@@ -120,7 +121,7 @@ describe("Tests for the generator", () => {
             const options = {
                 format: false,
                 request: {
-                    accept: new VarOrValue("application/json").asValue()
+                    accept: "application/json"
                 }
             };
             const result = generateTests(items, options);
@@ -145,7 +146,7 @@ describe("Tests for the generator", () => {
             const options = {
                 format: false,
                 request: {
-                    contentType: new VarOrValue("application/json").asValue()
+                    contentType: "application/json"
                 }
             };
             const result = generateTests(items, options);
@@ -170,7 +171,7 @@ describe("Tests for the generator", () => {
             const options = {
                 format: false,
                 request: {
-                    body: new VarOrValue('{"key":"value"}').asValue()
+                    body: '{"key":"value"}'
                 }
             };
             const result = generateTests(items, options);
@@ -196,8 +197,8 @@ describe("Tests for the generator", () => {
                 format: false,
                 request: {
                     headers: new Map([
-                        [new VarOrValue("X-Header-1").asValue(), new VarOrValue("value1").asValue()],
-                        [new VarOrValue("X-Header-2").asValue(), new VarOrValue("value2").asValue()]
+                        ["X-Header-1", "value1"],
+                        ["X-Header-2", "value2"]
                     ])
                 }
             };
@@ -225,8 +226,8 @@ describe("Tests for the generator", () => {
                 format: false,
                 request: {
                     cookies: new Map([
-                        [new VarOrValue("cookie1").asValue(), new VarOrValue("value1").asValue()],
-                        [new VarOrValue("cookie2").asValue(), new VarOrValue("value2").asValue()]
+                        ["cookie1", "value1"],
+                        ["cookie2", "value2"]
                     ])
                 }
             };
@@ -254,8 +255,8 @@ describe("Tests for the generator", () => {
                 format: false,
                 request: {
                     params: new Map([
-                        [new VarOrValue("param1").asValue(), new VarOrValue("value1").asValue()],
-                        [new VarOrValue("param2").asValue(), new VarOrValue("value2").asValue()]
+                        ["param1", "value1"],
+                        ["param2", "value2"]
                     ])
                 }
             };
@@ -283,7 +284,7 @@ describe("Tests for the generator", () => {
                 format: false,
                 request: {
                     method: "GET" as HTTPMethod,
-                    url: new VarOrValue("/api/endpoint").asValue()
+                    url: "/api/endpoint"
                 }
             };
             const result = generateTests(items, options);
@@ -308,7 +309,7 @@ describe("Tests for the generator", () => {
             const options = {
                 format: false,
                 request: {
-                    port: new VarOrValue(8080).asValue()
+                    port: 8080
                 }
             };
             const result = generateTests(items, options);
@@ -332,20 +333,20 @@ describe("Tests for the generator", () => {
 
             const requestSpec = {
                 method: "POST" as HTTPMethod,
-                url: new VarOrValue("endpoint").asVar(),
-                contentType: new VarOrValue("MediaType.APPLICATION_JSON").asVar(),
+                url: new Var("endpoint"),
+                contentType: new Var("MediaType.APPLICATION_JSON"),
                 headers: new Map([
-                    [new VarOrValue("X-Header-1").asValue(), new VarOrValue("header1").asVar()],
-                    [new VarOrValue("X-Header-2").asValue(), new VarOrValue("header2").asVar()]
+                    ["X-Header-1", new Var("header1")],
+                    ["X-Header-2", new Var("header2")]
                 ]),
                 cookies: new Map([
-                    [new VarOrValue("cookie").asValue(), new VarOrValue("someCookie").asVar()]
+                    ["cookie", new Var("someCookie")]
                 ]),
                 params: new Map([
-                    [new VarOrValue("param1").asValue(), new VarOrValue("firstParameter").asVar()],
-                    [new VarOrValue("param2").asValue(), new VarOrValue("secondParameter").asVar()]
+                    ["param1", new Var("firstParameter")],
+                    ["param2", new Var("secondParameter")]
                 ]),
-                body: new VarOrValue("body").asVar(),
+                body: new Var("body"),
             }
             const options = {
                 format: false,

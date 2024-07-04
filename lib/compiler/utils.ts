@@ -38,3 +38,25 @@ export function isNull(value: unknown): asserts value is null {
         throw new TypeError(`Expected null, got ${typeof value}`);
     }
 }
+
+
+/**
+ * A wrapper indicating that a string should be interpreted
+ * as a variable literal by the output generator. 
+ */
+
+export class Var {
+    private name: string;
+
+    constructor(name: string) {
+        this.name = name;
+    }
+
+    public unwrap() {
+        return this.name;
+    }
+
+    public map(fn: (name: string) => string) {
+        return new Var(fn(this.name));
+    }
+}

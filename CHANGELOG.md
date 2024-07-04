@@ -7,7 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [Unreleased]
 ## Removed
-- Removed the CLI to focus on the transpiler library development and the frontend via VSCode extension. In the future it might be reintroduced but probably on a separate repository, so that the transpiler can be used as a pure JavaScript/TypeScript library with no external dependencies.
+- BREAKING CHANGE: Removed the CLI to focus on the transpiler library development and the frontend via VSCode extension. In the future it might be reintroduced but probably on a separate repository, so that the transpiler can be used as a pure JavaScript/TypeScript library with no external dependencies.
+
+## Changed
+- BREAKING CHANGE: Removed the VarOrValue class and replaced with a simple Var class when needed. Creating a generic class was an overkill and didn't reflect the semantics of code properly, when realistically, a wrapper was only needed for the string type. Functions that accept both variables and other types can work by simply using TypeScript type unions. The new simpler class also works better when importing the library into a pure JS project.
 
 [0.0.6] - 2024-06-24
 ## Fixed

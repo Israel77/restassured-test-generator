@@ -2,39 +2,7 @@ import { GeneratorOptions, TestGenerator, RequestSpecification } from "../../typ
 import { JsonBodyTest } from "../../types/compiler/transformer";
 import { FieldType } from "../../types/compiler/analyzer";
 import { JsonType } from "../../types/jsonTypes";
-import { isBoolean, isNumber, isString } from "./utils.js";
-
-/**
- * If isVar is true, value will be intepreted as a variable in the generated test.
- */
-export class VarOrValue<T> {
-    private value: T
-    private isVar: boolean
-
-    constructor(value: T) {
-        this.value = value;
-        this.isVar = false;
-    }
-
-    asVar(): VarOrValue<T> {
-        this.isVar = true;
-        return this;
-    }
-
-    asValue(): VarOrValue<T> {
-        this.isVar = false;
-        return this;
-    }
-
-    unwrap(): T | string {
-        if (this.isVar || typeof this.value !== "string") {
-            return this.value;
-        } else {
-            isString(this.value);
-            return `"${this.value}"`;
-        }
-    }
-}
+import { Var, isBoolean, isNumber, isString } from "./utils.js";
 
 export const generateTests: TestGenerator = (responseTestItems, options?) => {
     options = {
@@ -89,30 +57,30 @@ const generateRequestSpecification = (request: RequestSpecification | undefined,
     // Request parameters
     if (request?.accept) {
         result += newline + indent +
-            `.accept(${request.accept.unwrap()})`;
+            `.accept(${request.accept instanceof Var ? request.accept.unwrap() : `"${request.accept}"`})`;
     }
 
     if (request?.body) {
         result += newline + indent +
-            `.body(${request.body.unwrap()})`;
+            `.body(${request.body instanceof Var ? request.body.unwrap() : `"${request.body}"`})`;
     }
 
     if (request?.contentType) {
         result += newline + indent +
-            `.contentType(${request.contentType.unwrap()})`;
+            `.contentType(${request.contentType instanceof Var ? request.contentType.unwrap() : `"${request.contentType}"`})`;
     }
 
     for (const cookie of request?.cookies ?? []) {
-        const key = cookie[0].unwrap();
-        const value = cookie[1].unwrap();
+        const key = cookie[0] instanceof Var ? cookie[0].unwrap() : `"${cookie[0]}"`;
+        const value = cookie[1] instanceof Var ? cookie[1].unwrap() : `"${cookie[1]}"`;
 
         result += newline + indent +
             `.cookie(${key}, ${value})`;
     }
 
     for (const header of request?.headers ?? []) {
-        const key = header[0].unwrap();
-        const value = header[1].unwrap();
+        const key = header[0] instanceof Var ? header[0].unwrap() : `"${header[0]}"`;
+        const value = header[1] instanceof Var ? header[1].unwrap() : `"${header[1]}"`;
 
         result += newline + indent +
             `.header(${key}, ${value})`;
@@ -120,16 +88,16 @@ const generateRequestSpecification = (request: RequestSpecification | undefined,
 
 
     for (const parameter of request?.params ?? []) {
-        const key = parameter[0].unwrap();
-        const value = parameter[1].unwrap();
+        const key = parameter[0] instanceof Var ? parameter[0].unwrap() : `"${parameter[0]}"`;
+        const value = parameter[1] instanceof Var ? parameter[1].unwrap() : `"${parameter[1]}"`;
 
         result += newline + indent +
             `.param(${key}, ${value})`;
     }
 
     for (const parameter of request?.queryParams ?? []) {
-        const key = parameter[0].unwrap();
-        const value = parameter[1].unwrap();
+        const key = parameter[0] instanceof Var ? parameter[0].unwrap() : `"${parameter[0]}"`;
+        const value = parameter[1] instanceof Var ? parameter[1].unwrap() : `"${parameter[1]}"`;
 
         result += newline + indent +
             `.queryParam(${key}, ${value})`;
@@ -138,14 +106,14 @@ const generateRequestSpecification = (request: RequestSpecification | undefined,
     // Request endpoint
     result += newline + indent + ".when()";
 
-    if (request?.method) {
+    if (request?.method && request.url) {
         result += newline + indent +
-            `.${request.method.toLowerCase()}(${request.url?.unwrap()})`;
+            `.${request.method.toLowerCase()}(${request.url instanceof Var ? request.url.unwrap() : `"${request.url}"`})`;
     }
 
     if (request?.port) {
         result += newline + indent +
-            `.port(${request.port.unwrap()})`;
+            `.port(${request.port instanceof Var ? request.port.unwrap() : request.port})`;
     }
 
     return result;

@@ -1,29 +1,29 @@
 import { expect } from 'chai';
 import { compile } from '../lib/compiler/compiler.js';
 import { CompilerOptions } from '../types/compiler/compiler.js';
-import { VarOrValue } from '../lib/compiler/generator.js';
+import { Var } from '../lib/compiler/utils.js';
 
 describe("Synthetic tests for the analyzer -> parser -> generator pipeline", () => {
-    it("Should generate tests for objects with string values", () => {
-        const json = `{
+  it("Should generate tests for objects with string values", () => {
+    const json = `{
             "string": "Hello, world!"
         }`;
 
-        const result = compile(json);
+    const result = compile(json);
 
-        let expectedResult = "given()" +
-            "\n    " +
-            ".when()" +
-            "\n    " +
-            ".then()" +
-            "\n    " +
-            ".body(\"string\", equalTo(\"Hello, world!\"));";
-        expect(result).to.equal(expectedResult);
-    });
+    let expectedResult = "given()" +
+      "\n    " +
+      ".when()" +
+      "\n    " +
+      ".then()" +
+      "\n    " +
+      ".body(\"string\", equalTo(\"Hello, world!\"));";
+    expect(result).to.equal(expectedResult);
+  });
 
-    // FIXME: Deeply nested arrays inside objects do not generate correct output
-    it("Should generate tests for complex objects", () => {
-        const json = `
+  // FIXME: Deeply nested arrays inside objects do not generate correct output
+  it("Should generate tests for complex objects", () => {
+    const json = `
     {
       "list": [
         "hello",
@@ -94,7 +94,7 @@ describe("Synthetic tests for the analyzer -> parser -> generator pipeline", () 
     }
     `
 
-        const expectedResult = `given()
+    const expectedResult = `given()
     .when()
     .get("/complex/object")
     .then()
@@ -136,18 +136,18 @@ describe("Synthetic tests for the analyzer -> parser -> generator pipeline", () 
     .body("people[4].friends[0]", equalTo(3))
     .statusCode(200);`
 
-        const options: CompilerOptions = {
-            simplify: false,
-            generatorOptions: {
-                statusCode: 200,
-                request: {
-                    method: "GET",
-                    url: new VarOrValue("/complex/object").asValue(),
-                }
-            }
+    const options: CompilerOptions = {
+      simplify: false,
+      generatorOptions: {
+        statusCode: 200,
+        request: {
+          method: "GET",
+          url: "/complex/object",
         }
-        const result = compile(json, options);
+      }
+    }
+    const result = compile(json, options);
 
-        expect(result).to.equal(expectedResult);
-    });
+    expect(result).to.equal(expectedResult);
+  });
 });
