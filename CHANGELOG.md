@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+[Unreleased]
+## Removed
+- Removed the CLI to focus on the transpiler library development and the frontend via VSCode extension. In the future it might be reintroduced but probably on a separate repository, so that the transpiler can be used as a pure JavaScript/TypeScript library with no external dependencies.
+
 [0.0.6] - 2024-06-24
 ## Fixed
 - Fix previous release, which did not had all the typescript files compiled
