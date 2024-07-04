@@ -23,7 +23,7 @@ The transpiler can be imported as a standalone library and used in a JavaScript 
 
 Example usage:
 ```js
-import { Compiler, VarOrValue } from 'restassured-test-generator';
+import { Compiler } from 'restassured-test-generator';
 
 const jsonString = `{"id": 69420, "name": "John", "age": 42}`;
 
@@ -33,7 +33,7 @@ const compilerOptions = {
         format: true,
         request: {
             method: 'POST',
-            url: new VarOrValue('https://example.com').asValue(),
+            url: 'https://example.com',
             statusCode: 200
         }
     }
@@ -52,10 +52,10 @@ console.log(output);
 //    .statusCode(200);
 ```
 
-The VarOrValue class is a wrapper around a string that can be either a variable or a value. This is useful when the test body compares against a variable created previously on the Java code, so that the output is not surrounded by quotation marks:
+The Var class is a wrapper around a string that can be either a variable or a value. This is useful when the test body compares against a variable created previously on the Java code, so that the output is not surrounded by quotation marks:
 
 ```js
-import { Compiler, VarOrValue } from 'restassured-test-generator';
+import { Compiler, Var } from 'restassured-test-generator';
 
 const jsonString = `{"id": 69420, "name": "John", "age": 42}`;
 
@@ -65,7 +65,7 @@ const compilerOptions = {
         format: true,
         request: {
             method: 'POST',
-            url: new VarOrValue('https://example.com').asVar(),
+            url: new Var('url'),
             statusCode: 200
         }
     }
