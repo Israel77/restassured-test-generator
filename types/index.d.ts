@@ -1,2 +1,2 @@
 export * as JsonTypes from "./jsonTypes";
-export * from "./compiler/index";
+export * as Compiler from "./compiler/index";
