@@ -1,11 +1,13 @@
 {
     "name": "restassured-test-generator",
-    "version": "0.0.8-rc.1",
+    "version": "0.0.8-rc.2",
     "description": "Generates RestAssured assertions based on a given JSON input",
     "main": "dist/index.js",
+    "types": "types/index.d.ts",
     "scripts": {
         "dev": "tsc --watch --sourceMap",
         "clean": "rm -r ./dist && echo 'dist directory cleaned' || 'dist directory is already clean'",
+        "clean:pack": "rm -r ./package; rm restassured-test-generator*.tgz",
         "test": "mocha",
         "build": "npm run clean; tsc && echo 'Successful build'",
         "coverage": "c8 npm run test",
@@ -27,6 +29,7 @@
     },
     "type": "module",
     "files": [
+        "types/",
         "dist/",
         "!dist/test"
     ]
