@@ -4,3 +4,7 @@ coverage/
 coverage-ts/
 assets/
 debug/
+
+# Ignore test builds
+package/
+restassured-test-generator*.tgz

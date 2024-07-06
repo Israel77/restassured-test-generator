@@ -1,8 +1,8 @@
 {
     "name": "restassured-test-generator",
-    "version": "0.0.8",
+    "version": "0.0.8-rc.1",
     "description": "Generates RestAssured assertions based on a given JSON input",
-    "main": "index.js",
+    "main": "dist/index.js",
     "scripts": {
         "dev": "tsc --watch --sourceMap",
         "clean": "rm -r ./dist && echo 'dist directory cleaned' || 'dist directory is already clean'",
@@ -25,5 +25,9 @@
         "typescript": "^5.4.5",
         "typescript-coverage-report": "^1.0.0"
     },
-    "type": "module"
+    "type": "module",
+    "files": [
+        "dist/",
+        "!dist/test"
+    ]
 }
