@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Create CI pipeline using GitHub actions.
 - Add tests for the utility functions and classes.
 - Export the Var class declaration to match index.js when using typescript.
+- Add option to generate the Java imports needed for the tests.
 
 ## Changed
 - Throw explicit error when non-supported type is passed to the transpiler.

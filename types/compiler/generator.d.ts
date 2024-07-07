@@ -8,6 +8,8 @@ export type GeneratorOptions = {
     statusCode?: number,
     // If true, the generated test will be formatted to be more readable (default: true)
     format?: boolean,
+    // If true, the generated test will include the dependencies required by the test (default: false)
+    includeDependencies?: boolean,
     request?: RequestSpecification,
 }
 
