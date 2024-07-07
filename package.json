@@ -1,6 +1,6 @@
 {
     "name": "restassured-test-generator",
-    "version": "0.0.9-rc.2",
+    "version": "0.0.9-rc.3",
     "description": "Generates RestAssured assertions based on a given JSON input",
     "main": "dist/index.js",
     "types": "types/index.d.ts",
@@ -9,9 +9,9 @@
         "clean": "rm -r ./dist && echo 'dist directory cleaned' || 'dist directory is already clean'",
         "clean:pack": "rm -r ./package; rm restassured-test-generator*.tgz",
         "test": "mocha",
-        "build": "npm run clean; tsc && echo 'Successful build'",
         "coverage": "c8 npm run test",
-        "type-coverage": "typescript-coverage-report"
+        "type-coverage": "typescript-coverage-report",
+        "build": "npm run clean; tsc && echo 'Successful build'"
     },
     "keywords": [],
     "author": "",
