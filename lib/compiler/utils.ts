@@ -49,6 +49,7 @@ export class Var {
     private name: string;
 
     constructor(name: string) {
+        isString(name);
         this.name = name;
     }
 

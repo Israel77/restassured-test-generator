@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 import { compile } from '../lib/compiler/compiler.js';
 import { CompilerOptions } from '../types/compiler/compiler.js';
-import { Var } from '../lib/compiler/utils.js';
 
 describe("Synthetic tests for the analyzer -> parser -> generator pipeline", () => {
   it("Should generate tests for objects with string values", () => {
