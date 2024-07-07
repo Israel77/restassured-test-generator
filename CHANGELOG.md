@@ -9,10 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Added
 - Create CI pipeline using GitHub actions.
 - Add tests for the utility functions and classes.
-- Make the callee responsible for handling errors thrown by the transpiler.
+- Export the Var class declaration to match index.js when using typescript.
 
 ## Changed
 - Throw explicit error when non-supported type is passed to the transpiler.
+- Make the callee responsible for handling errors thrown by the transpiler.
 
 [0.0.8] - 2024-07-06
 ## Changed
