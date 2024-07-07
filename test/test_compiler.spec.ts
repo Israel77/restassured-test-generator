@@ -21,7 +21,6 @@ describe("Synthetic tests for the analyzer -> parser -> generator pipeline", () 
     expect(result).to.equal(expectedResult);
   });
 
-  // FIXME: Deeply nested arrays inside objects do not generate correct output
   it("Should generate tests for complex objects", () => {
     const json = `
     {
