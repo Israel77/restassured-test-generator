@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add tests for the utility functions and classes.
 - Make the callee responsible for handling errors thrown by the transpiler.
 
+## Changed
+- Throw explicit error when non-supported type is passed to the transpiler.
+
 [0.0.8] - 2024-07-06
 ## Changed
 - Start using release candidates to avoid publishing broken builds.
