@@ -3,9 +3,14 @@ import { compile } from '../lib/compiler/compiler.js';
 import { CompilerOptions } from '../types/compiler/compiler.js';
 
 describe("Synthetic tests for the analyzer -> parser -> generator pipeline", () => {
-  it("Should generate tests for objects with string values", () => {
+  it("Should generate tests for objects with primitive values", () => {
     const json = `{
-            "string": "Hello, world!"
+            "string": "Hello, world!",
+            "integerNumber": 123456,
+            "decimalNumber": 123456.123,
+            "bigNumber": 9876543210,
+            "boolean": true,
+            "null": null
         }`;
 
     const result = compile(json);
@@ -16,7 +21,17 @@ describe("Synthetic tests for the analyzer -> parser -> generator pipeline", () 
       "\n    " +
       ".then()" +
       "\n    " +
-      ".body(\"string\", equalTo(\"Hello, world!\"));";
+      ".body(\"string\", equalTo(\"Hello, world!\"))" +
+      "\n    " +
+      ".body(\"integerNumber\", equalTo(123456))" +
+      "\n    " +
+      ".body(\"decimalNumber\", equalTo(123456.123f))" +
+      "\n    " +
+      ".body(\"bigNumber\", equalTo(9876543210L))" +
+      "\n    " +
+      ".body(\"boolean\", equalTo(true))" +
+      "\n    " +
+      ".body(\"null\", nullValue());";
     expect(result).to.equal(expectedResult);
   });
 
@@ -147,6 +162,68 @@ describe("Synthetic tests for the analyzer -> parser -> generator pipeline", () 
     const result = compile(json, options);
 
     expect(result).to.equal(expectedResult);
+  });
+
+  it("Should merge array items when simplify is true", () => {
+    const json = `
+    {
+      "list": [
+        "hello",
+        "world"
+      ]
+    }
+    `
+
+    const options = {
+      simplify: true,
+    }
+
+    const expectedResult = `given()
+    .when()
+    .then()
+    .body("list", hasItems("hello", "world"));`
+
+    expect(compile(json, options)).to.equal(expectedResult);
+  });
+
+  it("Should include imports when includeDependencies is true", () => {
+    const json = `
+    {
+      "list": [
+        "hello",
+        "world"
+      ],
+      "string": "Hello, world!",
+      "number": 123456,
+      "boolean": true,
+      "null": null,
+      "empty": {}
+    }
+    `
+    const options: CompilerOptions = {
+      simplify: true,
+      generatorOptions: {
+        includeDependencies: true,
+      }
+    }
+
+    const expectedResult = `import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.nullValue;
+//----------
+given()
+    .when()
+    .then()
+    .body("string", equalTo("Hello, world!"))
+    .body("number", equalTo(123456))
+    .body("boolean", equalTo(true))
+    .body("null", nullValue())
+    .body("empty", empty())
+    .body("list", hasItems("hello", "world"));`
+
+    expect(compile(json, options)).to.equal(expectedResult);
   });
 
   it("Should throw an error when the JSON type is invalid", () => {

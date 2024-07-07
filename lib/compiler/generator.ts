@@ -9,7 +9,7 @@ const JAVA_DEPENDENCIES = {
         EQUAL_TO: "import static org.hamcrest.Matchers.equalTo;\n",
         HAS_ITEMS: "import static org.hamcrest.Matchers.hasItems;\n",
         NULL_VALUE: "import static org.hamcrest.Matchers.nullValue;\n",
-        EMPTY: "import static org.hamcrest.Matchers.empty\n"
+        EMPTY: "import static org.hamcrest.Matchers.empty;\n"
     },
     RESTASSURED: {
         GIVEN: "import static io.restassured.RestAssured.given;\n",
