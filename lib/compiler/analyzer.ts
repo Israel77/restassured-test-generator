@@ -4,16 +4,20 @@ import { composeKey } from "./utils.js";
 
 /**
  * Represents an error that occurred during type inference.
+ * If the analyzer is properly doing exhaustive type inference,
+ * this error should never be thrown.
  */
-export class InferenceError extends Error {
+class InferenceError extends Error {
     /**
      * Creates a new InferenceError instance.
      * @param {string} message - The error message.
      */
+    /* c8 ignore start */
     constructor(message: string) {
         super(message);
         this.name = "InferenceError";
     }
+    /* c8 ignore stop */
 }
 
 /**
@@ -49,9 +53,12 @@ const analyzeValue = (value: JsonType, parent: string | undefined, key: string, 
     const fields: JsonField[] = [];
 
     const _type = parseType(value);
+    /* c8 ignore start */
     if (_type === null) {
+        // This indicates a coding error, all types should have been inferred.
         throw new InferenceError(`Could not infer type of ${composeKey(parent, key, fromArray)}`);
     }
+    /* c8 ignore stop */
 
     if (_type === "Array") {
         fields.push(...analyzeArray(value as JsonType[], parent, key, fromArray));
@@ -128,7 +135,9 @@ const parseType = (value: JsonType):
             } else {
                 return "Object";
             }
+        /* c8 ignore next 3*/
         default:
+            // Should never return null
             return null;
     }
 };

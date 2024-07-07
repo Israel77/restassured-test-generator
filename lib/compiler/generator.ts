@@ -42,8 +42,6 @@ const formatValue = (value: JsonType, type: FieldType): string | undefined => {
         case "Boolean":
             isBoolean(value);
             return value.toString();
-        case "null":
-            return "null";
         default:
             throw new Error("Unsupported value type");
     }
