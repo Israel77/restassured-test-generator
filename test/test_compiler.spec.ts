@@ -148,4 +148,16 @@ describe("Synthetic tests for the analyzer -> parser -> generator pipeline", () 
 
     expect(result).to.equal(expectedResult);
   });
+
+  it("Should throw an error when the JSON type is invalid", () => {
+    const json = `{`;
+
+    expect(() => compile(json)).to.throw();
+  });
+
+  it("Should throw an error when the JSON type is not supported", () => {
+    const json = `123456`;
+
+    expect(() => compile(json)).to.throw();
+  });
 });
