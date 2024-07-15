@@ -4,11 +4,29 @@ import { FieldType } from "../../types/compiler/analyzer";
 import { JsonType } from "../../types/jsonTypes";
 import { Var, isBoolean, isNumber, isString } from "./utils.js";
 
+const JAVA_DEPENDENCIES = {
+    HAMCREST_MATCHERS: {
+        EQUAL_TO: "import static org.hamcrest.Matchers.equalTo;\n",
+        HAS_ITEMS: "import static org.hamcrest.Matchers.hasItems;\n",
+        CONTAINS: "import static org.hamcrest.Matchers.contains;\n",
+        NULL_VALUE: "import static org.hamcrest.Matchers.nullValue;\n",
+        EMPTY: "import static org.hamcrest.Matchers.empty;\n"
+    },
+    RESTASSURED: {
+        GIVEN: "import static io.restassured.RestAssured.given;\n",
+        WHEN: "import static io.restassured.RestAssured.when;\n",
+    }
+} as const;
+
 export const generateTests: TestGenerator = (responseTestItems, options?) => {
     options = {
         format: true,
         ...options
     };
+
+    const dependencies = new Set<string>();
+    // All tests start with given
+    dependencies.add(JAVA_DEPENDENCIES.RESTASSURED.GIVEN);
 
     let indent = options.format ? "    " : "";
     let newline = options.format ? "\n" : "";
@@ -18,7 +36,11 @@ export const generateTests: TestGenerator = (responseTestItems, options?) => {
 
     result += generateRequestSpecification(options.request, newline, indent);
 
-    result += generateResponseTests(responseTestItems, newline, indent, options);
+    result += generateResponseTests(responseTestItems, newline, indent, options, dependencies);
+
+    if (options.includeDependencies) {
+        result = generateImports(dependencies) + result;
+    }
 
     result += end;
     return result;
@@ -42,8 +64,6 @@ const formatValue = (value: JsonType, type: FieldType): string | undefined => {
         case "Boolean":
             isBoolean(value);
             return value.toString();
-        case "null":
-            return "null";
         default:
             throw new Error("Unsupported value type");
     }
@@ -119,7 +139,7 @@ const generateRequestSpecification = (request: RequestSpecification | undefined,
     return result;
 }
 
-const generateResponseTests = (responseTestItems: JsonBodyTest[], newline: string, indent: string, options: GeneratorOptions): string => {
+const generateResponseTests = (responseTestItems: JsonBodyTest[], newline: string, indent: string, options: GeneratorOptions, dependencies: Set<string>): string => {
     let result = "";
 
     result += newline + indent + ".then()";
@@ -129,21 +149,29 @@ const generateResponseTests = (responseTestItems: JsonBodyTest[], newline: strin
             case "CheckForValue":
                 result += newline + indent +
                     `.body("${item.path}", equalTo(${formatValue(item.value, item.valueType)}))`;
+
+                dependencies.add(JAVA_DEPENDENCIES.HAMCREST_MATCHERS.EQUAL_TO);
                 break;
 
             case "CheckForNull":
                 result += newline + indent +
                     `.body("${item.path}", nullValue())`;
+
+                dependencies.add(JAVA_DEPENDENCIES.HAMCREST_MATCHERS.NULL_VALUE);
                 break;
 
             case "CheckArrayItems":
                 result += newline + indent +
-                    `.body("${item.path}", hasItems(${item.items.map(v => formatValue(v.value, v.valueType)).join(", ")}))`;
+                    `.body("${item.path}", contains(${item.items.map(v => formatValue(v.value, v.valueType)).join(", ")}))`;
+
+                dependencies.add(JAVA_DEPENDENCIES.HAMCREST_MATCHERS.CONTAINS);
                 break;
 
             case "CheckForEmpty":
                 result += newline + indent +
                     `.body("${item.path}", empty())`;
+
+                dependencies.add(JAVA_DEPENDENCIES.HAMCREST_MATCHERS.EMPTY);
                 break;
         }
     }
@@ -153,5 +181,16 @@ const generateResponseTests = (responseTestItems: JsonBodyTest[], newline: strin
             `.statusCode(${options.statusCode})`;
     }
 
+    return result;
+}
+
+const generateImports = (dependencies: Set<string>): string => {
+    let result = "";
+
+    for (const dependency of Array.from(dependencies).sort()) {
+        result += dependency;
+    }
+
+    result += "//----------\n";
     return result;
 }

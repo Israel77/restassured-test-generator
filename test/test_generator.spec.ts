@@ -100,7 +100,7 @@ describe("Tests for the generator", () => {
             const expectedResult = "given()" +
                 ".when()" +
                 ".then()" +
-                ".body(\"array\", hasItems(\"Hello, world!\", 123));";
+                ".body(\"array\", contains(\"Hello, world!\", 123));";
 
             const result = generateTests(items, options);
 
@@ -370,6 +370,33 @@ describe("Tests for the generator", () => {
 
             expect(result).to.equal(expectedResult);
 
+        });
+
+        it("Should include imports when includeDependencies is set", () => {
+            const items: JsonBodyTest[] = [
+                {
+                    testType: "CheckForValue",
+                    path: "Hello, world!",
+                    value: "Hello, world!",
+                    valueType: "String"
+                }
+            ];
+
+            const options = {
+                format: false,
+                includeDependencies: true
+            };
+
+            const result = generateTests(items, options);
+
+            const expectedResult = "import static io.restassured.RestAssured.given;\n" +
+                "import static org.hamcrest.Matchers.equalTo;\n" +
+                "//----------\n" +
+                "given()" +
+                ".when()" +
+                ".then()" +
+                ".body(\"Hello, world!\", equalTo(\"Hello, world!\"));";
+            expect(result).to.equal(expectedResult);
         });
 
     });

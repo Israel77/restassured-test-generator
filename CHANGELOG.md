@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+[0.0.9] - 2024-07-15
+## Added
+- Create CI pipeline using GitHub actions.
+- Add tests for the utility functions and classes.
+- Export the Var class declaration to match index.js when using typescript.
+- Add option to generate the Java imports needed for the tests.
+
+## Changed
+- Throw explicit error when non-supported type is passed to the transpiler.
+- Make the callee responsible for handling errors thrown by the transpiler.
+- BREAKING CHANGE: Replace hasItems with contains when testing arrays ([#3](https://github.com/Israel77/restassured-test-generator/issues/3)).
+
 [0.0.8] - 2024-07-06
 ## Changed
 - Start using release candidates to avoid publishing broken builds.
