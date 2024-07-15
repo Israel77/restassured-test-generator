@@ -1,6 +1,6 @@
 {
     "name": "restassured-test-generator",
-    "version": "0.0.9-rc.3",
+    "version": "0.0.9",
     "description": "Generates RestAssured assertions based on a given JSON input",
     "main": "dist/index.js",
     "types": "types/index.d.ts",
