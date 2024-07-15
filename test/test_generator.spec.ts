@@ -100,7 +100,7 @@ describe("Tests for the generator", () => {
             const expectedResult = "given()" +
                 ".when()" +
                 ".then()" +
-                ".body(\"array\", hasItems(\"Hello, world!\", 123));";
+                ".body(\"array\", contains(\"Hello, world!\", 123));";
 
             const result = generateTests(items, options);
 

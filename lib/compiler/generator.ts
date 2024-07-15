@@ -8,6 +8,7 @@ const JAVA_DEPENDENCIES = {
     HAMCREST_MATCHERS: {
         EQUAL_TO: "import static org.hamcrest.Matchers.equalTo;\n",
         HAS_ITEMS: "import static org.hamcrest.Matchers.hasItems;\n",
+        CONTAINS: "import static org.hamcrest.Matchers.contains;\n",
         NULL_VALUE: "import static org.hamcrest.Matchers.nullValue;\n",
         EMPTY: "import static org.hamcrest.Matchers.empty;\n"
     },
@@ -161,9 +162,9 @@ const generateResponseTests = (responseTestItems: JsonBodyTest[], newline: strin
 
             case "CheckArrayItems":
                 result += newline + indent +
-                    `.body("${item.path}", hasItems(${item.items.map(v => formatValue(v.value, v.valueType)).join(", ")}))`;
+                    `.body("${item.path}", contains(${item.items.map(v => formatValue(v.value, v.valueType)).join(", ")}))`;
 
-                dependencies.add(JAVA_DEPENDENCIES.HAMCREST_MATCHERS.HAS_ITEMS);
+                dependencies.add(JAVA_DEPENDENCIES.HAMCREST_MATCHERS.CONTAINS);
                 break;
 
             case "CheckForEmpty":

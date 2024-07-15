@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Changed
 - Throw explicit error when non-supported type is passed to the transpiler.
 - Make the callee responsible for handling errors thrown by the transpiler.
+- BREAKING CHANGE: Replace hasItems with contains when testing arrays ([#3](https://github.com/Israel77/restassured-test-generator/issues/3)).
 
 [0.0.8] - 2024-07-06
 ## Changed

@@ -181,7 +181,7 @@ describe("Synthetic tests for the analyzer -> parser -> generator pipeline", () 
     const expectedResult = `given()
     .when()
     .then()
-    .body("list", hasItems("hello", "world"));`
+    .body("list", contains("hello", "world"));`
 
     expect(compile(json, options)).to.equal(expectedResult);
   });
@@ -208,9 +208,9 @@ describe("Synthetic tests for the analyzer -> parser -> generator pipeline", () 
     }
 
     const expectedResult = `import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.nullValue;
 //----------
 given()
@@ -221,7 +221,7 @@ given()
     .body("boolean", equalTo(true))
     .body("null", nullValue())
     .body("empty", empty())
-    .body("list", hasItems("hello", "world"));`
+    .body("list", contains("hello", "world"));`
 
     expect(compile(json, options)).to.equal(expectedResult);
   });
