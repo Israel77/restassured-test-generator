@@ -39,7 +39,7 @@ jobs:
             minimum_coverage: 85
       
       - name: Simulate publish
-        uses: JS-DevTools/npm-publish@v1
+        uses: JS-DevTools/npm-publish@v3
         with:
           token: ${{ secrets.NPM_TOKEN }}
           dry-run: true

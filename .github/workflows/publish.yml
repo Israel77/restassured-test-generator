@@ -42,8 +42,7 @@ jobs:
             minimum_coverage: 85
       
       - name: Publish to npm
-        uses: JS-DevTools/npm-publish@v1
+        uses: JS-DevTools/npm-publish@v3
         with:
           token: ${{ secrets.NPM_TOKEN }}
-          check-version: true
-          greater-version-only: true
+          strategy: upgrade
