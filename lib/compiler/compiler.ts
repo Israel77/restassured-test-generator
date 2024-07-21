@@ -21,6 +21,6 @@ export const compile = (json: string, compilerOptions?: CompilerOptions): string
     }
 
     return generateTests(
-        transform(analyze(jsonObj), compilerOptions?.simplify),
+        transform(analyze(jsonObj), compilerOptions?.transformerOptions),
         compilerOptions?.generatorOptions);
 }

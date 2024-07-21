@@ -26,8 +26,11 @@ type ObjectTypeStore = {
  * @param {boolean} [simplify=false] - Whether to simplify the generated tests by combining values when possible.
  * @returns {JsonBodyTest[]} An array of JsonBodyTests representing the tests to be performed on the JSON body.
  */
-export const transform: Transformer = (fields, simplify?) => {
-    simplify ??= false;
+export const transform: Transformer = (fields, options?) => {
+    options ??= {
+        simplifyArrays: false,
+        checkEmptyObjects: false,
+    };
 
     let testItems: JsonBodyTestInternal[] = [];
 
@@ -43,7 +46,7 @@ export const transform: Transformer = (fields, simplify?) => {
                 parentTypes[field.parent ?? ""] === "Array");
             parentTypes[compositeKey] = field.type;
 
-            if (!fields.some(field => field.parent === compositeKey)) {
+            if (options.checkEmptyObjects && !fields.some(field => field.parent === compositeKey)) {
                 testItems.push({
                     testType: "CheckForEmpty",
                     path: compositeKey,
@@ -57,7 +60,7 @@ export const transform: Transformer = (fields, simplify?) => {
         }
     }
 
-    if (simplify) {
+    if (options.simplifyArrays) {
         testItems = simplifyArrayItems(fields, testItems, parentTypes);
     }
 

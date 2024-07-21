@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Fixed
 - Fix generation of simplified tests for items contained in nested arrays.
 
+## Changed
+BREAKING CHANGE: Transformer options are now passed as an object for more flexibility. All options are now turned off by default.
+
 [0.0.10] - 2024-07-18
 ## Updated
 - Republish the package due to error in previous builds.

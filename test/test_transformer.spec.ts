@@ -188,7 +188,7 @@ describe("Tests for the transformer", () => {
             }
         ];
 
-        const items = transform(fields, true);
+        const items = transform(fields, { simplifyArrays: true });
 
         expect(items.length).to.equal(1);
         expect(items[0]).to.deep.equal(
@@ -266,7 +266,7 @@ describe("Tests for the transformer", () => {
             }
         ];
 
-        const items = transform(fields, true);
+        const items = transform(fields, { simplifyArrays: true });
         expect(items).to.be.deep.equals([
             {
                 testType: "CheckArrayItems",
@@ -353,7 +353,7 @@ describe("Tests for the transformer", () => {
             }
         ];
 
-        const items = transform(fields, true);
+        const items = transform(fields, { simplifyArrays: true });
         expect(items).to.be.deep.equals([
             {
                 testType: "CheckArrayItems",
@@ -404,7 +404,7 @@ describe("Tests for the transformer", () => {
             }
         ]
 
-        const items = transform(fields);
+        const items = transform(fields, { checkEmptyObjects: true });
 
         expect(items).to.deep.equal([
             {
@@ -679,7 +679,7 @@ describe("Tests for the transformer", () => {
             //#endregion "people[2]"
         ]
 
-        const result = transform(fields, false);
+        const result = transform(fields, { simplifyArrays: false });
 
         expect(result).to.deep.equals(expectedResult);
     });

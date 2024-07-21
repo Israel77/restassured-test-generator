@@ -150,7 +150,7 @@ describe("Synthetic tests for the analyzer -> parser -> generator pipeline", () 
     .statusCode(200);`
 
     const options: CompilerOptions = {
-      simplify: false,
+      transformerOptions: { simplifyArrays: false },
       generatorOptions: {
         statusCode: 200,
         request: {
@@ -175,7 +175,7 @@ describe("Synthetic tests for the analyzer -> parser -> generator pipeline", () 
     `
 
     const options = {
-      simplify: true,
+      transformerOptions: { simplifyArrays: true },
     }
 
     const expectedResult = `given()
@@ -201,7 +201,7 @@ describe("Synthetic tests for the analyzer -> parser -> generator pipeline", () 
     }
     `
     const options: CompilerOptions = {
-      simplify: true,
+      transformerOptions: { simplifyArrays: true, checkEmptyObjects: true },
       generatorOptions: {
         includeDependencies: true,
       }
@@ -254,7 +254,9 @@ given()
     }
 `
     const options = {
-      simplify: true,
+      transformerOptions: {
+        simplifyArrays: true
+      },
     }
 
     const expectedResult = `given()
