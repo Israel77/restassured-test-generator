@@ -4,6 +4,7 @@ coverage/
 coverage-ts/
 assets/
 debug/
+.env
 
 # Ignore test builds
 package/

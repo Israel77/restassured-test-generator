@@ -1,6 +1,9 @@
-name: Run Node.js tests
+name: Publish  to npm
 
-on: [push]
+on:
+    push:
+        branches:
+            - master
 
 jobs:
   build:
@@ -38,8 +41,9 @@ jobs:
             path: coverage/cobertura-coverage.xml
             minimum_coverage: 85
       
-      - name: Simulate publish
+      - name: Publish to npm
         uses: JS-DevTools/npm-publish@v1
         with:
           token: ${{ secrets.NPM_TOKEN }}
-          dry-run: true
+          check-version: true
+          greater-version-only: true
