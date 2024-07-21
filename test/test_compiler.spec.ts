@@ -1,3 +1,4 @@
+import { describe, it } from 'mocha';
 import { expect } from 'chai';
 import { compile } from '../lib/compiler/compiler.js';
 import { CompilerOptions } from '../types/compiler/compiler.js';
@@ -15,7 +16,7 @@ describe("Synthetic tests for the analyzer -> parser -> generator pipeline", () 
 
     const result = compile(json);
 
-    let expectedResult = "given()" +
+    const expectedResult = "given()" +
       "\n    " +
       ".when()" +
       "\n    " +

@@ -1,4 +1,4 @@
-import { JsonBodyTest, Transformer, TransformerOptions } from "../../types/compiler/transformer.js";
+import { JsonBodyTest, Transformer } from "../../types/compiler/transformer.js";
 import { JsonField } from "../../types/compiler/analyzer.js";
 import { composeKey } from "./utils.js";
 
@@ -15,9 +15,7 @@ type JsonBodyTestInternal = JsonBodyTest & {
  * Represents a store of object types, where the key is a string identifier
  * and the value is either "Object" or "Array".
  */
-type ObjectTypeStore = {
-    [key: string]: "Object" | "Array";
-};
+type ObjectTypeStore = Record<string, "Object" | "Array">;
 
 /**
  * Transforms a list of JsonFields into a list of JsonBodyTests.
@@ -70,6 +68,7 @@ export const transform: Transformer = (fields, options?) => {
 const removeInternals = (item: JsonBodyTestInternal): JsonBodyTest => {
     // Remove parent and key from the object, as they are redundant with
     // the path property after the transformation.
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { parent, key, ...rest } = item;
     return rest;
 }
@@ -109,7 +108,7 @@ const simplifyArrayItems = (fields: JsonField[], items: JsonBodyTestInternal[], 
     return items;
 }
 
-const insertTest = (items: JsonBodyTestInternal[], field: JsonField, parentTypes: { [key: string]: "Array" | "Object" }): void => {
+const insertTest = (items: JsonBodyTestInternal[], field: JsonField, parentTypes: ObjectTypeStore): void => {
     const fromArray = parentTypes[field.parent ?? ""] === "Array"
 
     if (field.type === "null") {

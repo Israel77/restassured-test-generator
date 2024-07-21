@@ -1,3 +1,4 @@
+import { describe, it } from 'mocha';
 import { expect } from "chai";
 import { transform } from "../lib/compiler/transformer.js";
 import { JsonField } from "../types/compiler/analyzer.js";

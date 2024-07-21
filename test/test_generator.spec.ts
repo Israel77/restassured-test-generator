@@ -1,3 +1,4 @@
+import { describe, it } from 'mocha';
 import { expect } from 'chai';
 import { JsonBodyTest } from '../types/compiler/transformer.js';
 import { generateTests } from '../lib/compiler/generator.js';

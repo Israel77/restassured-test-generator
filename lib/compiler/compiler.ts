@@ -35,7 +35,7 @@ import { CompilerOptions } from "../../types/compiler/compiler.js";
  * shall be implemented in future versions.
  */
 export const compile = (json: string, compilerOptions?: CompilerOptions): string => {
-    const jsonObj: { [key: string]: JsonType } =
+    const jsonObj: Record<string, JsonType> =
         JSON.parse(json);
 
     if (typeof jsonObj !== "object") {

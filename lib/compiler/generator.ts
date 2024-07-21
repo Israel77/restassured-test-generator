@@ -2,7 +2,7 @@ import { GeneratorOptions, TestGenerator, RequestSpecification } from "../../typ
 import { JsonBodyTest } from "../../types/compiler/transformer";
 import { FieldType } from "../../types/compiler/analyzer";
 import { JsonType } from "../../types/jsonTypes";
-import { Var, isBoolean, isNumber, isString } from "./utils.js";
+import { Var, isBoolean, isNumber } from "./utils.js";
 
 /**
  * Object containing Java dependencies for test generation.
@@ -47,9 +47,9 @@ export const generateTests: TestGenerator = (responseTestItems, options?) => {
     // All tests start with given
     dependencies.add(JAVA_DEPENDENCIES.RESTASSURED.GIVEN);
 
-    let indent = options.format ? "    " : "";
-    let newline = options.format ? "\n" : "";
-    let end = ";";
+    const indent = options.format ? "    " : "";
+    const newline = options.format ? "\n" : "";
+    const end = ";";
 
     let result = "";
 

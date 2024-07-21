@@ -1,3 +1,4 @@
+import { describe, it } from 'mocha';
 import { expect } from 'chai';
 import { analyze } from '../lib/compiler/analyzer.js';
 import { JsonField } from '../types/compiler/analyzer.js';
@@ -39,7 +40,7 @@ describe("Tests for the analyzer", () => {
 
     it("Should analyze decimal values", () => {
         const jsonObj = {
-            "decimal": 1234567890.1234567890
+            "decimal": 1234567890.123456
         };
 
         const fields = analyze(jsonObj);
@@ -49,7 +50,7 @@ describe("Tests for the analyzer", () => {
                 parent: undefined,
                 key: "decimal",
                 type: "Number",
-                value: 1234567890.1234567890
+                value: 1234567890.123456
             }
         ]);
     });
