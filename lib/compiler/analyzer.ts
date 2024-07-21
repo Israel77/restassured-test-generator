@@ -61,6 +61,7 @@ const analyzeValue = (value: JsonType, parent: string | undefined, key: string, 
     /* c8 ignore stop */
 
     if (_type === "Array") {
+        // Assertion of type JsonType[] is guaranteed by the parseType function.
         fields.push(...analyzeArray(value as JsonType[], parent, key, fromArray));
     } else if (_type === "Object") {
         // Push object marker
@@ -73,6 +74,7 @@ const analyzeValue = (value: JsonType, parent: string | undefined, key: string, 
 
         // Recursively analyze the inner fields
         const fieldKey = composeKey(parent, key, fromArray);
+        // Assertion of type JsonObject is guaranteed by the parseType function.
         fields.push(...analyze(value as JsonObject, fieldKey));
     } else {
         fields.push({
