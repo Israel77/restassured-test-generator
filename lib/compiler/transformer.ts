@@ -75,7 +75,7 @@ const removeInternals = (item: JsonBodyTestInternal): JsonBodyTest => {
 }
 
 
-const simplifyArrayItems = (fields: JsonField[], items: JsonBodyTestInternal[], parentTypes: any): JsonBodyTestInternal[] => {
+const simplifyArrayItems = (fields: JsonField[], items: JsonBodyTestInternal[], parentTypes: ObjectTypeStore): JsonBodyTestInternal[] => {
     const arrays = fields
         .filter(field => field.type === "Array");
 
