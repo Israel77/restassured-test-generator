@@ -2,7 +2,7 @@
 
 A transpiler to convert JSON response body to Java RestAssured assertions.
 
-This project contains a library that can be used to generate RestAssured assertions from JSON responses. 
+The primary use of this project is for the [RestAssured Test Generator VSCode extension](https://github.com/Israel77/vscode-restassured-test-generator-vscode), but it can also be used as a standalone library to generate Java RestAssured assertions from JSON responses.
 
 > 🚧 Warning: This is a work in progress and breaking changes shall be expected.
 
@@ -42,6 +42,7 @@ const compilerOptions = {
 const output = Compiler.compile(jsonString, compilerOptions);
 
 console.log(output);
+// Expected output:
 // given()
 //    .when()
 //    .post("https://example.com")
@@ -74,6 +75,7 @@ const compilerOptions = {
 const output = Compiler.compile(jsonString, compilerOptions);
 
 console.log(output);
+// Expected output:
 // given()
 //    .when()
 //    .post(url)
@@ -96,3 +98,5 @@ const fields = Compiler.analyze(jsonString);
 const testSpec = Compiler.transform(fields);
 const output = Compiler.generateTests(testSpec);
 ```
+
+Further documentation of the modules can be found on the comments of each file in the source code.

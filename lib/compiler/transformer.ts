@@ -1,4 +1,4 @@
-import { JsonBodyTest, Transformer } from "../../types/compiler/transformer.js";
+import { JsonBodyTest, Transformer, TransformerOptions } from "../../types/compiler/transformer.js";
 import { JsonField } from "../../types/compiler/analyzer.js";
 import { composeKey } from "./utils.js";
 
@@ -23,7 +23,7 @@ type ObjectTypeStore = {
  * Transforms a list of JsonFields into a list of JsonBodyTests.
  * 
  * @param {JsonField[]} fields - An array of JsonFields representing the schema.
- * @param {boolean} [simplify=false] - Whether to simplify the generated tests by combining values when possible.
+ * @param {TransformerOptions} options - Options to apply additional transformations on the test generation.
  * @returns {JsonBodyTest[]} An array of JsonBodyTests representing the tests to be performed on the JSON body.
  */
 export const transform: Transformer = (fields, options?) => {
@@ -66,14 +66,10 @@ export const transform: Transformer = (fields, options?) => {
 
     return testItems.map(removeInternals);
 }
-/**
- * Converts the internal representation used within the transformer for optimizations
- * into the output format that will be used to generate the tests.
- * 
- * @param item - The JsonBodyTestInternal representation.
- * @returns The JSONBodyTest representation.
- */
+
 const removeInternals = (item: JsonBodyTestInternal): JsonBodyTest => {
+    // Remove parent and key from the object, as they are redundant with
+    // the path property after the transformation.
     const { parent, key, ...rest } = item;
     return rest;
 }
@@ -90,6 +86,7 @@ const simplifyArrayItems = (fields: JsonField[], items: JsonBodyTestInternal[], 
 
         const arrayFields = fields.filter(field => field.parent === path && field.type !== "Array" && field.type !== "Object");
 
+        // Remove individual tests for the array items
         items = items.filter(item => item.parent !== path);
 
         const arrayItems = arrayFields.map(field => ({
@@ -113,10 +110,12 @@ const simplifyArrayItems = (fields: JsonField[], items: JsonBodyTestInternal[], 
 }
 
 const insertTest = (items: JsonBodyTestInternal[], field: JsonField, parentTypes: { [key: string]: "Array" | "Object" }): void => {
+    const fromArray = parentTypes[field.parent ?? ""] === "Array"
+
     if (field.type === "null") {
         items.push({
             testType: "CheckForNull",
-            path: composeKey(field.parent, field.key, parentTypes[field.parent ?? ""] === "Array"),
+            path: composeKey(field.parent, field.key, fromArray),
             parent: field.parent,
             key: field.key,
         });
@@ -124,9 +123,7 @@ const insertTest = (items: JsonBodyTestInternal[], field: JsonField, parentTypes
     else {
         items.push({
             testType: "CheckForValue",
-            path: composeKey(field.parent,
-                field.key,
-                parentTypes[field.parent ?? ""] === "Array"),
+            path: composeKey(field.parent, field.key, fromArray),
             value: field.value,
             valueType: field.type,
             parent: field.parent,

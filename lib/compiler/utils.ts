@@ -14,7 +14,6 @@ export const composeKey = (parent: string | undefined, key: string, fromArray: b
 /**
  * Type assertion functions
  */
-
 export function isString(value: unknown): asserts value is string {
     if (typeof value !== "string") {
         throw new TypeError(`Expected a string, got ${typeof value}`);
@@ -44,7 +43,6 @@ export function isNull(value: unknown): asserts value is null {
  * A wrapper indicating that a string should be interpreted
  * as a variable literal by the output generator. 
  */
-
 export class Var {
     private name: string;
 

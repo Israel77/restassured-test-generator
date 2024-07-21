@@ -24,7 +24,7 @@ class InferenceError extends Error {
  * Analyzes a JSON object into an array of JsonFields.
  *
  * @param {JsonObject} jsonObj - The JSON object to analyze.
- * @param {string} [parent] - The parent key of the JSON object (undefined if it is the root).
+ * @param {string | undefined} [parent] - The parent key of the JSON object (undefined if it is the root).
  * @returns {JsonField[]} An array of JsonFields representing the JSON object.
  * @throws {InferenceError} If the type of a key cannot be inferred.
  */
@@ -42,7 +42,7 @@ export const analyze: Analyzer = (jsonObj, parent?) => {
 /**
  * Analyzes a value (object, array, or primitive) into an array of JsonFields.
  *
- * @param {any} value - The value to analyze.
+ * @param {JsonType} value - The value to analyze.
  * @param {string} [parent] - The parent key of the value (undefined if it is the root).
  * @param {string} [key] - The key of the value (undefined if it is an array element).
  * @param {boolean} [fromArray] - Wether the parent key refers to an array.
@@ -91,7 +91,7 @@ const analyzeValue = (value: JsonType, parent: string | undefined, key: string, 
  *
  * @param {any[]} jsonArray - The array to analyze.
  * @param {string} [parent] - The parent key of the array (undefined if it is the root).
- * @param {string} [key] - The key of the array (undefined if it is an array element).
+ * @param {string} [key] - The key of the array.
  * @returns {JsonField[]} An array of JsonFields representing the array.
  */
 const analyzeArray = (jsonArray: JsonType[], parent: string | undefined, key: string, fromArray: boolean): JsonField[] => {

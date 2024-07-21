@@ -10,7 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix generation of simplified tests for items contained in nested arrays.
 
 ## Changed
-BREAKING CHANGE: Transformer options are now passed as an object for more flexibility. All options are now turned off by default.
+- BREAKING CHANGE: Transformer options are now passed as an object for more flexibility. All options are now turned off by default.
+- Review documentation contained in files, and made it more comprehensive and beginner-friendly. This will be the prefered way to document the internals of the code architecture as opposed to using the README. [#2](https://github.com/Israel77/restassured-test-generator/issues/2).
 
 [0.0.10] - 2024-07-18
 ## Updated

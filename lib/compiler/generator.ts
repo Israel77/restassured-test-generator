@@ -4,7 +4,13 @@ import { FieldType } from "../../types/compiler/analyzer";
 import { JsonType } from "../../types/jsonTypes";
 import { Var, isBoolean, isNumber, isString } from "./utils.js";
 
+/**
+ * Object containing Java dependencies for test generation.
+ */
 const JAVA_DEPENDENCIES = {
+    /**
+     * Hamcrest Matchers dependencies.
+     */
     HAMCREST_MATCHERS: {
         EQUAL_TO: "import static org.hamcrest.Matchers.equalTo;\n",
         HAS_ITEMS: "import static org.hamcrest.Matchers.hasItems;\n",
@@ -12,12 +18,25 @@ const JAVA_DEPENDENCIES = {
         NULL_VALUE: "import static org.hamcrest.Matchers.nullValue;\n",
         EMPTY: "import static org.hamcrest.Matchers.empty;\n"
     },
+    /**
+     * RestAssured dependencies.
+     */
     RESTASSURED: {
         GIVEN: "import static io.restassured.RestAssured.given;\n",
         WHEN: "import static io.restassured.RestAssured.when;\n",
     }
 } as const;
 
+/**
+* Generates test code for REST API responses.
+* 
+* @param responseTestItems - An array of test items for the API response.
+* @param options - Optional configuration for test generation.
+* @param options.format - Whether to format the generated code with indentation and newlines. Defaults to true.
+* @param options.request - Request specification to be included in the test.
+* @param options.includeDependencies - Whether to include import statements for dependencies. Defaults to false.
+* @returns A string containing the generated test code.
+*/
 export const generateTests: TestGenerator = (responseTestItems, options?) => {
     options = {
         format: true,
@@ -46,6 +65,7 @@ export const generateTests: TestGenerator = (responseTestItems, options?) => {
     return result;
 }
 
+// This function formats the values to be suitable for the Java language.
 const formatValue = (value: JsonType, type: FieldType): string | undefined => {
     const JAVA_MAX_INT = 2_147_483_647;
 
@@ -73,6 +93,7 @@ const formatValue = (value: JsonType, type: FieldType): string | undefined => {
     }
 }
 
+// This function generates the request specification for the test.
 const generateRequestSpecification = (request: RequestSpecification | undefined,
     newline: string,
     indent: string): string => {
@@ -148,6 +169,7 @@ const generateResponseTests = (responseTestItems: JsonBodyTest[], newline: strin
 
     result += newline + indent + ".then()";
 
+    // Converts each test item to a matching string representation corresponding to the Java code.
     for (const item of responseTestItems) {
         switch (item.testType) {
             case "CheckForValue":
