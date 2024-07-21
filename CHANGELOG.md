@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+[Unreleased]
+## Fixed
+- Fix generation of simplified tests for items contained in nested arrays.
+
 [0.0.10] - 2024-07-18
 ## Updated
 - Republish the package due to error in previous builds.

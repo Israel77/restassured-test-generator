@@ -237,4 +237,30 @@ given()
 
     expect(() => compile(json)).to.throw();
   });
+
+  it("Should merge array items when simplify is true for deeply nested arrays", () => {
+    const json = `
+    {
+      "object": {
+        "array": [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f"
+        ]
+      }
+    }
+`
+    const options = {
+      simplify: true,
+    }
+
+    const expectedResult = `given()
+    .when()
+    .then()
+    .body("object.array", contains("a", "b", "c", "d", "e", "f"));`
+    expect(compile(json, options)).to.equal(expectedResult);
+  });
 });

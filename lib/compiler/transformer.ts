@@ -10,6 +10,15 @@ type JsonBodyTestInternal = JsonBodyTest & {
     key: string,
 };
 
+
+/**
+ * Represents a store of object types, where the key is a string identifier
+ * and the value is either "Object" or "Array".
+ */
+type ObjectTypeStore = {
+    [key: string]: "Object" | "Array";
+};
+
 /**
  * Transforms a list of JsonFields into a list of JsonBodyTests.
  * 
@@ -22,7 +31,9 @@ export const transform: Transformer = (fields, simplify?) => {
 
     let testItems: JsonBodyTestInternal[] = [];
 
-    const parentTypes: { [key: string]: "Object" | "Array" } = {};
+
+    // This will be used to lookup the parent types when composing keys.
+    const parentTypes: ObjectTypeStore = {};
 
     for (const field of fields) {
         if (field.type === "Object" || field.type === "Array") {
@@ -47,7 +58,7 @@ export const transform: Transformer = (fields, simplify?) => {
     }
 
     if (simplify) {
-        testItems = simplifyArrayItems(fields, testItems);
+        testItems = simplifyArrayItems(fields, testItems, parentTypes);
     }
 
     return testItems.map(removeInternals);
@@ -65,16 +76,18 @@ const removeInternals = (item: JsonBodyTestInternal): JsonBodyTest => {
 }
 
 
-const simplifyArrayItems = (fields: JsonField[], items: JsonBodyTestInternal[]): JsonBodyTestInternal[] => {
+const simplifyArrayItems = (fields: JsonField[], items: JsonBodyTestInternal[], parentTypes: any): JsonBodyTestInternal[] => {
     const arrays = fields
         .filter(field => field.type === "Array");
 
     for (const array of arrays) {
+
         const key = array.key;
+        const path = composeKey(array.parent, key, parentTypes[array.parent ?? ""] === "Array");
 
-        const arrayFields = fields.filter(field => field.parent === key && field.type !== "Array" && field.type !== "Object");
+        const arrayFields = fields.filter(field => field.parent === path && field.type !== "Array" && field.type !== "Object");
 
-        items = items.filter(item => item.parent !== key);
+        items = items.filter(item => item.parent !== path);
 
         const arrayItems = arrayFields.map(field => ({
             value: field.value,
@@ -85,7 +98,7 @@ const simplifyArrayItems = (fields: JsonField[], items: JsonBodyTestInternal[]):
         if (arrayItems.length > 0) {
             items.push({
                 testType: "CheckArrayItems",
-                path: composeKey(array.parent, key, true),
+                path: path,
                 items: arrayItems,
                 parent: array.parent,
                 key: key,

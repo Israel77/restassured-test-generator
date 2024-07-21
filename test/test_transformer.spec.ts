@@ -214,6 +214,180 @@ describe("Tests for the transformer", () => {
 
     });
 
+    it("Should merge array items inside nested objects", () => {
+        const fields: JsonField[] = [
+            {
+                parent: undefined,
+                key: "object",
+                type: "Object",
+                value: null
+            },
+            {
+                parent: "object",
+                key: "array",
+                type: "Array",
+                value: null
+            },
+            {
+                parent: "object.array",
+                key: "[0]",
+                type: "String",
+                value: "a"
+            },
+            {
+                parent: "object.array",
+                key: "[1]",
+                type: "String",
+                value: "b"
+            },
+            {
+                parent: "object.array",
+                key: "[2]",
+                type: "String",
+                value: "c"
+            },
+            {
+                parent: "object.array",
+                key: "[3]",
+                type: "String",
+                value: "d"
+            },
+            {
+                parent: "object.array",
+                key: "[4]",
+                type: "String",
+                value: "e"
+            },
+            {
+                parent: "object.array",
+                key: "[5]",
+                type: "String",
+                value: "f"
+            }
+        ];
+
+        const items = transform(fields, true);
+        expect(items).to.be.deep.equals([
+            {
+                testType: "CheckArrayItems",
+                path: "object.array",
+                items: [
+                    {
+                        value: "a",
+                        valueType: "String"
+                    },
+                    {
+                        value: "b",
+                        valueType: "String"
+                    },
+                    {
+                        value: "c",
+                        valueType: "String"
+                    },
+                    {
+                        value: "d",
+                        valueType: "String"
+                    },
+                    {
+                        value: "e",
+                        valueType: "String"
+                    },
+                    {
+                        value: "f",
+                        valueType: "String"
+                    }
+                ]
+            }
+        ])
+    });
+
+    it("Should merge array items inside nested arrays", () => {
+        const fields: JsonField[] = [
+            {
+                parent: undefined,
+                key: "array",
+                type: "Array",
+                value: null
+            },
+            {
+                parent: "array",
+                key: "[0]",
+                type: "Array",
+                value: null
+            },
+            {
+                parent: "array[0]",
+                key: "[0]",
+                type: "String",
+                value: "a"
+            },
+            {
+                parent: "array[0]",
+                key: "[1]",
+                type: "String",
+                value: "b"
+            },
+            {
+                parent: "array[0]",
+                key: "[2]",
+                type: "String",
+                value: "c"
+            },
+            {
+                parent: "array[0]",
+                key: "[3]",
+                type: "String",
+                value: "d"
+            },
+            {
+                parent: "array[0]",
+                key: "[4]",
+                type: "String",
+                value: "e"
+            },
+            {
+                parent: "array[0]",
+                key: "[5]",
+                type: "String",
+                value: "f"
+            }
+        ];
+
+        const items = transform(fields, true);
+        expect(items).to.be.deep.equals([
+            {
+                testType: "CheckArrayItems",
+                path: "array[0]",
+                items: [
+                    {
+                        value: "a",
+                        valueType: "String"
+                    },
+                    {
+                        value: "b",
+                        valueType: "String"
+                    },
+                    {
+                        value: "c",
+                        valueType: "String"
+                    },
+                    {
+                        value: "d",
+                        valueType: "String"
+                    },
+                    {
+                        value: "e",
+                        valueType: "String"
+                    },
+                    {
+                        value: "f",
+                        valueType: "String"
+                    }
+                ]
+            }
+        ])
+    });
+
     it("Should evaluate empty nested objects or arrays", () => {
         const fields: JsonField[] = [
             {
@@ -242,7 +416,7 @@ describe("Tests for the transformer", () => {
                 path: "emptyArray"
             }
         ])
-    })
+    });
 
     it("Should evaluate complex objects", () => {
         const fields: JsonField[] = [
